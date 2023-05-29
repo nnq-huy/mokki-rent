@@ -11,11 +11,10 @@ import {
 import { FaBiking } from 'react-icons/fa';
 import { BsSnow } from 'react-icons/bs';
 import { IoDiamond } from 'react-icons/io5';
-import { MdOutlineVilla } from 'react-icons/md';
+import { MdCastle, MdOutlineVilla } from 'react-icons/md';
 
 import CategoryBox from "../CategoryBox";
 import Container from '../Container';
-import { BiHistory } from 'react-icons/bi';
 
 
 export const categories = [
@@ -56,7 +55,7 @@ export const categories = [
   },
   {
     label: 'History',
-    icon: BiHistory,
+    icon: MdCastle,
     description: 'This property is an historical place'
   },
   {

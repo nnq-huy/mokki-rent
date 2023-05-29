@@ -5,28 +5,27 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+import useLoginModal from "@/app/hooks/useLoginModal";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
+import { User } from "@prisma/client";
 
 interface UserMenuProps {
-  currentUser?:  | null
+  currentUser?: User | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
   currentUser
 }) => {
   const router = useRouter();
-
-
-
+  const loginModal = useLoginModal();
+  const registerModal = useRegisterModal();
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
-
-
 
   return ( 
     <div className="relative">
@@ -36,6 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
           className="
             hidden
             md:block
+            text-mokki-green
             text-sm 
             font-semibold 
             py-3 
@@ -68,7 +68,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={undefined} />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   onClick={() => router.push('/properties')}
                 />
                 <MenuItem 
-                  label="Airbnb your home" 
+                  label="Rent a mökki" 
                   onClick={()=>{}}
                 />
                 <hr />
@@ -120,11 +120,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <>
                 <MenuItem 
                   label="Login" 
-                  onClick={()=>{}}
+                  onClick={loginModal.onOpen}
                 />
                 <MenuItem 
                   label="Sign up" 
-                  onClick={()=>{}}
+                  onClick={registerModal.onOpen}
                 />
               </>
             )}
