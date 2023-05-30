@@ -13,6 +13,7 @@ interface ListingReservationProps {
   onSubmit: () => void;
   disabled?: boolean;
   disabledDates: Date[];
+  dayCount?:number,
 }
 
 const ListingReservation: React.FC<
@@ -24,7 +25,8 @@ const ListingReservation: React.FC<
   onChangeDate,
   onSubmit,
   disabled,
-  disabledDates
+  disabledDates,
+  dayCount
 }) => {
   return ( 
     <div 
@@ -39,7 +41,7 @@ const ListingReservation: React.FC<
       <div className="
       flex flex-row items-center gap-1 p-4">
         <div className="text-2xl font-semibold">
-          $ {price}
+           {price}€
         </div>
         <div className="font-light text-neutral-600">
           night
@@ -59,7 +61,25 @@ const ListingReservation: React.FC<
           label="Reserve" 
           onClick={onSubmit}
         />
-      </div>
+      </div> 
+      <hr />
+      {dayCount! > 0 &&<div 
+        className="
+          p-4 
+          flex 
+          flex-row 
+          items-center 
+          justify-end
+          text-medium
+        "
+      >
+        <div className="px-2">
+          {dayCount} {dayCount == 1 ? <>night</>:<>nights</>} x 
+        </div>
+        <div>
+         {price}€
+        </div>
+      </div>}
       <hr />
       <div 
         className="
@@ -76,7 +96,7 @@ const ListingReservation: React.FC<
           Total
         </div>
         <div>
-          $ {totalPrice}
+         {totalPrice}€
         </div>
       </div>
     </div>

@@ -59,7 +59,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   }, [listing.category]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing.price);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const onCreateReservation = useCallback(() => {
@@ -105,7 +105,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
       } else {
-        setTotalPrice(listing.price);
+        setTotalPrice(0);
       }
     }
   }, [dateRange, listing.price]);
@@ -161,6 +161,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 onSubmit={onCreateReservation}
                 disabled={isLoading}
                 disabledDates={disabledDates}
+                dayCount={differenceInDays(
+                  dateRange.endDate!, 
+                  dateRange.startDate!
+                )}
               />
             </div>
           </div>

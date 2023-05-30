@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -25,10 +25,23 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
   const [isOpen, setIsOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLDivElement>(null);
 
-  const toggleOpen = useCallback(() => {
-    setIsOpen((value) => !value);
-  }, []);
+  const toggleMenu = useCallback(
+    (e: any) => {
+      if (
+        userMenuRef.current &&
+        userButtonRef.current &&
+        isOpen &&
+        !userMenuRef.current.contains(e.target) &&
+        !userButtonRef.current.contains(e.target)
+      ){
+        setIsOpen(false)
+      }
+    },
+    [isOpen]
+  );
 
   const onRent = useCallback(() => {
     if (!currentUser) {
@@ -37,6 +50,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
     rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", toggleMenu);
+    return ()=> document.removeEventListener("mousedown",toggleMenu)
+  }, [toggleMenu]);
 
   return ( 
     <div className="relative">
@@ -60,7 +78,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
           Rent your mökki
         </div>
         <div 
-        onClick={toggleOpen}
+        onClick={()=>setIsOpen(!isOpen)}
+        ref={userButtonRef}
         className="
           p-4
           md:py-1
@@ -85,6 +104,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       </div>
       {isOpen && (
         <div 
+          ref={userMenuRef}
           className="
             absolute 
             rounded-xl 
