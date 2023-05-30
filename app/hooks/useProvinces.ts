@@ -120,7 +120,7 @@ const useProvinces = () => {
   const getAll = () => data;
 
   const getByValue = (value: string) => {
-    return data.find((item) => item.value === value||item.english===value);
+    return data.find((item) => item.value === value);
   }
 
   return {

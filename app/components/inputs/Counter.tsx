@@ -1,13 +1,14 @@
 'use client';
 
 import { useCallback } from "react";
+import { IconType } from "react-icons";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface CounterProps {
   title: string;
   subtitle: string;
   value: number;
-  icon:React.ReactElement;
+  icon?:IconType;
   onChange: (value: number) => void;
 }
 
@@ -15,7 +16,7 @@ const Counter: React.FC<CounterProps> = ({
   title,
   subtitle,
   value,
-  icon,
+  icon: Icon,
   onChange,
 }) => {
   const onAdd = useCallback(() => {
@@ -33,7 +34,12 @@ const Counter: React.FC<CounterProps> = ({
   return ( 
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-col">
-        <div className="font-medium flex gap-2 items-center">{icon}{title}</div>
+        <div className="font-medium flex gap-2 items-center">{Icon && (
+        <Icon
+          size={24}
+          className="mr-2"
+        />
+      )}{title}</div>
         <div className="font-light text-gray-600">
           {subtitle}
         </div>

@@ -24,7 +24,8 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       className={`
-        relative
+        flex
+        justify-center
         disabled:opacity-70
         disabled:cursor-not-allowed
         rounded-lg
@@ -43,11 +44,7 @@ const Button: React.FC<ButtonProps> = ({
       {Icon && (
         <Icon
           size={24}
-          className="
-            absolute
-            left-4
-            top-3
-          "
+          className="mx-2"
         />
       )}
       {label}

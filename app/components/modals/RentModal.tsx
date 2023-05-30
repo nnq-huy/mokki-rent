@@ -72,9 +72,8 @@ const RentModal= () => {
   const bathroomCount = watch('bathroomCount');
   const imageSrc = watch('imageSrc');
   const hasSauna = watch('hasSauna');
-  
 
-  const Map = useMemo(() => dynamic(() => import('../Map'), { 
+  const Map = useMemo(() => dynamic(() => import('../Map'), {
     ssr: false 
   }), [location]);
 
@@ -192,7 +191,7 @@ const RentModal= () => {
         />
        
         <Counter 
-          icon={ <BsFillPeopleFill/>}
+          icon={BsFillPeopleFill}
           onChange={(value) => setCustomValue('guestCount', value)}
           value={guestCount}
           title="Guests" 
@@ -200,7 +199,7 @@ const RentModal= () => {
         />
         <hr />
         <Counter 
-          icon={ <MdBedroomParent/>}
+          icon={MdBedroomParent}
           onChange={(value) => setCustomValue('roomCount', value)}
           value={roomCount}
           title="Rooms" 
@@ -208,7 +207,7 @@ const RentModal= () => {
         />
         <hr />
         <Counter 
-          icon={<MdBathroom/>}
+          icon={MdBathroom}
           onChange={(value) => setCustomValue('bathroomCount', value)}
           value={bathroomCount}
           title="Bathrooms" 
@@ -216,7 +215,7 @@ const RentModal= () => {
         />
         <hr/>
         <SaunaToggle 
-          icon={<MdWater />}
+          icon={MdWater}
           title='Sauna'
           subtitle='Does your mökki have a sauna?'
           value={hasSauna}
