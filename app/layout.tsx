@@ -6,6 +6,7 @@ import './globals.css'
 import {  Nunito } from 'next/font/google'
 import ToasterProvider from './providers/ToasterProvider';
 import getCurrentUser from './actions/getCurrentUser';
+import RentModal from './components/modals/RentModal';
 
 export const metadata = {
   title: 'Mokki rent',
@@ -30,6 +31,7 @@ export default async function RootLayout({
           <ToasterProvider/>
           <LoginModal />
           <RegisterModal />
+          <RentModal />
           <Header currentUser={currentUser}/>
         </ClientOnly>
         {children}

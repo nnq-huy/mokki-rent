@@ -11,6 +11,7 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
 import { User } from "@prisma/client";
+import useRentModal from "@/app/hooks/useRentModal";
 
 interface UserMenuProps {
   currentUser?: User | null;
@@ -22,16 +23,26 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const router = useRouter();
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
+  const rentModal = useRentModal();
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
+
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    rentModal.onOpen();
+  }, [loginModal, , currentUser]);
 
   return ( 
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div 
-          onClick={()=>{}}
+          onClick={onRent}
           className="
             hidden
             md:block
@@ -46,7 +57,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
             cursor-pointer
           "
         >
-          Rent a mökki
+          Rent your mökki
         </div>
         <div 
         onClick={toggleOpen}
@@ -107,7 +118,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   onClick={() => router.push('/properties')}
                 />
                 <MenuItem 
-                  label="Rent a mökki" 
+                  label="Rent your mökki out" 
                   onClick={()=>{}}
                 />
                 <hr />

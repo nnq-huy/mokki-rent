@@ -56,7 +56,7 @@ export const categories = [
   {
     label: 'History',
     icon: MdCastle,
-    description: 'This property is an historical place'
+    description: 'This property is an historical place!'
   },
   {
     label: 'Camping',
