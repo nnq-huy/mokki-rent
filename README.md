@@ -32,7 +32,7 @@ Main features:
 
 ## Link to demo
 
-[https://web-messenger-nextjs.vercel.app](https://web-messenger-nextjs.vercel.app/)
+[https://mokki-rent.vercel.app](https://mokki-rent.vercel.app/)
 
 
 ## To run the project
