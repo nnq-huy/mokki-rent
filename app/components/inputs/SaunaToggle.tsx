@@ -8,7 +8,8 @@ interface SaunaToggleProps {
   title: string;
   subtitle: string;
   value: boolean;
-  icon:IconType;
+  defaultChecked?:boolean;
+  icon?:IconType;
   onChange: (value: boolean) => void;
 }
 
@@ -16,6 +17,7 @@ const SaunaToggle: React.FC<SaunaToggleProps> = ({
   title,
   subtitle,
   value,
+  defaultChecked,
   icon: Icon,
   onChange,
 }) => {
@@ -39,7 +41,7 @@ const SaunaToggle: React.FC<SaunaToggleProps> = ({
       <div className="flex text-4xl flex-row items-center gap-4">
         <Toggle
             aria-label='No label tag'
-            defaultChecked={true}
+            defaultChecked={defaultChecked??true}
             onChange={onToggle}
         />
         </div>

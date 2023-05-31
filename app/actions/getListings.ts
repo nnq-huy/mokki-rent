@@ -9,7 +9,7 @@ export interface IListingsParams {
   endDate?: string;
   locationValue?: string;
   category?: string;
-  hasSauna?:boolean;
+  needSauna?:boolean
 }
 
 export default async function getListings(
@@ -25,7 +25,7 @@ export default async function getListings(
       startDate,
       endDate,
       category,
-      hasSauna,
+      needSauna,
     } = params;
 
     let query: any = {};
@@ -33,13 +33,12 @@ export default async function getListings(
     if (userId) {
       query.userId = userId;
     }
-
-    if(hasSauna) {
-      query.hasSauna = hasSauna;
-    }
-
     if (category) {
       query.category = category;
+    }
+
+    if(needSauna) {
+      query.hasSauna = true;
     }
 
     if (roomCount) {
@@ -82,7 +81,6 @@ export default async function getListings(
         }
       }
     }
-
     const listings = await prisma.listing.findMany({
       where: query,
       orderBy: {

@@ -1,12 +1,10 @@
 import ClientOnly from './components/ClientOnly';
 import Header from './components/navbar/Navbar';
-import LoginModal from './components/modals/LoginModal';
-import RegisterModal from './components/modals/RegisterModal';
 import './globals.css'
 import {  Nunito } from 'next/font/google'
 import ToasterProvider from './providers/ToasterProvider';
 import getCurrentUser from './actions/getCurrentUser';
-import RentModal from './components/modals/RentModal';
+import ModalsProvider from './providers/ModalsProvider';
 
 export const metadata = {
   title: 'Mokki rent',
@@ -29,9 +27,7 @@ export default async function RootLayout({
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider/>
-          <LoginModal />
-          <RegisterModal />
-          <RentModal />
+          <ModalsProvider/>
           <Header currentUser={currentUser}/>
         </ClientOnly>
         <div className="pb-20 pt-28">

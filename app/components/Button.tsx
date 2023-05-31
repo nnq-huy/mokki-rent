@@ -24,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       className={`
+        items-center
         flex
         justify-center
         disabled:opacity-70

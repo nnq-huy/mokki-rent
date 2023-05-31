@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { differenceInDays, eachDayOfInterval } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
-
 import Container from "@/app/components/Container";
 import { categories } from "@/app/components/navbar/Categories";
 import ListingHead from "@/app/components/listings/ListingHead";
@@ -61,6 +60,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  const isOwnListing = currentUser ? (currentUser.id === listing.userId) :false;
 
   const onCreateReservation = useCallback(() => {
       if (!currentUser) {
@@ -159,7 +159,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
-                disabled={isLoading}
+                disabled={isLoading||isOwnListing}
                 disabledDates={disabledDates}
                 dayCount={differenceInDays(
                   dateRange.endDate!, 

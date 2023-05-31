@@ -10,6 +10,7 @@ import useProvinces from "@/app/hooks/useProvinces";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
 import { Listing, Reservation, User } from "@prisma/client";
+import { AiOutlineDelete } from "react-icons/ai";
 
 interface ListingCardProps {
   data: Listing;
@@ -119,6 +120,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </div>
         {onAction && actionLabel && (
           <Button
+          icon={AiOutlineDelete}
             disabled={disabled}
             small
             label={actionLabel} 

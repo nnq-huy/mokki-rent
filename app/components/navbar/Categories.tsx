@@ -5,8 +5,11 @@ import { TbBeach, TbMountain, TbPool } from 'react-icons/tb';
 import { 
   GiBarn, 
   GiBoatFishing, 
+  GiDeer, 
+  GiForest, 
   GiForestCamp, 
   GiIsland,
+  GiWheat,
 } from 'react-icons/gi';
 import { FaBiking } from 'react-icons/fa';
 import { BsSnow } from 'react-icons/bs';
@@ -30,7 +33,7 @@ export const categories = [
   },
   {
     label: 'Countryside',
-    icon: TbMountain,
+    icon: GiWheat,
     description: 'This property is in the countryside!'
   },
   {
@@ -77,6 +80,11 @@ export const categories = [
     label: 'Lux',
     icon: IoDiamond,
     description: 'This property is brand new and luxurious!'
+  },
+  {
+    label: 'National Park',
+    icon: GiForest,
+    description: 'This property is near a national park'
   }
 ]
 

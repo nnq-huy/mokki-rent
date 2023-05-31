@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
-
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
 import { User } from "@prisma/client";

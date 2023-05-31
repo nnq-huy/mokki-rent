@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import useProvinces from "@/app/hooks/useProvinces";
-
 import Heading from "../Heading";
 import HeartButton from "../HeartButton";
 import { User } from "@prisma/client";
@@ -31,7 +30,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
     <>
       <Heading
         title={title}
-        subtitle={`${location?.english}, ${location?.label}`}
+        subtitle={`${location?.label}, ${location?.english}`}
       />
       <div className="
           w-full
