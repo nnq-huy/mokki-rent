@@ -128,6 +128,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   label="My favorites" 
                   onClick={() => router.push('/favorites')}
                 />
+                <hr />
                 <MenuItem 
                   label="My reservations" 
                   onClick={() => router.push('/reservations')}
@@ -142,12 +143,20 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 />
                 <hr />
                 <MenuItem 
+                  label="Home" 
+                  onClick={() => router.push('/')}
+                />
+                <MenuItem 
                   label="Logout" 
                   onClick={() => signOut()}
                 />
               </>
             ) : (
               <>
+                <MenuItem 
+                  label="Home" 
+                  onClick={() => router.push('/')}
+                />
                 <MenuItem 
                   label="Login" 
                   onClick={loginModal.onOpen}

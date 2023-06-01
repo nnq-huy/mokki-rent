@@ -7,8 +7,8 @@ import getCurrentUser from './actions/getCurrentUser';
 import ModalsProvider from './providers/ModalsProvider';
 
 export const metadata = {
-  title: 'Mokki rent',
-  description: 'best place to spend your summer in Finland',
+  title: 'Mökki Rent',
+  description: 'The best place to spend your summer in Finland!',
 }
 
 const font = Nunito({
