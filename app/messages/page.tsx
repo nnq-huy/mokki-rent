@@ -7,16 +7,16 @@ import getMessages from "../actions/getMessages";
 
 
 interface IParams {
-  reservationId?: string;
-  senderId?: string;
-  receiverId?: string;
+  receiverId?: string
 }
 
-const MessagesPage = async ({ params }: { params: IParams }) => {
+const MessagesPage = async () => {
+  const currentUser = await getCurrentUser();
+  let params:IParams={};
+
+  params ={receiverId:currentUser?.id};
 
   const messsages = await getMessages(params);
-  const currentUser = await getCurrentUser();
-
 
   if (!currentUser) {
     return (

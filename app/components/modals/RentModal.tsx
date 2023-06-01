@@ -17,7 +17,7 @@ import Modal from "./Modal";
 import CategoryInput from '../inputs/CategoryInput';
 import ProvinceSelect from "../inputs/ProvinceSelect";
 import { categories } from '../navbar/Categories';
-import Input from '../inputs/Input';
+import FormInput from '../inputs/FormInput';
 import Heading from '../Heading';
 import Counter from '../inputs/Counter';
 import ImageUpload from '../inputs/ImageUpload';
@@ -247,7 +247,7 @@ const RentModal= () => {
           title="How would you describe your place?"
           subtitle="Short and sweet works best!"
         />
-        <Input
+        <FormInput
           id="title"
           label="Title"
           disabled={isLoading}
@@ -256,7 +256,7 @@ const RentModal= () => {
           required
         />
         <hr />
-        <Input
+        <FormInput
           id="description"
           label="Description"
           disabled={isLoading}
@@ -275,7 +275,7 @@ const RentModal= () => {
           title="Now, set your price"
           subtitle="How much do you charge per night?"
         />
-        <Input
+        <FormInput
           id="price"
           label="Price"
           formatPrice 

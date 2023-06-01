@@ -46,33 +46,36 @@ model Account {
 }
 
 model Listing {
-  id    String @id @default(uuid())
-  title String
-  description String
-  imageSrc String
-  createdAt DateTime @default(now())
-  category  String
-  roomCount Int
-  bathroomCount Int
-  hasSauna  Boolean
-  guestCount Int
-  locationValue String
-  userId String 
-  price Int
+  id                  String @id @default(uuid())
+  title               String
+  description         String
+  imageSrc            String
+  createdAt           DateTime @default(now())
+  category            String
+  roomCount           Int
+  bathroomCount       Int
+  hasSauna            Boolean
+  guestCount          Int
+  locationValue       String
+  userId              String
+  price               Int
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations Reservation[]
 }
 
 model Reservation {
-  id String @id @default(uuid())
-  userId String
-  listingId String
-  startDate DateTime
-  endDate DateTime
-  totalPrice Int
-  confirmed Boolean
-  createdAt DateTime @default(now())
+  id                  String @id @default(uuid())
+  userId              String
+  listingId           String
+  hostId              String
+  hostName            String
+  hostPhoto           String?
+  startDate           DateTime
+  endDate             DateTime
+  totalPrice          Int
+  confirmed           Boolean
+  createdAt           DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
@@ -80,15 +83,15 @@ model Reservation {
 }
 
 model Message {
-  id String @id @default(cuid())
-  reservationId String
-  senderId String
-  senderName String
-  senderPhoto String
-  receiverId String
-  content String
-  createdAt DateTime @default(now())
-  isPicture Boolean
+  id                  String @id @default(cuid())
+  reservationId       String
+  senderId            String
+  senderName          String
+  senderPhoto         String?
+  receiverId          String
+  content             String
+  createdAt           DateTime @default(now())
+  isPicture           Boolean
 
   reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
 }

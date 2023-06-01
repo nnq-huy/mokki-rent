@@ -23,7 +23,7 @@ export default async function getMessages(
     }
 
     if (receiverId) {
-      query.receiverId = { userId: receiverId };
+      query.receiverId = receiverId ;
     }
 
     const messages = await prisma.message.findMany({

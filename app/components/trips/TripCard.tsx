@@ -10,9 +10,10 @@ import useProvinces from "@/app/hooks/useProvinces";
 import Button from "../Button";
 import { Listing, Reservation, User } from "@prisma/client";
 import { AiOutlineDelete, AiOutlineMessage } from "react-icons/ai";
-import Avatar from "../Avatar";
-import { BsHouseCheckFill } from "react-icons/bs";
 import HeartButton from "../HeartButton";
+import Avatar from "../Avatar";
+import useMessageModal from "@/app/hooks/useMessageModal";
+import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 
 interface TripCardProps {
   listing: Listing;
@@ -34,6 +35,9 @@ const TripCard: React.FC<TripCardProps> = ({
   currentUser,
 }) => {
   const router = useRouter();
+  const messageModal = useMessageModal();
+  const {setCurrentReservation} = useCurrentReservation();
+
   const { getByValue } = useProvinces();
 
   const location = getByValue(listing.locationValue);
@@ -49,6 +53,11 @@ const TripCard: React.FC<TripCardProps> = ({
     onAction?.(actionId)
   }, [disabled, onAction, actionId]);
 
+  const handleOpenMessage = ()=>{
+    setCurrentReservation(reservation);
+    messageModal.onOpen();
+  }
+
   const start = new Date(reservation.startDate);
   const end = new Date(reservation.endDate);
   const checkinDate = `${format(start, 'PP')}`;
@@ -57,7 +66,7 @@ const TripCard: React.FC<TripCardProps> = ({
 
   return (
     <div 
-      onClick={() => router.push(`/listings/${listing.id}`)} 
+       
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
@@ -71,6 +80,7 @@ const TripCard: React.FC<TripCardProps> = ({
           "
         >
           <Image
+          onClick={() => router.push(`/listings/${listing.id}`)}
             fill
             className="
               object-cover 
@@ -103,6 +113,10 @@ const TripCard: React.FC<TripCardProps> = ({
         <div className="font-semibold">
           Total: {reservation.totalPrice}€, {bookedDays} {bookedDays>1?'nights':'night'}
         </div>
+        <div className="flex items-center">
+            <p className="truncate pr-1">Hosted by {reservation.hostName}</p>
+            <Avatar src={reservation.hostPhoto} />
+        </div>
         <div className="font-bold">
         {reservation.confirmed?'Booking confirmed':'Confirmation pending...'}
         </div>
@@ -110,8 +124,8 @@ const TripCard: React.FC<TripCardProps> = ({
           icon={AiOutlineMessage}
           disabled={disabled}
           small
-          label="Message host" 
-          onClick={()=>{}}
+          label="Contact host" 
+          onClick={handleOpenMessage}
         />
         {onAction && actionLabel && (
           <Button

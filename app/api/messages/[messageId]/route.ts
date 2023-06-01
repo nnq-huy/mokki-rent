@@ -6,7 +6,7 @@ import prisma from "@/app/utils/prismadb";
 interface IParams {
     messageId?: string;
   }
-  
+
   export async function DELETE(
     request: Request, 
     { params }: { params: IParams }

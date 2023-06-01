@@ -72,7 +72,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        listingId: listing?.id
+        listingId: listing?.id,
+        hostId: listing?.userId,
+        hostName:listing?.user.name,
+        hostPhoto: listing?.user.image
       })
       .then(() => {
         toast.success('Listing reserved!');
@@ -86,14 +89,16 @@ const ListingClient: React.FC<ListingClientProps> = ({
         setIsLoading(false);
       })
   },
-  [
-    totalPrice, 
-    dateRange, 
-    listing?.id,
-    router,
-    currentUser,
-    loginModal
-  ]);
+  [currentUser, 
+  totalPrice,
+  dateRange.startDate,
+  dateRange.endDate,
+  listing?.id,
+  listing?.userId,
+  listing?.user.name,
+  listing?.user.image,
+  loginModal,
+  router]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
@@ -162,7 +167,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 disabled={isLoading||isOwnListing}
                 disabledDates={disabledDates}
                 dayCount={differenceInDays(
-                  dateRange.endDate!, 
+                  dateRange.endDate!,
                   dateRange.startDate!
                 )}
               />
