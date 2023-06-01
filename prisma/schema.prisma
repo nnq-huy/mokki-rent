@@ -71,8 +71,24 @@ model Reservation {
   startDate DateTime
   endDate DateTime
   totalPrice Int
+  confirmed Boolean
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  messages Message[]
+}
+
+model Message {
+  id String @id @default(cuid())
+  reservationId String
+  senderId String
+  senderName String
+  senderPhoto String
+  receiverId String
+  content String
+  createdAt DateTime @default(now())
+  isPicture Boolean
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
 }

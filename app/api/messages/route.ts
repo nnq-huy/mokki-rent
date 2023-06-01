@@ -14,32 +14,36 @@ export async function POST(
 
   const body = await request.json();
   const { 
-    listingId,
-    startDate,
-    endDate,
-    totalPrice
+    reservationId,
+    senderId,
+    senderName,
+    senderPhoto,
+    receiverId,
+    content,
+    isPicture,
    } = body;
 
-   if (!listingId || !startDate || !endDate || !totalPrice) {
+   if (!reservationId  || !receiverId || !content || !isPicture) {
     return NextResponse.error();
   }
 
-  const listingAndReservation = await prisma.listing.update({
+  const message = await prisma.reservation.update({
     where: {
-      id: listingId
+      id: reservationId
     },
     data: {
-      reservations: {
+      messages: {
         create: {
-          userId: currentUser.id,
-          startDate,
-          endDate,
-          totalPrice,
-          confirmed: false
+            receiverId,
+            senderId,
+            senderName,
+            senderPhoto,
+            content,
+            isPicture
         }
       }
     }
   });
 
-  return NextResponse.json(listingAndReservation);
+  return NextResponse.json(message);
 }

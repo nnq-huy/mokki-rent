@@ -12,6 +12,7 @@ import ListingCard from "@/app/components/listings/ListingCard";
 import { Reservation, User } from "@prisma/client";
 import { confirmAlert } from "react-confirm-alert";
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import TripCard from "../components/trips/TripCard";
 
 
 interface TripsClientProps {
@@ -78,9 +79,9 @@ const TripsClient: React.FC<TripsClientProps> = ({
         "
       >
         {reservations.map((reservation: any) => (
-          <ListingCard
+          <TripCard
             key={reservation.id}
-            data={reservation.listing}
+            listing={reservation.listing}
             reservation={reservation}
             actionId={reservation.id}
             onAction={confirmDelete}

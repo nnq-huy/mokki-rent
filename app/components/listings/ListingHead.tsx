@@ -28,10 +28,17 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 
   return ( 
     <>
-      <Heading
+      <div className="flex items-center gap-4">
+        <Heading
         title={title}
         subtitle={`${location?.label}, ${location?.english}`}
-      />
+        />
+        <HeartButton 
+            listingId={id}
+            currentUser={currentUser}
+          />
+      </div>
+      
       <div className="
           w-full
           h-[60vh]
@@ -43,7 +50,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
         <Image
           src={imageSrc}
           fill
-          className="object-cover w-full"
+          className="object-cover	w-full"
           alt="Image"
         />
         <div
@@ -53,10 +60,6 @@ const ListingHead: React.FC<ListingHeadProps> = ({
             right-5
           "
         >
-          <HeartButton 
-            listingId={id}
-            currentUser={currentUser}
-          />
         </div>
       </div>
     </>

@@ -42,13 +42,13 @@ const Button: React.FC<ButtonProps> = ({
         ${small ? 'border-[1px]' : 'border-2'}
       `}
     >
+      {label}
       {Icon && (
         <Icon
           size={24}
-          className="mx-2"
+          className="mx-2 justify-self-end"
         />
       )}
-      {label}
     </button>
    );
 }
