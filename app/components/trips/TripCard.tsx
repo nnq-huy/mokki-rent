@@ -14,6 +14,7 @@ import HeartButton from "../HeartButton";
 import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
+import useIsGuest from "@/app/hooks/useIsGuest";
 
 interface TripCardProps {
   listing: Listing;
@@ -36,6 +37,7 @@ const TripCard: React.FC<TripCardProps> = ({
 }) => {
   const router = useRouter();
   const messageModal = useMessageModal();
+  const IsGuest = useIsGuest();
   const {setCurrentReservation} = useCurrentReservation();
 
   const { getByValue } = useProvinces();
@@ -54,6 +56,7 @@ const TripCard: React.FC<TripCardProps> = ({
   }, [disabled, onAction, actionId]);
 
   const handleOpenMessage = ()=>{
+    IsGuest.switchToGuest();
     setCurrentReservation(reservation);
     messageModal.onOpen();
   }
@@ -67,7 +70,7 @@ const TripCard: React.FC<TripCardProps> = ({
   return (
     <div 
        
-      className="col-span-1 cursor-pointer group"
+      className="col-span-1 "
     >
       <div className="flex flex-col gap-2 w-full">
         <div 
@@ -75,7 +78,7 @@ const TripCard: React.FC<TripCardProps> = ({
             aspect-square 
             w-full 
             relative 
-            overflow-hidden 
+            overflow-hidden
             rounded-xl
           "
         >
@@ -83,6 +86,7 @@ const TripCard: React.FC<TripCardProps> = ({
           onClick={() => router.push(`/listings/${listing.id}`)}
             fill
             className="
+              cursor-pointer group
               object-cover 
               h-full 
               w-full 
