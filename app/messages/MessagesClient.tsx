@@ -1,24 +1,17 @@
 'use client';
 
 
-import useLoginModal from "@/app/hooks/useLoginModal";
 import Container from "@/app/components/Container";
 import {  User, Message } from "@prisma/client";
 
-const initialDateRange = {
-  startDate: new Date(),
-  endDate: new Date(),
-  key: 'selection'
-};
-
 interface MessagesClientProps {
-  messsages: Message[]
-  currentUser?: User | null;
+  //messsages: Message[]
+  //currentUser?: User | null;
 }
 
 const MessagingClient: React.FC<MessagesClientProps> = ({
-  messsages,
-  currentUser
+  //messsages,
+  //currentUser
 }) => {
 
 

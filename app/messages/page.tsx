@@ -12,11 +12,11 @@ interface IParams {
 
 const MessagesPage = async () => {
   const currentUser = await getCurrentUser();
-  let params:IParams={};
+  //let params:IParams={};
 
-  params ={receiverId:currentUser?.id};
+  //params ={receiverId:currentUser?.id};
 
-  const messsages = await getMessages(params);
+  //const messsages = await getMessages(params);
 
   if (!currentUser) {
     return (
@@ -33,8 +33,8 @@ const MessagesPage = async () => {
   return (
     <ClientOnly>
       <MessagesClient
-        messsages={messsages}
-        currentUser={currentUser}
+        //messsages={messsages}
+        //currentUser={currentUser}
       />
     </ClientOnly>
   );
