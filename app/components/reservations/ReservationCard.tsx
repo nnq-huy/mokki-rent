@@ -87,7 +87,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     <div 
       className="col-span-1"
     >
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
         <div 
           onClick={() => router.push(`/listings/${data.id}`)}
           className="

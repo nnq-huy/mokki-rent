@@ -147,6 +147,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   onClick={() => router.push('/')}
                 />
                 <MenuItem 
+                  label="Messages" 
+                  onClick={() => router.push('/messages')}
+                />
+                <MenuItem 
                   label="Logout" 
                   onClick={() => signOut()}
                 />

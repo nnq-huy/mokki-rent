@@ -2,18 +2,24 @@
 
 
 import Container from "@/app/components/Container";
-import {  User, Message } from "@prisma/client";
+import {  User, Message, Reservation } from "@prisma/client";
+import LeftPanel from "../components/messages/LeftPanel";
+import ConversationPanel from "../components/messages/ConversationPanel";
+import ReservationPanel from "../components/messages/ReservationDetailsPanel";
+import useCurrentReservation from "../hooks/useCurrentReservation";
 
 interface MessagesClientProps {
-  //messsages: Message[]
+  reservationsAsGuest : Reservation[];
+  messsages: Message[]
   //currentUser?: User | null;
 }
 
 const MessagingClient: React.FC<MessagesClientProps> = ({
-  //messsages,
+  reservationsAsGuest,
+  messsages,
   //currentUser
 }) => {
-
+  const {currentReservation} = useCurrentReservation();
 
 
 
@@ -24,9 +30,9 @@ const MessagingClient: React.FC<MessagesClientProps> = ({
         min-h-full
         "
       >
-        <div className="w-80 bg-neutral-700 text-white">contact panel</div>
-        <div className="w-full bg-mokki-green">conversation panel</div>
-        <div className="w-96 bg-rose-500">Reservation detail panel</div>
+       <LeftPanel reservations={reservationsAsGuest}/>
+        <ConversationPanel messages={messsages}/>
+        <ReservationPanel reservation={currentReservation}/>
       </div>
     </Container>
    );

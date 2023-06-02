@@ -7,7 +7,6 @@ export async function POST(
   request: Request, 
 ) {
   const currentUser = await getCurrentUser();
-
   if (!currentUser) {
     return NextResponse.error();
   }
@@ -25,9 +24,9 @@ export async function POST(
   const senderName = currentUser.name??'';
   const senderPhoto = currentUser.image??'';
 
-   /* if (!reservationId  || !receiverId || !content || !isPicture) {
+    if (!reservationId  || !receiverId || !content) {
     return NextResponse.error();
-  } */
+  }
 
   const message = await prisma.reservation.update({
     where: {

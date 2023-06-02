@@ -29,7 +29,7 @@ export default async function getMessages(
     const messages = await prisma.message.findMany({
       where: query,
       include: {
-        reservation: true,
+        reservation: false,
       },
       orderBy: {
         createdAt: 'desc'

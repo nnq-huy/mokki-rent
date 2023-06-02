@@ -4,19 +4,10 @@ import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
 import MessagesClient from "./MessagesClient";
 import getMessages from "../actions/getMessages";
-
-
-interface IParams {
-  receiverId?: string
-}
+import getReservations from "@/app/actions/getReservations";
 
 const MessagesPage = async () => {
   const currentUser = await getCurrentUser();
-  //let params:IParams={};
-
-  //params ={receiverId:currentUser?.id};
-
-  //const messsages = await getMessages(params);
 
   if (!currentUser) {
     return (
@@ -29,12 +20,15 @@ const MessagesPage = async () => {
       </ClientOnly>
     )
   }
+  const messagesReceived = await getMessages({receiverId:currentUser!.id});
+  const messagesSent = await getMessages({senderId:currentUser!.id});
+  const reservationsAsGuest = await getReservations({ userId: currentUser.id });
 
   return (
     <ClientOnly>
       <MessagesClient
-        //messsages={messsages}
-        //currentUser={currentUser}
+      reservationsAsGuest={reservationsAsGuest}
+      messsages={messagesReceived.concat(messagesSent)}
       />
     </ClientOnly>
   );

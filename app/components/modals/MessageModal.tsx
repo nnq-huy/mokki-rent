@@ -51,14 +51,16 @@ const MessageModal =  () => {
       message: "",
     },
   })
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-
+  const setValues = ()=>{
+    setValue('content', form.watch().message)
     setValue('receiverId',isGuest?currentReservation.hostId:currentReservation.userId);
     setValue('reservationId', currentReservation.id);
-    setTimeout(()=>setIsLoading(true),300);
+  }
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
 
-    axios.post('/api/messages', data)
+    setIsLoading(true);
+
+     axios.post('/api/messages', data)
     .then(() => {
       toast.success('Message sent!');
       messageModal.onClose();
@@ -69,7 +71,8 @@ const MessageModal =  () => {
     .finally(() => {
       setIsLoading(false);
       form.reset();
-    })
+    });
+   
   }
 
   const bodyContent = (
@@ -98,7 +101,7 @@ const MessageModal =  () => {
               )} name={'message'} />
               <Button submit={true}
                 label="Send"
-                onClick={()=>setValue('content', form.getValues().message)}
+                onClick={setValues}
               />
       </form>
     </Form>
