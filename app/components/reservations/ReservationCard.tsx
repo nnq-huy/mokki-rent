@@ -12,10 +12,13 @@ import { Listing, Reservation, User } from "@prisma/client";
 import { AiOutlineDelete, AiOutlineMessage } from "react-icons/ai";
 import Avatar from "../Avatar";
 import { BsHouseCheckFill } from "react-icons/bs";
+import useIsGuest from "@/app/hooks/useIsGuest";
+import useMessageModal from "@/app/hooks/useMessageModal";
+import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 
 interface ReservationCardProps {
   data: Listing;
-  reservation?: Reservation & {user: User};
+  reservation: Reservation & {user: User};
   onDelete?: (id: string) => void;
   onConfirm?:(id: string) => void;
   disabled?: boolean;
@@ -36,12 +39,20 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
 }) => {
   const router = useRouter();
   const { getByValue } = useProvinces();
-  const guest = reservation?.user;
+  const guest = reservation.user;
+  const IsGuest = useIsGuest();
+  const messageModal = useMessageModal();
+  const {setCurrentReservation} = useCurrentReservation();
+
 
   const location = getByValue(data.locationValue);
 
 
-
+  const handleOpenMessage = ()=>{
+    IsGuest.switchToHost();
+    setCurrentReservation(reservation);
+    messageModal.onOpen();
+  }
   const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -64,42 +75,23 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     onConfirm?.(actionId)
   }, [disabled, onConfirm, actionId]);
 
-  const price = useMemo(() => {
-    if (reservation) {
-      return reservation.totalPrice;
-    }
 
-    return data.price;
-  }, [reservation, data.price]);
 
-  const reservationDate = useMemo(() => {
-    if (!reservation) {
-      return null;
-    }
-  
-    const start = new Date(reservation.startDate);
-    const end = new Date(reservation.endDate);
-
-    return `${format(start, 'PP')} - ${format(end, 'PP')}`;
-  }, [reservation]);
-
- 
-  const bookedDays = useMemo(() => {
-    if (reservation) {
-      return differenceInDays(reservation.endDate,reservation.startDate)
-    }
-
-    return 0;
-  }, [reservation]);
+  const start = new Date(reservation.startDate);
+  const end = new Date(reservation.endDate);
+  const checkinDate = `${format(start, 'PP')}`;
+  const checkoutDate=`${format(end, 'PP')}`;
+  const bookedDays = differenceInDays(end,start);
 
   return (
     <div 
-      onClick={() => router.push(`/listings/${data.id}`)} 
-      className="col-span-1 cursor-pointer group"
+      className="col-span-1"
     >
       <div className="flex flex-col gap-2 w-full">
         <div 
+          onClick={() => router.push(`/listings/${data.id}`)}
           className="
+            cursor-pointer group
             aspect-square 
             w-full 
             relative 
@@ -124,11 +116,12 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           {location?.label}
         </div>
         <div className="font-light text-neutral-500">
-          {reservationDate}
+          Check-in: {checkinDate} <br/>
+          Check-out: {checkoutDate}
         </div>
         <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">
-            Total: {price}€, {bookedDays} {bookedDays>1?'nights':'night'}
+            Total: {reservation.totalPrice}€, {bookedDays} {bookedDays>1?'nights':'night'}
           </div>
         </div>
         <div className="flex items-center">
@@ -150,7 +143,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             disabled={disabled}
             small
             label="Message guest" 
-            onClick={()=>{}}
+            onClick={handleOpenMessage}
           />
         {onDelete && actionLabel && (
           <Button

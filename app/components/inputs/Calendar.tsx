@@ -22,7 +22,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 }) => {
   return ( 
     <DateRange
-      rangeColors={['#262626']}
+      rangeColors={['#028446']}
       ranges={[value]}
       date={new Date()}
       onChange={onChange}

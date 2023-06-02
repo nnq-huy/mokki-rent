@@ -12,20 +12,22 @@ export async function POST(
     return NextResponse.error();
   }
 
+
   const body = await request.json();
   const { 
     reservationId,
-    senderId,
-    senderName,
-    senderPhoto,
     receiverId,
     content,
     isPicture,
    } = body;
 
-   if (!reservationId  || !receiverId || !content || !isPicture) {
+  const senderId = currentUser.id;
+  const senderName = currentUser.name??'';
+  const senderPhoto = currentUser.image??'';
+
+   /* if (!reservationId  || !receiverId || !content || !isPicture) {
     return NextResponse.error();
-  }
+  } */
 
   const message = await prisma.reservation.update({
     where: {

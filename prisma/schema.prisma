@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id              String @id @default(uuid())
+  id              String @id @default(cuid())
   name            String?
   email           String?   @unique
   emailVerified   DateTime?
@@ -46,7 +46,7 @@ model Account {
 }
 
 model Listing {
-  id                  String @id @default(uuid())
+  id                  String @id @default(cuid())
   title               String
   description         String
   imageSrc            String
@@ -65,7 +65,7 @@ model Listing {
 }
 
 model Reservation {
-  id                  String @id @default(uuid())
+  id                  String @id @default(cuid())
   userId              String
   listingId           String
   hostId              String

@@ -60,6 +60,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  //check if the listing user's own property and disable the reserve function
   const isOwnListing = currentUser ? (currentUser.id === listing.userId) :false;
 
   const onCreateReservation = useCallback(() => {
@@ -106,7 +107,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         dateRange.endDate, 
         dateRange.startDate
       );
-      
+      //price calculation
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
       } else {
