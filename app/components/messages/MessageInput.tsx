@@ -10,6 +10,7 @@ import { UserContext } from "@/app/messages/MessagesClient";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { useRouter } from "next/navigation";
+import Button from "../Button";
 
 
 interface ChatInputProps {
@@ -77,7 +78,6 @@ return (
 				shadow-xl 
 				max-h-36
 				bg-white 
-				dark:bg-gray-600 
 				w-full 
 				px-2
 			">
@@ -91,7 +91,7 @@ return (
 					className="hidden"/>
         <button
           onClick={()=>{}}
-          className="flex items-center justify-center text-gray-400 hover:text-gray-600"
+          className="flex items-center justify-center text-gray-400 hover:text-mokki-green"
         >
           { <BsImage/>}
         </button>
@@ -117,8 +117,6 @@ return (
 							pl-4 
 							h-10"
           />
-					
-        
           <button
             onClick={() => setShowEmojis(!showEmojis)}
             className="
@@ -131,34 +129,23 @@ return (
 							right-0 
 							top-0 
 							text-gray-400 
-							hover:text-gray-600"
+							hover:text-mokki-green"
           >
             {<BsEmojiSmile/>}
           </button>
         </div>
       </div>
-      <div className="ml-4">
-        <button
-					disabled={isLoading}
-        	onClick={sendMessage}
-          className="
-						flex 
-						items-center 
-						justify-center 
-						bg-mokki-green 
-						hover:bg-green-500 
-						rounded-md 
-						text-white 
-						px-4 
-						py-1 
-						flex-shrink-0"
-        >
-          <span>Send</span>
-          <span className="ml-2">
-          {<BsSend/>}
-          </span>
-        </button>
-      </div>
+		<div className="flex">
+			<Button
+			 	label=""
+		 		disabled={isLoading}
+				onClick={sendMessage}
+				icon={BsSend}
+				small
+				outline
+			/>
+		</div>
+   
     </div>
     {showEmojis && (
       <div>

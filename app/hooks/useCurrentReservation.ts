@@ -10,6 +10,8 @@ interface CurrentReservationStore {
     user?: User;
     listing?: Listing;
 })) => void;
+
+  resetCurrentReservation:() => void; 
 }
 
 const useCurrentReservation = create<CurrentReservationStore>((set)=>({
@@ -29,7 +31,20 @@ const useCurrentReservation = create<CurrentReservationStore>((set)=>({
     } 
     
   ) ,
-  setCurrentReservation : (reservation) => set({currentReservation:reservation})
+  setCurrentReservation : (reservation) => set({currentReservation:reservation}),
+  resetCurrentReservation : () => set({currentReservation:{
+      id:'',
+      userId:'',
+      listingId:'',
+      hostId:'',
+      hostName:'',
+      hostPhoto:'',
+      startDate:new Date(),
+      endDate: new Date(),
+      totalPrice: 0,
+      confirmed: false,
+      createdAt: new Date(),
+    } })
 }));
 
 export default useCurrentReservation;

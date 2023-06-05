@@ -2,11 +2,10 @@
 import { Message } from "@prisma/client"
 import Avatar from "../Avatar";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MessageBubble } from "./MessageBubble";
 import useIsGuest from "@/app/hooks/useIsGuest";
-import { UserContext } from "@/app/messages/MessagesClient";
 import { MessageInput } from "./MessageInput";
 
 interface ConversationPanelProps {
@@ -40,7 +39,7 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
             </div>
           </div> 
           :<div className="p-2 flex items-center">
-          <Avatar src={currentReservation.user?.image}/>
+          {(currentReservation.user)?<Avatar src={currentReservation.user!.image}/>:<></>}
           <div>
             <p className="font-semibold text-gray-800 px-2">{currentReservation.user?.name}</p>
           </div>
@@ -52,8 +51,9 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
         </div>
 
         <div className="flex flex-col p-4 overflow-auto">
-          <ul>
-            {currentMessages.map((message)=>(
+          {currentMessages.length 
+            ?<ul>
+              {currentMessages.map((message)=>(
               <li key={message.id}>
                 {
                   message.senderId===currentReservation.hostId
@@ -63,6 +63,8 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
               </li>
             ))}
           </ul>
+          : <div className="text-center text-gray-400">No messages found... </div> }
+          
       </div>
       <MessageInput />
     </div>

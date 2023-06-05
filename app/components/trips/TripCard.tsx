@@ -22,10 +22,12 @@ interface TripCardProps {
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
-  currentUser?: User | null
+  currentUser?: User | null;
+  showMessage?:Boolean;
 };
 
 const TripCard: React.FC<TripCardProps> = ({
+  showMessage,
   reservation,
   onAction,
   disabled,
@@ -121,13 +123,14 @@ const TripCard: React.FC<TripCardProps> = ({
         <div className="font-bold">
         {reservation.confirmed?'Booking confirmed':'Confirmation pending...'}
         </div>
-        <Button
+        {showMessage && <Button
           icon={AiOutlineMessage}
           disabled={disabled}
           small
           label="Contact host" 
           onClick={handleOpenMessage}
-        />
+        />}
+        
         {onAction && actionLabel && (
           <Button
             icon={AiOutlineDelete}

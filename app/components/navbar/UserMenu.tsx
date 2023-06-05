@@ -27,6 +27,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const userMenuRef = useRef<HTMLDivElement>(null);
   const userButtonRef = useRef<HTMLDivElement>(null);
 
+  //click outside to dismiss user menu
   const toggleMenu = useCallback(
     (e: any) => {
       if (

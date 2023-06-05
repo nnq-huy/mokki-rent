@@ -24,10 +24,11 @@ interface ReservationCardProps {
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
+  showMessage?:Boolean;
 };
 
 const ReservationCard: React.FC<ReservationCardProps> = ({
-  
+  showMessage,
   reservation,
   onDelete,
   onConfirm,
@@ -136,13 +137,13 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             label="Confirm booking" 
             onClick={handleConfirm}
           />}
-          <Button
+          {showMessage && <Button
             icon={AiOutlineMessage}
             disabled={disabled}
             small
             label="Message guest" 
             onClick={handleOpenMessage}
-          />
+          />}
         {onDelete && actionLabel && (
           <Button
             icon={AiOutlineDelete}

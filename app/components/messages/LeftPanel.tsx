@@ -8,17 +8,17 @@ import { useEffect, useState } from "react";
 
 interface LeftPanelProps {
   reservationsAsGuest: (Reservation & {
-    user: User;
-    listing: Listing;
+    user?: User;
+    listing?: Listing;
 })[];
   reservationsAsHost: (Reservation & {
-    user: User;
-    listing: Listing;
+    user?: User;
+    listing?: Listing;
 })[];
 }
 
 const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsAsHost})=>{
-  const {setCurrentReservation} = useCurrentReservation();
+  const {setCurrentReservation, resetCurrentReservation} = useCurrentReservation();
   const {isGuest, switchToGuest, switchToHost} = useIsGuest();
   const [reservationsList, setReservationList] = useState(reservationsAsGuest);
 
@@ -28,6 +28,7 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
     } else {
       setReservationList(reservationsAsHost);
     }
+    
   },[isGuest, reservationsAsGuest, reservationsAsHost]);
 
   return (
@@ -63,7 +64,15 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
           <Button
             small
             label={isGuest?"Switch to host view":"Switch to guest view"}
-            onClick={isGuest?switchToHost:switchToGuest}
+            onClick={()=>{
+              if (isGuest){
+                (reservationsAsHost.length >0) ? setCurrentReservation(reservationsAsHost[0]) : resetCurrentReservation()
+                switchToHost();
+              } else {
+                switchToGuest();
+                (reservationsAsGuest.length >0) ? setCurrentReservation(reservationsAsGuest[0]) : resetCurrentReservation()
+              }
+            }}
             outline
           />
         </div>
@@ -85,11 +94,11 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
                     focus:outline-none"
                   onClick={()=>{setCurrentReservation(reservation)}}
                 >
-                  <Avatar src={isGuest?reservation.hostPhoto:reservation.user.image}/>
+                  <Avatar src={isGuest?reservation.hostPhoto:reservation.user!.image}/>
                   <div className=" hidden md:block md:w-2/3 text-left rtl:text-right">
                   
                     <h1 className="truncate text-sm font-semibold text-gray-700 capitalize dark:text-white">
-                      {reservation.listing.locationValue}<br/>
+                      {reservation.listing!.locationValue}<br/>
                       {reservation.startDate.toLocaleDateString('fi')} - {reservation.endDate.toLocaleDateString('fi')}
                     </h1>
                     {isGuest
@@ -97,7 +106,7 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
                       Host: {reservation.hostName}
                     </div>
                     : <div className=" hidden md:block md:w-2/3 text-left rtl:text-right truncate text-xs text-gray-500 dark:text-gray-400">
-                    Guest: {reservation.user.name}
+                    Guest: {reservation.user!.name}
                     </div>}
                   </div>
 

@@ -109,6 +109,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             onConfirm={confirmReservation}
             disabled={deletingId === reservation.id}
             actionLabel="Cancel reservation"
+            showMessage
           />
         ))}
       </div>
