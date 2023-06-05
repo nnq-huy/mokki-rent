@@ -4,8 +4,8 @@ import { Message } from '@prisma/client';
 import Image from 'next/image';
 
 interface MessageBubbleProps {
-    message: Message;
-    isLeft:boolean;
+  message: Message;
+  isLeft:boolean;
 }
 export const MessageBubble : React.FC<MessageBubbleProps> = ({message, isLeft})=>{
 
@@ -15,22 +15,22 @@ export const MessageBubble : React.FC<MessageBubbleProps> = ({message, isLeft})=
         {
 					message.isPicture
 					? <div className="rounded-xl shadow">
-								<Image 
-									width={300} 
-									height={300} 
-									src={message.content} 
-									alt={'picture message'}>
-								</Image>
-							</div>
+						<Image 
+							width={300} 
+							height={300} 
+							src={message.content} 
+							alt={'picture message'}>
+						</Image>
+					</div>
 					: <div className="bg-white dark:bg-gray-500 p-3 rounded-r-lg shadow rounded-bl-lg">
             <p className="text-sm text-gray-800 dark:text-gray-100">
-									{message.content}
-								</p>
+							{message.content}
+						</p>
           </div>
 				}
-          <p className=" pt-1 text-xs text-gray-500">
-						timeStamp
-					</p>
+        <p className=" pt-1 text-xs text-gray-500">
+					{message.createdAt.toLocaleDateString('fi')}
+				</p>
       </div>
     </div>
     );} else {return(
@@ -50,7 +50,7 @@ export const MessageBubble : React.FC<MessageBubbleProps> = ({message, isLeft})=
               <p className="text-sm">{message.content}</p>
             </div>}
           <p className="text-end pt-1 text-xs text-gray-500 leading-none">
-						timeStamp
+					{message.createdAt.toLocaleDateString('fi')}
 					</p>
         </div>
       </div>

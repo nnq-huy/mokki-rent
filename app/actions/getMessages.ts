@@ -32,7 +32,7 @@ export default async function getMessages(
         reservation: false,
       },
       orderBy: {
-        createdAt: 'desc'
+        createdAt: 'asc'
       }
     });
 

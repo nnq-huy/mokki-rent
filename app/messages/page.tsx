@@ -23,12 +23,16 @@ const MessagesPage = async () => {
   const messagesReceived = await getMessages({receiverId:currentUser!.id});
   const messagesSent = await getMessages({senderId:currentUser!.id});
   const reservationsAsGuest = await getReservations({ userId: currentUser.id });
+  const reservationsAsHost = await getReservations({ hostId: currentUser.id });
+
 
   return (
     <ClientOnly>
       <MessagesClient
       reservationsAsGuest={reservationsAsGuest}
+      reservationsAsHost={reservationsAsHost}
       messsages={messagesReceived.concat(messagesSent)}
+      currentUser={currentUser}
       />
     </ClientOnly>
   );

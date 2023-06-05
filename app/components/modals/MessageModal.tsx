@@ -100,6 +100,7 @@ const MessageModal =  () => {
                 </FormItem>
               )} name={'message'} />
               <Button submit={true}
+                disabled={isLoading}
                 label="Send"
                 onClick={setValues}
               />

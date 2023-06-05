@@ -17,8 +17,7 @@ import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 
 interface TripCardProps {
-  listing: Listing;
-  reservation: Reservation;
+  reservation: Reservation & {user?: User, listing?: Listing};
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
@@ -27,7 +26,6 @@ interface TripCardProps {
 };
 
 const TripCard: React.FC<TripCardProps> = ({
-  listing,
   reservation,
   onAction,
   disabled,
@@ -42,7 +40,7 @@ const TripCard: React.FC<TripCardProps> = ({
 
   const { getByValue } = useProvinces();
 
-  const location = getByValue(listing.locationValue);
+  const location = getByValue(reservation.listing!.locationValue);
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,7 +80,7 @@ const TripCard: React.FC<TripCardProps> = ({
           "
         >
           <Image
-          onClick={() => router.push(`/listings/${listing.id}`)}
+          onClick={() => router.push(`/listings/${reservation.listing!.id}`)}
             fill
             className="
               cursor-pointer group
@@ -92,7 +90,7 @@ const TripCard: React.FC<TripCardProps> = ({
               group-hover:scale-110 
               transition
             "
-            src={listing.imageSrc}
+            src={reservation.listing!.imageSrc}
             alt="Listing"
           />
           <div className="
@@ -101,7 +99,7 @@ const TripCard: React.FC<TripCardProps> = ({
             right-3
           ">
             <HeartButton 
-              listingId={listing.id} 
+              listingId={reservation.listing!.id} 
               currentUser={currentUser}
             />
           </div>
@@ -116,8 +114,8 @@ const TripCard: React.FC<TripCardProps> = ({
         <div className="font-semibold">
           Total: {reservation.totalPrice}€, {bookedDays} {bookedDays>1?'nights':'night'}
         </div>
-        <div className="flex items-center">
-            <p className="truncate pr-1">Hosted by {reservation.hostName}</p>
+        <div className="flex min-w-full items-center">
+            <p className="truncate pr-1">Hosted by <br/>{reservation.hostName}</p>
             <Avatar src={reservation.hostPhoto} />
         </div>
         <div className="font-bold">

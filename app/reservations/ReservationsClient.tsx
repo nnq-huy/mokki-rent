@@ -14,12 +14,10 @@ import ReservationCard from '../components/reservations/ReservationCard';
 interface ReservationsClientProps {
   reservations: (Reservation & {user: User, 
   listing: Listing})[],
-  currentUser?: User | null,
 }
 
 const ReservationsClient: React.FC<ReservationsClientProps> = ({
   reservations,
-  currentUser
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState('');
@@ -40,7 +38,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     });
   };
 
-  const confirmRevervation = (id:string) => {
+  const confirmReservation = (id:string) => {
     confirmAlert({
       title: 'Are you sure?',
       message: 'you want to confirm this guest reservation?',
@@ -105,14 +103,12 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         {reservations.map((reservation: any) => (
           <ReservationCard
             key={reservation.id}
-            data={reservation.listing}
             reservation={reservation}
             actionId={reservation.id}
             onDelete={confirmDelete}
-            onConfirm={confirmRevervation}
+            onConfirm={confirmReservation}
             disabled={deletingId === reservation.id}
-            actionLabel="Cancel guest reservation"
-            currentUser={currentUser}
+            actionLabel="Cancel reservation"
           />
         ))}
       </div>

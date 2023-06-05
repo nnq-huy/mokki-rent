@@ -17,25 +17,23 @@ import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 
 interface ReservationCardProps {
-  data: Listing;
-  reservation: Reservation & {user: User};
+  
+  reservation: Reservation & {user?: User, listing?:Listing};
   onDelete?: (id: string) => void;
   onConfirm?:(id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
-  currentUser?: User | null
 };
 
 const ReservationCard: React.FC<ReservationCardProps> = ({
-  data,
+  
   reservation,
   onDelete,
   onConfirm,
   disabled,
   actionLabel,
   actionId = '',
-  currentUser,
 }) => {
   const router = useRouter();
   const { getByValue } = useProvinces();
@@ -45,7 +43,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const {setCurrentReservation} = useCurrentReservation();
 
 
-  const location = getByValue(data.locationValue);
+  const location = getByValue(reservation.listing!.locationValue);
 
 
   const handleOpenMessage = ()=>{
@@ -89,7 +87,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     >
       <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
         <div 
-          onClick={() => router.push(`/listings/${data.id}`)}
+          onClick={() => router.push(`/listings/${reservation.listing!.id}`)}
           className="
             cursor-pointer group
             aspect-square 
@@ -108,7 +106,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
               group-hover:scale-110 
               transition
             "
-            src={data.imageSrc}
+            src={reservation.listing!.imageSrc}
             alt="Listing"
           />
         </div>
@@ -125,7 +123,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           </div>
         </div>
         <div className="flex items-center">
-            <p className="truncate pr-1">Booked by {guest?.name}</p>
+            <p className="truncate pr-1">Booked by<br/> {guest?.name}</p>
             <Avatar src={guest?.image} />
         </div>
         <div className="font-bold">

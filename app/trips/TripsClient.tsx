@@ -81,7 +81,6 @@ const TripsClient: React.FC<TripsClientProps> = ({
         {reservations.map((reservation: any) => (
           <TripCard
             key={reservation.id}
-            listing={reservation.listing}
             reservation={reservation}
             actionId={reservation.id}
             onAction={confirmDelete}
