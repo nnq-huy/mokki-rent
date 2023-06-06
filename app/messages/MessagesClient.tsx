@@ -45,9 +45,7 @@ const MessagingClient: React.FC<MessagesClientProps> = ({
     <Container>
       <UserContext.Provider value={currentUser!}>
       <div 
-        className="max-w-full flex flex-row h-[80vh] grid-flow-col
-        min-h-full
-        "
+        className="max-w-full flex flex-row h-[90vh]"
       >
        <LeftPanel reservationsAsGuest={reservationsAsGuest} reservationsAsHost={reservationsAsHost}/>
         <ConversationPanel messages={messagesSortedByTime}/>

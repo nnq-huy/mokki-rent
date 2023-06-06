@@ -30,6 +30,7 @@ const TripsPage = async () => {
         <EmptyState
           title="No trips found"
           subtitle="Looks like you havent reserved any trips."
+          showSearch
         />
       </ClientOnly>
     );

@@ -1,7 +1,7 @@
 'use client';
 
 import {  useRef, useState } from "react";
-import { BsEmojiSmile, BsImage, BsSend } from "react-icons/bs";
+import { BsEmojiSmile, BsSend } from "react-icons/bs";
 import { toast } from "react-hot-toast";
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
@@ -94,6 +94,7 @@ export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
 	      <div className="flex-grow ml-1">
 	        <div className="relative w-full p-2">
 	      		<Textarea
+						className="resize-none"
 							maxLength={500}
 							id="message"
 	      		  onChange={handleChange}
@@ -131,7 +132,6 @@ export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
 					outline
 				/>
 			</div>
-	
 	    </div>
 	    {showEmojis && (
 	      <div>

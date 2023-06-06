@@ -23,7 +23,6 @@ const ReservationPanel : React.FC<ReservationPanelProps> = ({reservation})=>{
 
   const confirmDelete = useCallback((id:string) => {
     const onCancel = () => {
-
       axios.delete(`/api/reservations/${id}`)
       .then(() => {
         toast.success('Reservation cancelled');
@@ -33,7 +32,7 @@ const ReservationPanel : React.FC<ReservationPanelProps> = ({reservation})=>{
         toast.error('Something went wrong.')
       })
     };
-    
+
     confirmAlert({
       title: 'Are you sure?',
       message: 'you want to delete this reservation?',

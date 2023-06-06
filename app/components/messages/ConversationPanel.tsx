@@ -31,7 +31,8 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
 
   return (
 		<div className="flex w-full flex-col bg-gray-50 justify-between p-2 rounded-lg shadow-sm">
-      <div className="flex justify-between items-center w-full h-16 bg-gray-100 rounded-xl shadow-lg">
+      <div className="flex justify-between items-center w-full h-[40px] bg-gray-100 rounded-xl shadow-lg">
+        <p className="font-semibold text-neutral-500 px-2">Messages with </p>
         {isGuest
           ?<div className="p-2 flex items-center">
             <Avatar src={currentReservation.hostPhoto}/>
@@ -46,30 +47,32 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
           </div>
         </div> 
         }
-          <button className="px-2 text-xl text-gray-700">
-            {<BsThreeDotsVertical/>}
-          </button>
-        </div>
-
-        <div className="flex flex-col p-4 overflow-auto">
-          {currentMessages.length 
-            ?<ul>
-              {currentMessages.map((message)=>(
-              <li key={message.id}>
-                {
-                  message.senderId===currentReservation.hostId
-                  ? <MessageBubble message={message} isLeft={isGuest}/>
-                  : <MessageBubble message={message} isLeft={!isGuest}/>
-                }
-              </li>
-            ))}
+        <button className="px-2 text-xl text-gray-700">
+          {<BsThreeDotsVertical/>}
+        </button>
+      </div>
+      <div className="flex flex-col p-4 overflow-auto">
+        {currentMessages.length 
+          ?<ul>
+            {currentMessages.map((message)=>(
+            <li key={message.id} className="">
+              {
+                message.senderId===currentReservation.hostId
+                ? <MessageBubble message={message} isLeft={isGuest}/>
+                : <MessageBubble message={message} isLeft={!isGuest}/>
+              }
+            </li>
+          ))}
           </ul>
-          : <div className="text-center text-gray-400">no messages found... </div> }
+          : <div className="text-center text-gray-400">
+            no messages found...
+          </div>
+        }
         <span ref={scroll}></span>
       </div>
       <MessageInput scroll={scroll}/>
     </div>
-    );
+  );
 }
 
 export default ConversationPanel;

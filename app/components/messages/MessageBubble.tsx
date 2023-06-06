@@ -37,10 +37,10 @@ export const MessageBubble : React.FC<MessageBubbleProps> = ({message, isLeft})=
       <div className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
         <div>
           {message.isPicture
-						?	<div className="rounded-xl shadow">
+						?	<div className="rounded-xl shadow shrink">
 							<Image
-								width={300}
-								height={300}
+								width={400}
+								height={400}
 								src={message.content}
 								alt={'picture message'}>
 							</Image>

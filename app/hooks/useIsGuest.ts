@@ -6,11 +6,11 @@ interface IsGuestStore {
   switchToGuest: () => void;
 }
 
-const useSearchModal = create<IsGuestStore>((set) => ({
+const isGuest = create<IsGuestStore>((set) => ({
   isGuest: true,
   switchToHost: () => set({ isGuest: false }),
   switchToGuest: () => set({ isGuest: true })
 }));
 
 
-export default useSearchModal;
+export default isGuest;

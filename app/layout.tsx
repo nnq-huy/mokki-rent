@@ -30,7 +30,7 @@ export default async function RootLayout({
           <ModalsProvider/>
           <Header currentUser={currentUser}/>
         </ClientOnly>
-        <div className="pb-20 pt-28">
+        <div className="pt-[88px]">
         {children}
         </div>
       </body>

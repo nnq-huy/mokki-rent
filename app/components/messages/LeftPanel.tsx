@@ -28,7 +28,7 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
     } else {
       setReservationList(reservationsAsHost);
     }
-    
+
   },[isGuest, reservationsAsGuest, reservationsAsHost]);
 
   return (
@@ -39,7 +39,7 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
         bg-gray-50
         w-16
         sm:w-16
-        md:w-[16rem]
+        md:w-[17rem]
         border-r-2
         border-gray-200
         rounded-lg
@@ -60,10 +60,9 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
             {isGuest?"Guest View":"Host View"}
           </h2>
         </div>
-        <div className="px-3 pt-0 pb-2">
+        <div className="md:px-12 pb-2">
           <Button
-            small
-            label={isGuest?"Switch to host view":"Switch to guest view"}
+            label="Switch role"
             onClick={()=>{
               if (isGuest){
                 (reservationsAsHost.length >0) ? setCurrentReservation(reservationsAsHost[0]) : resetCurrentReservation()
@@ -79,8 +78,9 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
         <div className="space-y-4">
           <hr/>
             <div className="px-2">Reservations</div>
-            <ul>
-              {reservationsList.map((reservation)=>(
+            {reservationsList.length ?
+             <ul>
+              { reservationsList.map((reservation)=>(
               <li key={reservation.id}>
                 <button
                   className="
@@ -96,7 +96,6 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
                 >
                   <Avatar src={isGuest?reservation.hostPhoto:reservation.user!.image}/>
                   <div className=" hidden md:block md:w-2/3 text-left rtl:text-right">
-                  
                     <h1 className="truncate text-sm font-semibold text-gray-700 capitalize dark:text-white">
                       {reservation.listing!.locationValue}<br/>
                       {reservation.startDate.toLocaleDateString('fi')} - {reservation.endDate.toLocaleDateString('fi')}
@@ -113,7 +112,11 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
                 </button>
               </li>
             ))}
-						</ul>
+						</ul>:
+            <div className="text-neutral-400 text-center text-md align-self-center">
+              no reservations found
+            </div>}
+            
         </div>
       </div>
     </div>
