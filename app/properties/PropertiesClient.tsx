@@ -2,7 +2,7 @@
 
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 
@@ -10,8 +10,7 @@ import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
 import { Listing, User } from "@prisma/client";
-import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import ConfirmDialog from "../components/ConfirmDialog";
 
 
 interface PropertiesClientProps {
@@ -24,40 +23,36 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   currentUser
 }) => {
   const router = useRouter();
-  const [deletingId, setDeletingId] = useState('');
+  const [actionId, setActionId] = useState('');
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const confirmDelete = (id:string) => {
-    confirmAlert({
-      title: 'Are you sure?',
-      message: 'you want to delete this property listing?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: ()=> onDelete(id)
-        },
-        {
-          label: 'No',
-        }
-      ],
-    });
-  };
-
-  const onDelete = useCallback((id: string) => {
-    setDeletingId(id);
-
-    axios.delete(`/api/listings/${id}`)
+  const onDelete = async () => {
+    await axios.delete(`/api/listings/${actionId}`)
     .then(() => {
       toast.success('Listing deleted');
+      setOpenDeleteDialog(false);
       router.refresh();
     })
-    .catch((error) => {
-      toast.error(error?.response?.data?.error)
+    .catch(() => {
+      toast.error('Something went wrong.')
+    }).finally(()=>{
+      setActionId('');
     })
-    .finally(() => {
-      setDeletingId('');
-    })
-  }, [router]);
+  };
 
+  const deleteListingDialog = (
+    <ConfirmDialog 
+      isOpen={openDeleteDialog}
+      title="Are you sure you want to delete this reservation?"
+      subtitle="This action cannot be undone!"
+      onConfirm={onDelete}
+      onDismiss={()=>{
+        setOpenDeleteDialog(false);
+        setActionId('');
+      }}
+      actionLabel="Delete"
+    />
+  );
 
   return ( 
     <Container>
@@ -78,13 +73,13 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           gap-8
         "
       >
+        <>{deleteListingDialog}</>
         {listings.map((listing: any) => (
           <ListingCard
             key={listing.id}
             data={listing}
-            actionId={listing.id}
-            onAction={confirmDelete}
-            disabled={deletingId === listing.id}
+            onAction={()=>{setActionId(listing.id); setOpenDeleteDialog(true)}}
+            disabled={actionId === listing.id}
             actionLabel="Delete property"
             currentUser={currentUser}
             isHost

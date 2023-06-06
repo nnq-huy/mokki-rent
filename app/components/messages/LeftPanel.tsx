@@ -5,6 +5,7 @@ import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import Button from "../Button";
 import { useEffect, useState } from "react";
+import { AiOutlineUserSwitch } from "react-icons/ai";
 
 interface LeftPanelProps {
   reservationsAsGuest: (Reservation & {
@@ -57,12 +58,13 @@ const LeftPanel : React.FC<LeftPanelProps> = ({reservationsAsGuest,reservationsA
             font-semibold
             text-gray-600 
           ">
-            {isGuest?"Guest View":"Host View"}
+            
           </h2>
         </div>
         <div className="md:px-12 pb-2">
           <Button
-            label="Switch role"
+            icon={AiOutlineUserSwitch}
+            label={isGuest?"Guest View":"Host View"}
             onClick={()=>{
               if (isGuest){
                 (reservationsAsHost.length >0) ? setCurrentReservation(reservationsAsHost[0]) : resetCurrentReservation()

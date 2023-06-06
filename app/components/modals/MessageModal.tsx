@@ -1,111 +1,26 @@
 'use client';
 
-import { useState } from "react";
 import Modal from "./Modal";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import Heading from "../Heading";
-import { Textarea } from "@/app/components/inputs/Textarea"
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
-import toast from "react-hot-toast";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/app/components/form/Form"
-import { messageSchema } from "@/app/validations/message.validation";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Button from "../Button";
 import useIsGuest from "@/app/hooks/useIsGuest";
+import { MessageInput } from "../messages/MessageInput";
 
 
 const MessageModal =  () => {
-  const [isLoading, setIsLoading] = useState(false);
   const messageModal = useMessageModal();
   const {isGuest} = useIsGuest();
   const {currentReservation} = useCurrentReservation();
-
-  
-  const {
-    handleSubmit,
-    setValue,
-    formState: {
-      errors,
-    },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      isPicture: false,
-      content:'',
-      receiverId:'',
-      reservationId:'',
-    }
-  });
-
-  const form = useForm<Yup.InferType<typeof messageSchema>>({
-    resolver: yupResolver(messageSchema),
-    defaultValues: {
-      message: "",
-    },
-  })
-  const setValues = ()=>{
-    setValue('content', form.watch().message)
-    setValue('receiverId',isGuest?currentReservation.hostId:currentReservation.userId);
-    setValue('reservationId', currentReservation.id);
-  }
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-
-    setIsLoading(true);
-
-     axios.post('/api/messages', data)
-    .then(() => {
-      toast.success('Message sent!');
-      messageModal.onClose();
-    })
-    .catch((error) => {
-      toast.error('Error: '+error);
-    })
-    .finally(() => {
-      setIsLoading(false);
-      form.reset();
-    });
-   
-  }
 
   const bodyContent = (
     <div className="flex flex-col gap-1">
 			<Heading 
 				title={isGuest?"Ask your host":"Send a message  to your guest"}
-				subtitle={isGuest?currentReservation.hostName:''}
+				subtitle={isGuest?currentReservation.hostName:currentReservation.user!.name??""}
 		  />
       <div>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      maxLength={500}
-                      required
-                      placeholder="enter your message (max 500 characters)"
-                       {...field}
-                       />
-                      </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} name={'message'} />
-              <Button submit={true}
-                disabled={isLoading}
-                label="Send"
-                onClick={setValues}
-              />
-      </form>
-    </Form>
+        <MessageInput />
       </div>
     </div>
   );
@@ -115,7 +30,6 @@ const MessageModal =  () => {
 
   return (
     <Modal
-      disabled={isLoading}
       isOpen={messageModal.isOpen}
       title="Message"
       onClose={messageModal.onClose}

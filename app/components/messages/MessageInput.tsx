@@ -11,11 +11,11 @@ import useIsGuest from "@/app/hooks/useIsGuest";
 import { useRouter } from "next/navigation";
 import Button from "../Button";
 import useAutosizeTextArea from "@/app/hooks/useAutosizeTextArea";
-import { Textarea } from "../inputs/Textarea";
+import { Textarea } from "../ui/textarea";
 import ImageUploadSmall from "../inputs/ImageUploadSmall";
 
 interface ChatInputProps {
-  scroll:React.RefObject<HTMLDivElement>
+  scroll?:React.RefObject<HTMLDivElement>
 }
 export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
 	const {currentReservation} = useCurrentReservation();
@@ -66,7 +66,7 @@ export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
 		})
 		.finally(() => {
 			setIsLoading(false);
-			scroll.current?.scrollIntoView({behavior:"smooth"});
+			if(scroll){scroll!.current?.scrollIntoView({behavior:"smooth"});}
 
 		});
       } catch(e) {toast.error('Cannot send message: '+e)}

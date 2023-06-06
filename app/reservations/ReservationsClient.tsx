@@ -1,15 +1,15 @@
 'use client';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
+
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
 import { Listing, Reservation, User } from "@prisma/client";
 import ReservationCard from '../components/reservations/ReservationCard';
+import ConfirmDialog from "../components/ConfirmDialog";
 
 interface ReservationsClientProps {
   reservations: (Reservation & {user: User, 
@@ -20,66 +20,63 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   reservations,
 }) => {
   const router = useRouter();
-  const [deletingId, setDeletingId] = useState('');
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [actionId, setActionId] = useState('');
 
-  const confirmDelete = (id:string) => {
-    confirmAlert({
-      title: 'Are you sure?',
-      message: 'you want to delete this guest reservation?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: ()=> onCancel(id)
-        },
-        {
-          label: 'No',
-        }
-      ],
-    });
+  const onCancel = async () => {
+    await  axios.delete(`/api/reservations/${actionId}`)
+    .then(() => {
+      toast.success('Reservation cancelled');
+      setOpenDeleteDialog(false);
+      router.refresh();
+    })
+    .catch(() => {
+      toast.error('Something went wrong.')
+    }).finally(()=>{
+      setActionId('');
+    })
   };
 
-  const confirmReservation = (id:string) => {
-    confirmAlert({
-      title: 'Are you sure?',
-      message: 'you want to confirm this guest reservation?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: ()=> onConfirm(id)
-        },
-        {
-          label: 'No',
-        }
-      ],
-    });
-  };
-
-  const onConfirm = useCallback((id:string) => {
-    axios.put(`/api/reservations/${id}`)
+  const onConfirm = async () => {
+    await axios.put(`/api/reservations/${actionId}`)
     .then(() => {
       toast.success('Reservation confirmed!');
+      setOpenConfirmDialog(false);
       router.refresh();
     })
     .catch(()=>{
       toast.error('Something went wrong.')
     })
-  },[router]);
+  };
 
-  const onCancel = useCallback((id: string) => {
-    setDeletingId(id);
+  const deleteReservationDialog = (
+    <ConfirmDialog 
+      isOpen={openDeleteDialog}
+      title="Are you sure you want to delete this reservation?"
+      subtitle="This action cannot be undone!"
+      onConfirm={onCancel}
+      onDismiss={()=>{
+        setOpenDeleteDialog(false);
+        setActionId('');
+      }}
+      actionLabel="Delete"
+    />
+  );
 
-    axios.delete(`/api/reservations/${id}`)
-    .then(() => {
-      toast.success('Reservation cancelled');
-      router.refresh();
-    })
-    .catch(() => {
-      toast.error('Something went wrong.')
-    })
-    .finally(() => {
-      setDeletingId('');
-    })
-  }, [router]);
+  const confirmReservationDialog = (
+    <ConfirmDialog 
+      isOpen={openConfirmDialog}
+      title="Are you sure you want to confirm this reservation?" 
+      subtitle="You can still cancel this reservation 10 days before arrival."
+      onConfirm={onConfirm}
+      onDismiss={()=>{
+        setOpenConfirmDialog(false);
+        setActionId('');
+      }}
+      actionLabel="Confirm"
+    />
+  );
 
   return (
     <Container>
@@ -100,14 +97,18 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           gap-8
         "
       >
+        <>
+          {confirmReservationDialog}
+          {deleteReservationDialog}
+        </>
         {reservations.map((reservation: any) => (
           <ReservationCard
             key={reservation.id}
             reservation={reservation}
             actionId={reservation.id}
-            onDelete={confirmDelete}
-            onConfirm={confirmReservation}
-            disabled={deletingId === reservation.id}
+            onDelete={()=>{setActionId(reservation.id); setOpenDeleteDialog(true)}}
+            onConfirm={()=>{setActionId(reservation.id); setOpenConfirmDialog(true)}}
+            disabled={actionId === reservation.id}
             actionLabel="Cancel reservation"
             showMessage
           />
