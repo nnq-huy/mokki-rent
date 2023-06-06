@@ -1,21 +1,21 @@
 'use client';
 
-import { useContext, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { BsEmojiSmile, BsImage, BsSend } from "react-icons/bs";
 import { toast } from "react-hot-toast";
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import axios from "axios";
-import { UserContext } from "@/app/messages/MessagesClient";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { useRouter } from "next/navigation";
 import Button from "../Button";
-
+import useAutosizeTextArea from "@/app/hooks/useAutosizeTextArea";
+import { Textarea } from "../inputs/Textarea";
+import ImageUploadSmall from "../inputs/ImageUploadSmall";
 
 interface ChatInputProps {
-	
-  scroll?:React.RefObject<HTMLDivElement>
+  scroll:React.RefObject<HTMLDivElement>
 }
 export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
 	const {currentReservation} = useCurrentReservation();
@@ -24,8 +24,14 @@ export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
 
   const [message, setMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
-  const inputFile = useRef(null);
 	const [isLoading,setIsLoading] = useState(false);
+	const textAreaRef = useRef<HTMLTextAreaElement>(null);
+	useAutosizeTextArea(textAreaRef.current, message);
+	const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+  	const val = evt.target?.value;
+
+    setMessage(val);
+  };
 
   const addEmoji = (e:any) => {
     let sym = e.unified.split("-");
@@ -36,124 +42,105 @@ export const MessageInput : React.FC<ChatInputProps> = ({scroll})=>{
     setShowEmojis(!showEmojis);
   };
 
-  const sendMessage = async () =>{
-
-    if (message.trim()===""){
+  const sendMessage = async (isPicture:Boolean, imgUrl?:string) =>{
+		if (message.trim()===""&& !isPicture){
       toast.error('please enter an message...')
       return
-    }else {
-			const messageData ={
-			isPicture: false,
-      content:message,
-      receiverId:isGuest?currentReservation.hostId:currentReservation.userId,
-      reservationId:currentReservation.id,
-			}
+    } else {
+		const messageData ={
+			isPicture: isPicture,
+    	content:imgUrl??message,
+    	receiverId:isGuest?currentReservation.hostId:currentReservation.userId,
+    	reservationId:currentReservation.id,
+		}
 			setIsLoading(true);
-      try {
-				axios.post('/api/messages', messageData)
-				.then(() => {
-					toast.success('Message sent!');
-					setMessage("");
-					router.refresh();
-				})
-				.catch((error) => {
-					toast.error('Error: '+error);
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
+    try {
+		axios.post('/api/messages', messageData)
+		.then(() => {
+			toast.success('Message sent!');
+			setMessage("");
+			router.refresh();
+		})
+		.catch((error) => {
+			toast.error('Error: '+error);
+		})
+		.finally(() => {
+			setIsLoading(false);
+			scroll.current?.scrollIntoView({behavior:"smooth"});
+
+		});
       } catch(e) {toast.error('Cannot send message: '+e)}
     }
   }
 
-return (
-  <div>
-		<div 
-			className="
-				flex-grow
-				flex
-				flex-row 
-				items-center 
-				rounded-xl 
-				shadow-xl 
-				max-h-36
-				bg-white 
-				w-full 
-				px-2
-			">
-      <div>
-				<input 
-					title="file select" 
-					type="file" accept="image/*" 
-					id='file' 
-					ref={inputFile} 
-					onChange={()=>{}} 
-					className="hidden"/>
-        <button
-          onClick={()=>{}}
-          className="flex items-center justify-center text-gray-400 hover:text-mokki-green"
-        >
-          { <BsImage/>}
-        </button>
-      </div>
-      <div className="flex-grow ml-1">
-        <div className="relative w-full p-2">
-					
-					<input
-						maxLength={500}
-            title="message"
-            type="text"
-            value={message}
-            onChange={(e)=>setMessage(e.target.value)}
-            className="
-							bg-gray-50
-							dark:bg-gray-300 
-							flex 
-							w-full 
-							border 
-							rounded-xl 
-							focus:outline-none 
-							focus:border-mokki-green 
-							pl-4 
-							h-10"
-          />
-          <button
-            onClick={() => setShowEmojis(!showEmojis)}
-            className="
-							absolute 
-							flex 
-							items-center 
-							justify-center 
-							h-full 
-							w-12 
-							right-0 
-							top-0 
-							text-gray-400 
-							hover:text-mokki-green"
-          >
-            {<BsEmojiSmile/>}
-          </button>
-        </div>
-      </div>
-		<div className="flex">
-			<Button
-			 	label=""
-		 		disabled={isLoading}
-				onClick={sendMessage}
-				icon={BsSend}
-				small
-				outline
+	return (
+	  <div>
+			<div 
+				className="
+					flex-grow
+					flex
+					flex-row 
+					items-center 
+					rounded-xl 
+					shadow-xl 
+					max-h-36
+					bg-white 
+					w-full 
+					px-2
+				">
+			<ImageUploadSmall
+				onChange={(value)=>sendMessage(true,value)}
 			/>
-		</div>
-   
-    </div>
-    {showEmojis && (
-      <div>
-    		<Picker 
-					data={data} 
-					onEmojiSelect={addEmoji} 
+	      <div className="flex-grow ml-1">
+	        <div className="relative w-full p-2">
+	      		<Textarea
+							maxLength={500}
+							id="message"
+	      		  onChange={handleChange}
+	      		  placeholder="enter your message..."
+	      		  ref={textAreaRef}
+	      		  rows={1}
+	      		  value={message}
+	      		/>
+	        	<button
+	            onClick={() => setShowEmojis(!showEmojis)}
+	            className="
+								absolute 
+								flex 
+								items-center 
+								justify-center 
+								h-full 
+								w-12 
+								right-0 
+								top-0 
+								text-gray-400 
+								hover:text-mokki-green"
+	          	>
+	            {<BsEmojiSmile/>}
+	          </button>
+	        </div>
+
+	      </div>
+			<div className="flex">
+				<Button
+				 	label=""
+			 		disabled={isLoading}
+					onClick={()=>sendMessage(false)}
+					icon={BsSend}
+					small
+					outline
 				/>
-      </div>
-    )}
-  </div>
-)}
+			</div>
+	
+	    </div>
+	    {showEmojis && (
+	      <div>
+	    		<Picker 
+						data={data} 
+						onEmojiSelect={addEmoji} 
+					/>
+	      </div>
+	    )}
+	  </div>
+	)
+}

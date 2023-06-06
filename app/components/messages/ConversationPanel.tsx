@@ -2,7 +2,7 @@
 import { Message } from "@prisma/client"
 import Avatar from "../Avatar";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MessageBubble } from "./MessageBubble";
 import useIsGuest from "@/app/hooks/useIsGuest";
@@ -15,6 +15,7 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
   const {currentReservation} = useCurrentReservation();
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   const {isGuest} = useIsGuest();
+  const scroll = useRef<HTMLDivElement>(null);
 
   useEffect(()=>{
     let filteredMessages:Message[] = [];
@@ -63,10 +64,10 @@ const ConversationPanel : React.FC<ConversationPanelProps> = ({messages})=>{
               </li>
             ))}
           </ul>
-          : <div className="text-center text-gray-400">No messages found... </div> }
-          
+          : <div className="text-center text-gray-400">no messages found... </div> }
+        <span ref={scroll}></span>
       </div>
-      <MessageInput />
+      <MessageInput scroll={scroll}/>
     </div>
     );
 }

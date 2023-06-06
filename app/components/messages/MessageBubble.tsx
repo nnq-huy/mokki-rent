@@ -15,10 +15,10 @@ export const MessageBubble : React.FC<MessageBubbleProps> = ({message, isLeft})=
         {
 					message.isPicture
 					? <div className="rounded-xl shadow">
-						<Image 
-							width={300} 
-							height={300} 
-							src={message.content} 
+						<Image
+							width={300}
+							height={300}
+							src={message.content}
 							alt={'picture message'}>
 						</Image>
 					</div>
@@ -38,10 +38,10 @@ export const MessageBubble : React.FC<MessageBubbleProps> = ({message, isLeft})=
         <div>
           {message.isPicture
 						?	<div className="rounded-xl shadow">
-							<Image 
-								width={300} 
-								height={300} 
-								src={message.content} 
+							<Image
+								width={300}
+								height={300}
+								src={message.content}
 								alt={'picture message'}>
 							</Image>
 							</div>
