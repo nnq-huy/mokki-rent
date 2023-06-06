@@ -27,6 +27,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const userMenuRef = useRef<HTMLDivElement>(null);
   const userButtonRef = useRef<HTMLDivElement>(null);
 
+  //click outside to dismiss user menu
   const toggleMenu = useCallback(
     (e: any) => {
       if (
@@ -145,6 +146,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 <MenuItem 
                   label="Home" 
                   onClick={() => router.push('/')}
+                />
+                <MenuItem 
+                  label="Messages" 
+                  onClick={() => router.push('/messages')}
                 />
                 <MenuItem 
                   label="Logout" 

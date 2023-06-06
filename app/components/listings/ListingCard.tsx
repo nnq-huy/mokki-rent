@@ -11,6 +11,7 @@ import HeartButton from "../HeartButton";
 import Button from "../Button";
 import { Listing, Reservation, User } from "@prisma/client";
 import { AiOutlineDelete } from "react-icons/ai";
+import { Edit } from "lucide-react";
 
 interface ListingCardProps {
   data: Listing;
@@ -20,6 +21,7 @@ interface ListingCardProps {
   actionLabel?: string;
   actionId?: string;
   currentUser?: User | null
+  isHost:boolean
 };
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -30,6 +32,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   actionId = '',
   currentUser,
+  isHost
 }) => {
   const router = useRouter();
   const { getByValue } = useProvinces();
@@ -68,11 +71,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div 
-      onClick={() => router.push(`/listings/${data.id}`)} 
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
         <div 
+          onClick={() => router.push(`/listings/${data.id}`)} 
           className="
             aspect-square 
             w-full 
@@ -93,16 +96,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             src={data.imageSrc}
             alt="Listing"
           />
-          <div className="
-            absolute
-            top-3
-            right-3
-          ">
-            <HeartButton 
-              listingId={data.id} 
-              currentUser={currentUser}
-            />
-          </div>
+        
         </div>
         <div className="font-semibold text-lg">
           {location?.label}
@@ -118,6 +112,12 @@ const ListingCard: React.FC<ListingCardProps> = ({
             <div className="font-light">night</div>
           )}
         </div>
+        {isHost&&<Button 
+          label="Edit info"
+          onClick={()=>{}}
+          icon={Edit}
+          small
+        />}
         {onAction && actionLabel && (
           <Button
           icon={AiOutlineDelete}

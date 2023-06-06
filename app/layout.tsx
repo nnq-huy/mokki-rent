@@ -23,14 +23,14 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
 
   return (
-    <html lang="en">
+    <html lang="en-FI">
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider/>
           <ModalsProvider/>
           <Header currentUser={currentUser}/>
         </ClientOnly>
-        <div className="pb-20 pt-28">
+        <div className="pt-[88px]">
         {children}
         </div>
       </body>

@@ -5,14 +5,11 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 
-
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
-import ListingCard from "@/app/components/listings/ListingCard";
 import { Reservation, User } from "@prisma/client";
-import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css';
-
+import TripCard from "../components/trips/TripCard";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 interface TripsClientProps {
   reservations: Reservation[],
@@ -25,26 +22,13 @@ const TripsClient: React.FC<TripsClientProps> = ({
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState('');
-
+  const [openDialog, setOpenDialog] = useState(false);
   const confirmDelete = (id:string) => {
-    confirmAlert({
-      title: 'Are you sure?',
-      message: 'you want to delete this trip?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: ()=> onCancel(id)
-        },
-        {
-          label: 'No',
-        }
-      ],
-    });
+    setDeletingId(id);
+    setOpenDialog(true);
   };
 
   const onCancel = useCallback((id: string) => {
-    setDeletingId(id);
-
     axios.delete(`/api/reservations/${id}`)
     .then(() => {
       toast.success('Reservation cancelled');
@@ -55,6 +39,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
     })
     .finally(() => {
       setDeletingId('');
+      setOpenDialog(false);
     })
   }, [router]);
 
@@ -70,28 +55,40 @@ const TripsClient: React.FC<TripsClientProps> = ({
           grid 
           grid-cols-1 
           sm:grid-cols-2 
-          md:grid-cols-3 
+          md:grid-cols-3
           lg:grid-cols-4
-          xl:grid-cols-5
-          2xl:grid-cols-6
+          xl:grid-cols-4
+          2xl:grid-cols-5
           gap-8
         "
       >
+      <>
+        <ConfirmDialog
+          isOpen={openDialog}
+          title="Are you sure you want to delete this?" 
+          subtitle="This action cannot be undone"
+          onConfirm={()=>onCancel(deletingId)}
+          onDismiss={()=>{
+            setOpenDialog(false);
+            setDeletingId('');
+          }}
+        />
+      </>
         {reservations.map((reservation: any) => (
-          <ListingCard
+          <TripCard
             key={reservation.id}
-            data={reservation.listing}
             reservation={reservation}
             actionId={reservation.id}
             onAction={confirmDelete}
             disabled={deletingId === reservation.id}
             actionLabel="Cancel reservation"
             currentUser={currentUser}
+            showMessage
           />
         ))}
       </div>
     </Container>
    );
 }
- 
+
 export default TripsClient;

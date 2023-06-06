@@ -21,10 +21,12 @@ Main features:
 ## To dos:
 
 - messaging between host & user
+- user & host profiles
 - more detailed info on listing
 - more images per listing
 - advanced price calculation
 - map view of all listings
+- calendar view to manage listing's reservations
 - multilangues
 - cookies consent
 - dark theme

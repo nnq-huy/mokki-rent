@@ -60,6 +60,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+  //check if the listing user's own property and disable the reserve function
   const isOwnListing = currentUser ? (currentUser.id === listing.userId) :false;
 
   const onCreateReservation = useCallback(() => {
@@ -72,7 +73,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        listingId: listing?.id
+        listingId: listing?.id,
+        hostId: listing?.userId,
+        hostName:listing?.user.name,
+        hostPhoto: listing?.user.image
       })
       .then(() => {
         toast.success('Listing reserved!');
@@ -86,14 +90,16 @@ const ListingClient: React.FC<ListingClientProps> = ({
         setIsLoading(false);
       })
   },
-  [
-    totalPrice, 
-    dateRange, 
-    listing?.id,
-    router,
-    currentUser,
-    loginModal
-  ]);
+  [currentUser, 
+  totalPrice,
+  dateRange.startDate,
+  dateRange.endDate,
+  listing?.id,
+  listing?.userId,
+  listing?.user.name,
+  listing?.user.image,
+  loginModal,
+  router]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
@@ -101,7 +107,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         dateRange.endDate, 
         dateRange.startDate
       );
-      
+      //price calculation
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
       } else {
@@ -162,7 +168,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 disabled={isLoading||isOwnListing}
                 disabledDates={disabledDates}
                 dayCount={differenceInDays(
-                  dateRange.endDate!, 
+                  dateRange.endDate!,
                   dateRange.startDate!
                 )}
               />

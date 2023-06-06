@@ -17,7 +17,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
     <Container>
       <Heading
         title="Favorites"
-        subtitle="List of places you favorited!"
+        subtitle="List of places you put on wishlist!"
       />
       <div 
         className="
@@ -37,7 +37,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
             currentUser={currentUser}
             key={listing.id}
             data={listing}
-          />
+            isHost={false}          />
         ))}
       </div>
     </Container>

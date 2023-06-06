@@ -46,6 +46,7 @@ const Home = async ({ searchParams }: HomeProps) => {
               currentUser={currentUser}
               key={listing.id}
               data={listing}
+              isHost={false}
             />
           ))}
         </div>
