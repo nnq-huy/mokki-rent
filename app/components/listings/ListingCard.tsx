@@ -7,7 +7,6 @@ import { format } from 'date-fns';
 
 import useProvinces from "@/app/hooks/useProvinces";
 
-import HeartButton from "../HeartButton";
 import Button from "../Button";
 import { Listing, Reservation, User } from "@prisma/client";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -21,7 +20,7 @@ interface ListingCardProps {
   actionLabel?: string;
   actionId?: string;
   currentUser?: User | null
-  isHost:boolean
+  isHost: boolean
 };
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -31,7 +30,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
   disabled,
   actionLabel,
   actionId = '',
-  currentUser,
   isHost
 }) => {
   const router = useRouter();
@@ -41,14 +39,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+      e.stopPropagation();
 
-    if (disabled) {
-      return;
-    }
+      if (disabled) {
+        return;
+      }
 
-    onAction?.(actionId)
-  }, [disabled, onAction, actionId]);
+      onAction?.(actionId)
+    }, [disabled, onAction, actionId]);
 
   const price = useMemo(() => {
     if (reservation) {
@@ -62,7 +60,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
     if (!reservation) {
       return null;
     }
-  
+
     const start = new Date(reservation.startDate);
     const end = new Date(reservation.endDate);
 
@@ -70,12 +68,12 @@ const ListingCard: React.FC<ListingCardProps> = ({
   }, [reservation]);
 
   return (
-    <div 
+    <div
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
-        <div 
-          onClick={() => router.push(`/listings/${data.id}`)} 
+        <div
+          onClick={() => router.push(`/listings/${data.id}`)}
           className="
             aspect-square 
             w-full 
@@ -96,7 +94,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             src={data.imageSrc}
             alt="Listing"
           />
-        
+
         </div>
         <div className="font-semibold text-lg">
           {location?.label}
@@ -112,24 +110,24 @@ const ListingCard: React.FC<ListingCardProps> = ({
             <div className="font-light">night</div>
           )}
         </div>
-        {isHost&&<Button 
+        {isHost && <Button
           label="Edit info"
-          onClick={()=>{}}
+          onClick={() => { }}
           icon={Edit}
           small
         />}
         {onAction && actionLabel && (
           <Button
-          icon={AiOutlineDelete}
+            icon={AiOutlineDelete}
             disabled={disabled}
             small
-            label={actionLabel} 
+            label={actionLabel}
             onClick={handleCancel}
           />
         )}
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default ListingCard;

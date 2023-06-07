@@ -15,12 +15,13 @@ Main features:
 - simple price calculation
 - user can reserve a cottage for a time, it will be made unavailable to other users
 - user and host can cancel reservations
+- guest and host can send messages, confirm and cancel reservations in the messages center
 - search url can be shared to show filtered listings to other users
 - responsive design
 
 ## To dos:
 
-- messaging between host & user
+- ~~messaging between host & user~~
 - user & host profiles
 - more detailed info on listing
 - more images per listing

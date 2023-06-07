@@ -6,9 +6,8 @@ import RentModal from "../components/modals/RentModal";
 import SearchModal from "../components/modals/SearchModal";
 import MessageModal from "../components/modals/MessageModal";
 
-
 const ModalsProvider = () => {
-  return ( 
+  return (
     <>
       <LoginModal />
       <RegisterModal />
@@ -16,7 +15,7 @@ const ModalsProvider = () => {
       <RentModal />
       <MessageModal />
     </>
-   );
+  );
 }
- 
+
 export default ModalsProvider;

@@ -5,8 +5,8 @@ import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { useCallback, useState } from "react";
 import { toast } from "react-hot-toast";
-import { 
-  FormProvider, 
+import {
+  FormProvider,
   useForm
 } from "react-hook-form";
 
@@ -22,7 +22,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormInput } from "../auth/FormInput";
 
-const RegisterModal= () => {
+const RegisterModal = () => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
@@ -30,27 +30,25 @@ const RegisterModal= () => {
   type FormData = Yup.InferType<typeof signupSchema>;
   const methods = useForm<FormData>({ mode: "onBlur", resolver: yupResolver(signupSchema) });
   const {
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = methods;
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
 
-
-
-  const onSubmit = (data:FormData) => {
+  const onSubmit = (data: FormData) => {
     setIsLoading(true);
 
     axios.post('/api/register', data)
-    .then(() => {
-      toast.success('Registered!');
-      registerModal.onClose();
-      loginModal.onOpen();
-    })
-    .catch((error) => {
-      toast.error(error);
-    })
-    .finally(() => {
-      setIsLoading(false);
-    })
+      .then(() => {
+        toast.success('Registered!');
+        registerModal.onClose();
+        loginModal.onOpen();
+      })
+      .catch((error) => {
+        toast.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   }
 
   const onToggle = useCallback(() => {
@@ -65,47 +63,47 @@ const RegisterModal= () => {
         subtitle="Create an account!"
       />
       <FormProvider {...methods}>
-				<form
-					action=""
-					className="w-full mx-auto px-1"
-					onSubmit={handleSubmit(onSubmit)}
-				>
+        <form
+          action=""
+          className="w-full mx-auto px-1"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FormInput
-						label="Name"
-						name="name"
-						type="name"
-						formOptions={signupSchema.fields.name}
-						errors={errors.name}
-					/>
-					<FormInput
-						label="Email"
-						name="email"
-						type="email"
-						formOptions={signupSchema.fields.email}
-						errors={errors.email}
-					/>
-					<FormInput
-						label="Password"
-						name="password"
-						type="password"
-						formOptions={signupSchema.fields.password}
-						errors={errors.password}
-					/>
+            label="Name"
+            name="name"
+            type="name"
+            formOptions={signupSchema.fields.name}
+            errors={errors.name}
+          />
           <FormInput
-						label="Confirm Password"
-						name="confirm_password"
-						type="password"
-						formOptions={signupSchema.fields.confirm_password}
-						errors={errors.confirm_password}
-					/>
+            label="Email"
+            name="email"
+            type="email"
+            formOptions={signupSchema.fields.email}
+            errors={errors.email}
+          />
+          <FormInput
+            label="Password"
+            name="password"
+            type="password"
+            formOptions={signupSchema.fields.password}
+            errors={errors.password}
+          />
+          <FormInput
+            label="Confirm Password"
+            name="confirm_password"
+            type="password"
+            formOptions={signupSchema.fields.confirm_password}
+            errors={errors.confirm_password}
+          />
           <div className="pb-6"></div>
           <Button
-            disabled={isLoading} 
-            label={'Continue'} 
+            disabled={isLoading}
+            label={'Continue'}
             onClick={handleSubmit(onSubmit)}
           />
-				</form>
-			</FormProvider>
+        </form>
+      </FormProvider>
 
     </div>
   )
@@ -113,19 +111,19 @@ const RegisterModal= () => {
   const footerContent = (
     <div className="flex flex-col gap-4">
       <hr />
-      <Button 
-        outline 
+      <Button
+        outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => signIn('google')} 
+        onClick={() => signIn('google')}
       />
-      <Button 
-        outline 
+      <Button
+        outline
         label="Continue with Github"
         icon={FaGithub}
         onClick={() => signIn('github')}
       />
-      <div 
+      <div
         className="
           text-neutral-500 
           text-center 
@@ -134,14 +132,14 @@ const RegisterModal= () => {
         "
       >
         <p>Already have an account?
-          <span 
-            onClick={onToggle} 
+          <span
+            onClick={onToggle}
             className="
               text-mokki-green
               cursor-pointer 
               hover:underline
             "
-            > Log in</span>
+          > Log in</span>
         </p>
       </div>
     </div>

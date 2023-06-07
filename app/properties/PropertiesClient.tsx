@@ -28,25 +28,25 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
 
   const onDelete = async () => {
     await axios.delete(`/api/listings/${actionId}`)
-    .then(() => {
-      toast.success('Listing deleted');
-      setOpenDeleteDialog(false);
-      router.refresh();
-    })
-    .catch(() => {
-      toast.error('Something went wrong.')
-    }).finally(()=>{
-      setActionId('');
-    })
+      .then(() => {
+        toast.success('Listing deleted');
+        setOpenDeleteDialog(false);
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error('Something went wrong.')
+      }).finally(() => {
+        setActionId('');
+      })
   };
 
   const deleteListingDialog = (
-    <ConfirmDialog 
+    <ConfirmDialog
       isOpen={openDeleteDialog}
       title="Are you sure you want to delete this reservation?"
       subtitle="This action cannot be undone!"
       onConfirm={onDelete}
-      onDismiss={()=>{
+      onDismiss={() => {
         setOpenDeleteDialog(false);
         setActionId('');
       }}
@@ -54,13 +54,13 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
     />
   );
 
-  return ( 
+  return (
     <Container>
       <Heading
         title="Properties"
         subtitle="List of your properties"
       />
-      <div 
+      <div
         className="
           mt-10
           grid 
@@ -78,7 +78,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           <ListingCard
             key={listing.id}
             data={listing}
-            onAction={()=>{setActionId(listing.id); setOpenDeleteDialog(true)}}
+            onAction={() => { setActionId(listing.id); setOpenDeleteDialog(true) }}
             disabled={actionId === listing.id}
             actionLabel="Delete property"
             currentUser={currentUser}
@@ -87,7 +87,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
         ))}
       </div>
     </Container>
-   );
+  );
 }
- 
+
 export default PropertiesClient;

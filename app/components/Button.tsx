@@ -9,21 +9,21 @@ interface ButtonProps {
   outline?: boolean;
   small?: boolean;
   icon?: IconType;
-  submit?:boolean;
+  submit?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ 
-  label, 
-  onClick, 
-  disabled, 
+const Button: React.FC<ButtonProps> = ({
+  label,
+  onClick,
+  disabled,
   outline,
   small,
   submit,
   icon: Icon,
 }) => {
-  return ( 
+  return (
     <button
-      type={submit?'submit':'button'}
+      type={submit ? 'submit' : 'button'}
       disabled={disabled}
       onClick={onClick}
       className={`
@@ -54,7 +54,7 @@ const Button: React.FC<ButtonProps> = ({
         />
       )}
     </button>
-   );
+  );
 }
- 
+
 export default Button;

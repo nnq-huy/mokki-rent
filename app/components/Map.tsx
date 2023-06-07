@@ -9,11 +9,11 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // @ts-ignore
-delete L.Icon.Default.prototype._getIconUrl; 
+delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-    iconUrl: markerIcon.src,
-    iconRetinaUrl: markerIcon2x.src,
-    shadowUrl: markerShadow.src,
+  iconUrl: markerIcon.src,
+  iconRetinaUrl: markerIcon2x.src,
+  shadowUrl: markerShadow.src,
 });
 
 interface MapProps {
@@ -26,10 +26,10 @@ const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">Op
 const Map: React.FC<MapProps> = ({ center }) => {
   return (
     <div className='z-10'>
-      <MapContainer 
-        center={center as L.LatLngExpression || [62.8925, 27.678333]} 
-        zoom={center ? 7 : 4} 
-        scrollWheelZoom={true} 
+      <MapContainer
+        center={center as L.LatLngExpression || [62.8925, 27.678333]}
+        zoom={center ? 7 : 4}
+        scrollWheelZoom={true}
         className="h-[35vh] rounded-lg"
       >
         <TileLayer

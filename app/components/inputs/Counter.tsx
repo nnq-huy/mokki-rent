@@ -8,7 +8,7 @@ interface CounterProps {
   title: string;
   subtitle: string;
   value: number;
-  icon?:IconType;
+  icon?: IconType;
   onChange: (value: number) => void;
 }
 
@@ -31,15 +31,15 @@ const Counter: React.FC<CounterProps> = ({
     onChange(value - 1);
   }, [onChange, value]);
 
-  return ( 
+  return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-col">
         <div className="font-medium flex gap-2 items-center">{Icon && (
-        <Icon
-          size={24}
-          className="mr-2"
-        />
-      )}{title}</div>
+          <Icon
+            size={24}
+            className="mr-2"
+          />
+        )}{title}</div>
         <div className="font-light text-gray-600">
           {subtitle}
         </div>
@@ -64,15 +64,15 @@ const Counter: React.FC<CounterProps> = ({
         >
           <AiOutlineMinus />
         </div>
-        <div 
+        <div
           className="
             font-light 
             text-xl 
             text-neutral-600
           "
         >
-            {value}
-          </div>
+          {value}
+        </div>
         <div
           onClick={onAdd}
           className="
@@ -94,7 +94,7 @@ const Counter: React.FC<CounterProps> = ({
         </div>
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default Counter;

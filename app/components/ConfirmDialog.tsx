@@ -14,9 +14,9 @@ interface ConfirmDialogProps {
   actionLabel?: string;
   disabled?: boolean;
   title: string;
-  subtitle:string;
+  subtitle: string;
   onConfirm: () => void;
-  onDismiss:() => void;
+  onDismiss: () => void;
 };
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -28,7 +28,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onDismiss
 }) => {
-  return(
+  return (
     <AlertDialog
       open={isOpen}
     >
@@ -36,7 +36,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>
-          {subtitle}
+            {subtitle}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogCancel
@@ -48,11 +48,11 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           onClick={onConfirm}
           className="text-white bg-mokki-green hover:bg-mokki-green hover:opacity-70"
         >
-          {actionLabel??"Continue"}
+          {actionLabel ?? "Continue"}
         </AlertDialogAction>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
- 
+
 export default ConfirmDialog;

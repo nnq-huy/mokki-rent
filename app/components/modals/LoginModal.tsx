@@ -30,36 +30,36 @@ const LoginModal = () => {
   const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
 
-	type FormData = Yup.InferType<typeof loginSchema>;
+  type FormData = Yup.InferType<typeof loginSchema>;
 
   const methods = useForm<FormData>({ mode: "onBlur", resolver: yupResolver(loginSchema) });
-	const {
-		handleSubmit,
-		formState: { errors, isSubmitting },
-		setError,
-	} = methods;
-  
+  const {
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = methods;
+
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-		signIn('credentials', {
+    signIn('credentials', {
       ...data,
       redirect: false,
     })
-    .then((callback) => {
-      setIsLoading(false);
+      .then((callback) => {
+        setIsLoading(false);
 
-      if (callback?.ok) {
-        toast.success('Logged in');
-        router.refresh();
-        loginModal.onClose();
-      }
+        if (callback?.ok) {
+          toast.success('Logged in');
+          router.refresh();
+          loginModal.onClose();
+        }
 
-      if (callback?.error) {
-        toast.error(callback.error);
-      }
-    });
-	};
+        if (callback?.error) {
+          toast.error(callback.error);
+        }
+      });
+  };
 
   const onToggle = useCallback(() => {
     loginModal.onClose();
@@ -73,47 +73,47 @@ const LoginModal = () => {
         subtitle="Login to your account!"
       />
       <FormProvider {...methods}>
-				<form
-					action=""
-					className="w-full mx-auto px-1"
-					onSubmit={handleSubmit(onSubmit)}
-				>
-					<FormInput
-						label="Email"
-						name="email"
-						type="email"
-						formOptions={loginSchema.fields.email}
-						errors={errors.email}
-					/>
-					<FormInput
-						label="Password"
-						name="password"
-						type="password"
-						formOptions={loginSchema.fields.password}
-						errors={errors.password}
-					/>
+        <form
+          action=""
+          className="w-full mx-auto px-1"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <FormInput
+            label="Email"
+            name="email"
+            type="email"
+            formOptions={loginSchema.fields.email}
+            errors={errors.email}
+          />
+          <FormInput
+            label="Password"
+            name="password"
+            type="password"
+            formOptions={loginSchema.fields.password}
+            errors={errors.password}
+          />
           <div className="pb-6"></div>
           <Button
-            disabled={isLoading} 
-            label={'Continue'} 
+            disabled={isLoading}
+            label={'Continue'}
             onClick={handleSubmit(onSubmit)}
           />
-				</form>
-			</FormProvider>
+        </form>
+      </FormProvider>
     </div>
   )
 
   const footerContent = (
     <div className="flex flex-col gap-4">
       <hr />
-      <Button 
-        outline 
+      <Button
+        outline
         label="Continue with Google"
         icon={FcGoogle}
         onClick={() => signIn('google')}
       />
-      <Button 
-        outline 
+      <Button
+        outline
         label="Continue with Github"
         icon={FaGithub}
         onClick={() => signIn('github')}
@@ -121,14 +121,14 @@ const LoginModal = () => {
       <div className="
       text-neutral-500 text-center mt-4 font-light">
         <p>First time here?
-          <span 
-            onClick={onToggle} 
+          <span
+            onClick={onToggle}
             className="
               text-mokki-green
               cursor-pointer 
               hover:underline
             "
-            > Create an account</span>
+          > Create an account</span>
         </p>
       </div>
     </div>

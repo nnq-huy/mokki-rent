@@ -3,14 +3,14 @@
 import { PuffLoader } from "react-spinners";
 
 const Loader = () => {
-  return ( 
+  return (
     <div
-    className="
+      className="
       h-[70vh]
-      flex 
-      flex-col 
-      justify-center 
-      items-center 
+      flex
+      flex-col
+      justify-center
+      items-center
     "
     >
       <PuffLoader
@@ -18,7 +18,7 @@ const Loader = () => {
         color='#028446'
       />
     </div>
-   );
+  );
 }
- 
+
 export default Loader;

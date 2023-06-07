@@ -13,7 +13,7 @@ const ListingPage = async () => {
 
   if (!currentUser) {
     return (
-      <ClientOnly> 
+      <ClientOnly>
         <EmptyState
           title="Unauthorized"
           subtitle="Please login to access this page"
@@ -44,5 +44,5 @@ const ListingPage = async () => {
     </ClientOnly>
   );
 }
- 
+
 export default ListingPage;

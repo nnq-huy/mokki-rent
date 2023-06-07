@@ -22,7 +22,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
 }) => {
   const { getAll } = useProvinces();
 
-  return ( 
+  return (
     <div className='z-50'>
       <Select
         placeholder="Anywhere"
@@ -57,7 +57,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
         })}
       />
     </div>
-   );
+  );
 }
- 
+
 export default ProvinceSelect;

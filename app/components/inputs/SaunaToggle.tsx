@@ -8,8 +8,8 @@ interface SaunaToggleProps {
   title: string;
   subtitle: string;
   value: boolean;
-  defaultChecked?:boolean;
-  icon?:IconType;
+  defaultChecked?: boolean;
+  icon?: IconType;
   onChange: (value: boolean) => void;
 }
 
@@ -21,32 +21,32 @@ const SaunaToggle: React.FC<SaunaToggleProps> = ({
   icon: Icon,
   onChange,
 }) => {
-    const onToggle = useCallback(() => {
-        onChange(!value);
-      }, [onChange, value]);
+  const onToggle = useCallback(() => {
+    onChange(!value);
+  }, [onChange, value]);
 
-  return ( 
+  return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-col">
         <div className="font-medium flex gap-2 items-center">{Icon && (
-        <Icon
-          size={24}
-          className="mr-2"
-        />
-      )}{title}</div>
+          <Icon
+            size={24}
+            className="mr-2"
+          />
+        )}{title}</div>
         <div className="font-light text-gray-600">
           {subtitle}
         </div>
       </div>
       <div className="flex text-4xl flex-row items-center gap-4">
         <Toggle
-            aria-label='No label tag'
-            defaultChecked={defaultChecked??true}
-            onChange={onToggle}
+          aria-label='No label tag'
+          defaultChecked={defaultChecked ?? true}
+          onChange={onToggle}
         />
-        </div>
       </div>
-   );
+    </div>
+  );
 }
- 
+
 export default SaunaToggle;

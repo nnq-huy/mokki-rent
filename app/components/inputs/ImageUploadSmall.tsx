@@ -22,8 +22,8 @@ const ImageUploadSmall: React.FC<ImageUploadButtonProps> = ({
   }, [onChange]);
 
   return (
-    <CldUploadWidget 
-      onUpload={handleUpload} 
+    <CldUploadWidget
+      onUpload={handleUpload}
       uploadPreset={uploadPreset}
       options={{
         maxFiles: 1
@@ -47,8 +47,8 @@ const ImageUploadSmall: React.FC<ImageUploadButtonProps> = ({
               size={24}
             />
           </div>
-        ) 
-    }}
+        )
+      }}
     </CldUploadWidget>
   );
 }

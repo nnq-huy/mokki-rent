@@ -2,12 +2,11 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { TbBeach, TbMountain, TbPool } from 'react-icons/tb';
-import { 
-  GiBarn, 
-  GiBoatFishing, 
-  GiDeer, 
-  GiForest, 
-  GiForestCamp, 
+import {
+  GiBarn,
+  GiBoatFishing,
+  GiForest,
+  GiForestCamp,
   GiIsland,
   GiWheat,
 } from 'react-icons/gi';
@@ -103,15 +102,15 @@ const Categories = () => {
       <div
         className="
           pt-4
-          flex 
-          flex-row 
-          items-center 
+          flex
+          flex-row
+          items-center
           justify-between
           overflow-x-auto
         "
       >
         {categories.map((item) => (
-          <CategoryBox 
+          <CategoryBox
             key={item.label}
             label={item.label}
             icon={item.icon}
@@ -122,5 +121,5 @@ const Categories = () => {
     </Container>
   );
 }
- 
+
 export default Categories;

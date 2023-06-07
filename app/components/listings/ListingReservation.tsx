@@ -13,7 +13,7 @@ interface ListingReservationProps {
   onSubmit: () => void;
   disabled?: boolean;
   disabledDates: Date[];
-  dayCount?:number,
+  dayCount?: number,
 }
 
 const ListingReservation: React.FC<
@@ -28,43 +28,43 @@ const ListingReservation: React.FC<
   disabledDates,
   dayCount
 }) => {
-  return ( 
-    <div 
-      className="
+    return (
+      <div
+        className="
       bg-white 
         rounded-xl 
         border-[1px]
       border-neutral-200 
         overflow-hidden
       "
-    >
-      <div className="
+      >
+        <div className="
       flex flex-row items-center gap-1 p-4">
-        <div className="text-2xl font-semibold">
-           {price}€
+          <div className="text-2xl font-semibold">
+            {price}€
+          </div>
+          <div className="font-light text-neutral-600">
+            night
+          </div>
         </div>
-        <div className="font-light text-neutral-600">
-          night
-        </div>
-      </div>
-      <hr />
-      <Calendar
-        value={dateRange}
-        disabledDates={disabledDates}
-        onChange={(value) => 
-          onChangeDate(value.selection)}
-      />
-      <hr />
-      <div className="p-4">
-        <Button 
-          disabled={disabled} 
-          label="Reserve" 
-          onClick={onSubmit}
+        <hr />
+        <Calendar
+          value={dateRange}
+          disabledDates={disabledDates}
+          onChange={(value) =>
+            onChangeDate(value.selection)}
         />
-      </div> 
-      <hr />
-      {dayCount! > 0 &&<div 
-        className="
+        <hr />
+        <div className="p-4">
+          <Button
+            disabled={disabled}
+            label="Reserve"
+            onClick={onSubmit}
+          />
+        </div>
+        <hr />
+        {dayCount! > 0 && <div
+          className="
           p-4 
           flex 
           flex-row 
@@ -72,17 +72,17 @@ const ListingReservation: React.FC<
           justify-end
           text-medium
         "
-      >
-        <div className="px-2">
-          {dayCount} {dayCount == 1 ? <>night</>:<>nights</>} x 
-        </div>
-        <div>
-         {price}€
-        </div>
-      </div>}
-      <hr />
-      <div 
-        className="
+        >
+          <div className="px-2">
+            {dayCount} {dayCount == 1 ? <>night</> : <>nights</>} x
+          </div>
+          <div>
+            {price}€
+          </div>
+        </div>}
+        <hr />
+        <div
+          className="
           p-4 
           flex 
           flex-row 
@@ -91,16 +91,16 @@ const ListingReservation: React.FC<
           font-semibold
           text-lg
         "
-      >
-        <div>
-          Total
-        </div>
-        <div>
-         {totalPrice}€
+        >
+          <div>
+            Total
+          </div>
+          <div>
+            {totalPrice}€
+          </div>
         </div>
       </div>
-    </div>
-   );
-}
- 
+    );
+  }
+
 export default ListingReservation;

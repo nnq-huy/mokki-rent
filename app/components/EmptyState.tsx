@@ -15,9 +15,9 @@ interface EmptyStateProps {
   title?: string;
   subtitle?: string;
   showReset?: boolean;
-  showLogin?:boolean;
-  showRent?:boolean;
-  showSearch?:boolean;
+  showLogin?: boolean;
+  showRent?: boolean;
+  showSearch?: boolean;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
@@ -33,15 +33,15 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   const rentModal = useRentModal();
   const searchModal = useSearchModal();
 
-  return ( 
-    <div 
+  return (
+    <div
       className="
         h-[60vh]
-        flex 
-        flex-col 
-        gap-2 
-        justify-center 
-        items-center 
+        flex
+        flex-col
+        gap-2
+        justify-center
+        items-center
       "
     >
       <Heading
@@ -52,11 +52,11 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       <div className="w-56 mt-4">
         {showLogin && (
           <Button
-            icon={BiLogIn} 
+            icon={BiLogIn}
             outline
             label="Login"
             onClick={loginModal.onOpen}
-            />
+          />
         )}
         {showReset && (
           <Button
@@ -84,7 +84,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
         )}
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default EmptyState;
