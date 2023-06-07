@@ -13,8 +13,8 @@ interface InputProps {
 const TextInput: React.FC<InputProps> = ({
   id,
   label,
-  type = "text", 
-  disabled, 
+  type = "text",
+  disabled,
 }) => {
   return (
     <div className="w-full relative">
@@ -38,7 +38,7 @@ const TextInput: React.FC<InputProps> = ({
           disabled:cursor-not-allowed
         `}
       />
-      <label 
+      <label
         className={`
           absolute 
           text-md
@@ -57,7 +57,7 @@ const TextInput: React.FC<InputProps> = ({
         {label}
       </label>
     </div>
-   );
+  );
 }
- 
+
 export default TextInput;

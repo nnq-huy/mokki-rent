@@ -12,7 +12,7 @@ const useAutosizeTextArea = (
       if (scrollHeight > 140) {
         textAreaRef.style.height = 140 + "px";
       } else {textAreaRef.style.height = scrollHeight + "px";}
-      
+
     }
   }, [textAreaRef, value]);
 };

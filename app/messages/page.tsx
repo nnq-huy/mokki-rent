@@ -11,7 +11,7 @@ const MessagesPage = async () => {
 
   if (!currentUser) {
     return (
-      <ClientOnly> 
+      <ClientOnly>
         <EmptyState
           title="Unauthorized"
           subtitle="Please login to access this page"
@@ -20,22 +20,21 @@ const MessagesPage = async () => {
       </ClientOnly>
     )
   }
-  const messagesReceived = await getMessages({receiverId:currentUser!.id});
-  const messagesSent = await getMessages({senderId:currentUser!.id});
+  const messagesReceived = await getMessages({ receiverId: currentUser!.id });
+  const messagesSent = await getMessages({ senderId: currentUser!.id });
   const reservationsAsGuest = await getReservations({ userId: currentUser.id });
   const reservationsAsHost = await getReservations({ hostId: currentUser.id });
-
 
   return (
     <ClientOnly>
       <MessagesClient
-      reservationsAsGuest={reservationsAsGuest}
-      reservationsAsHost={reservationsAsHost}
-      messsages={messagesReceived.concat(messagesSent)}
-      currentUser={currentUser}
+        reservationsAsGuest={reservationsAsGuest}
+        reservationsAsHost={reservationsAsHost}
+        messsages={messagesReceived.concat(messagesSent)}
+        currentUser={currentUser}
       />
     </ClientOnly>
   );
 }
- 
+
 export default MessagesPage;

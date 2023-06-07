@@ -23,24 +23,24 @@ const TripsClient: React.FC<TripsClientProps> = ({
   const router = useRouter();
   const [deletingId, setDeletingId] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
-  const confirmDelete = (id:string) => {
+  const confirmDelete = (id: string) => {
     setDeletingId(id);
     setOpenDialog(true);
   };
 
   const onCancel = useCallback((id: string) => {
     axios.delete(`/api/reservations/${id}`)
-    .then(() => {
-      toast.success('Reservation cancelled');
-      router.refresh();
-    })
-    .catch((error) => {
-      toast.error(error?.response?.data?.error)
-    })
-    .finally(() => {
-      setDeletingId('');
-      setOpenDialog(false);
-    })
+      .then(() => {
+        toast.success('Reservation cancelled');
+        router.refresh();
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.error)
+      })
+      .finally(() => {
+        setDeletingId('');
+        setOpenDialog(false);
+      })
   }, [router]);
 
   return (
@@ -49,7 +49,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
         title="Trips"
         subtitle="Where you've been and where you're going"
       />
-      <div 
+      <div
         className="
           mt-10
           grid 
@@ -62,18 +62,18 @@ const TripsClient: React.FC<TripsClientProps> = ({
           gap-8
         "
       >
-      <>
-        <ConfirmDialog
-          isOpen={openDialog}
-          title="Are you sure you want to delete this?" 
-          subtitle="This action cannot be undone"
-          onConfirm={()=>onCancel(deletingId)}
-          onDismiss={()=>{
-            setOpenDialog(false);
-            setDeletingId('');
-          }}
-        />
-      </>
+        <>
+          <ConfirmDialog
+            isOpen={openDialog}
+            title="Are you sure you want to delete this?"
+            subtitle="This action cannot be undone"
+            onConfirm={() => onCancel(deletingId)}
+            onDismiss={() => {
+              setOpenDialog(false);
+              setDeletingId('');
+            }}
+          />
+        </>
         {reservations.map((reservation: any) => (
           <TripCard
             key={reservation.id}
@@ -88,7 +88,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
         ))}
       </div>
     </Container>
-   );
+  );
 }
 
 export default TripsClient;

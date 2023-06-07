@@ -1,6 +1,6 @@
 'use client';
 
-import { 
+import {
   FieldErrors,
   FieldValues,
   UseFormRegister
@@ -22,8 +22,8 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({
   id,
   label,
-  type = "text", 
-  disabled, 
+  type = "text",
+  disabled,
   formatPrice,
   register,
   required,
@@ -66,7 +66,7 @@ const Input: React.FC<InputProps> = ({
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
       />
-      <label 
+      <label
         className={`
           absolute 
           text-md
@@ -87,7 +87,7 @@ const Input: React.FC<InputProps> = ({
         {label}
       </label>
     </div>
-   );
+  );
 }
- 
+
 export default Input;

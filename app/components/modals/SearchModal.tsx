@@ -41,8 +41,8 @@ const SearchModal = () => {
     key: 'selection'
   });
 
-  const Map = useMemo(() => dynamic(() => import('../Map'), { 
-    ssr: false 
+  const Map = useMemo(() => dynamic(() => import('../Map'), {
+    ssr: false
   }), [location]);
 
   const onBack = useCallback(() => {
@@ -91,20 +91,20 @@ const SearchModal = () => {
     setStep(STEPS.LOCATION);
     searchModal.onClose();
     router.push(url);
-  }, 
-  [
-    step, 
-    searchModal, 
-    location, 
-    router, 
-    guestCount, 
-    roomCount,
-    dateRange,
-    onNext,
-    bathroomCount,
-    params,
-    needSauna
-  ]);
+  },
+    [
+      step,
+      searchModal,
+      location,
+      router,
+      guestCount,
+      roomCount,
+      dateRange,
+      onNext,
+      bathroomCount,
+      params,
+      needSauna
+    ]);
 
   const actionLabel = useMemo(() => {
     if (step === STEPS.INFO) {
@@ -128,10 +128,10 @@ const SearchModal = () => {
         title="Where do you wanna go?"
         subtitle="Find the perfect location!"
       />
-      <ProvinceSelect 
-        value={location} 
-        onChange={(value) => 
-          setLocation(value as ProvinceSelectValue)} 
+      <ProvinceSelect
+        value={location}
+        onChange={(value) =>
+          setLocation(value as ProvinceSelectValue)}
       />
       <hr />
       <Map center={location?.latlng} />
@@ -160,21 +160,21 @@ const SearchModal = () => {
           title="More information"
           subtitle="Find your perfect place!"
         />
-        <Counter 
+        <Counter
           onChange={(value) => setGuestCount(value)}
           value={guestCount}
-          title="Guests" 
+          title="Guests"
           subtitle="How many guests are coming?"
         />
         <hr />
-        <Counter 
+        <Counter
           onChange={(value) => setRoomCount(value)}
           value={roomCount}
-          title="Rooms" 
+          title="Rooms"
           subtitle="How many rooms do you need?"
         />
         <hr />
-        <Counter 
+        <Counter
           onChange={(value) => {
             setBathroomCount(value)
           }}
@@ -183,8 +183,8 @@ const SearchModal = () => {
           subtitle="How many bathrooms do you need?"
         />
         <hr />
-        <SaunaToggle 
-          onChange={(value) => { setNeedSauna(value); } }
+        <SaunaToggle
+          onChange={(value) => { setNeedSauna(value); }}
           title="Sauna"
           subtitle="Do you need a sauna?"
           value={needSauna}

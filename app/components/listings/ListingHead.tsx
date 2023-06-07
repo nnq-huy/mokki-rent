@@ -26,19 +26,19 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 
   const location = getByValue(locationValue);
 
-  return ( 
+  return (
     <>
       <div className="flex items-center gap-4">
         <Heading
-        title={title}
-        subtitle={`${location?.label}, ${location?.english}`}
+          title={title}
+          subtitle={`${location?.label}, ${location?.english}`}
         />
-        <HeartButton 
-            listingId={id}
-            currentUser={currentUser}
-          />
+        <HeartButton
+          listingId={id}
+          currentUser={currentUser}
+        />
       </div>
-      
+
       <div className="
           w-full
           h-[60vh]
@@ -63,7 +63,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
         </div>
       </div>
     </>
-   );
+  );
 }
- 
+
 export default ListingHead;

@@ -3,16 +3,16 @@ import Logo from "./Logo";
 import Container from "../Container";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
-import {User} from "@prisma/client"
+import { User } from "@prisma/client"
 
 interface NavbarProps {
-  currentUser? : User | null;
+  currentUser?: User | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   currentUser
 }) => {
-  return ( 
+  return (
     <div className="
         fixed
         w-full
@@ -25,9 +25,9 @@ const Navbar: React.FC<NavbarProps> = ({
           border-b-[1px]
         "
       >
-      <Container>
-        <div
-          className="
+        <Container>
+          <div
+            className="
             flex
             flex-row
             items-center
@@ -35,15 +35,15 @@ const Navbar: React.FC<NavbarProps> = ({
             gap-3
             md:gap-0
           "
-        >
-          <Logo />
-          <Search />
-          <UserMenu currentUser={currentUser}/>
-        </div>
-      </Container>
+          >
+            <Logo />
+            <Search />
+            <UserMenu currentUser={currentUser} />
+          </div>
+        </Container>
+      </div>
+      <Categories />
     </div>
-    <Categories />
-  </div>
   );
 }
 

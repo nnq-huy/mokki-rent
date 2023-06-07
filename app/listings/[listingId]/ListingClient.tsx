@@ -53,7 +53,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   }, [reservations]);
 
   const category = useMemo(() => {
-     return categories.find((items) => 
+    return categories.find((items) =>
       items.label === listing.category);
   }, [listing.category]);
 
@@ -61,23 +61,23 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(0);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   //check if the listing user's own property and disable the reserve function
-  const isOwnListing = currentUser ? (currentUser.id === listing.userId) :false;
+  const isOwnListing = currentUser ? (currentUser.id === listing.userId) : false;
 
   const onCreateReservation = useCallback(() => {
-      if (!currentUser) {
-        return loginModal.onOpen();
-      }
-      setIsLoading(true);
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+    setIsLoading(true);
 
-      axios.post('/api/reservations', {
-        totalPrice,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        listingId: listing?.id,
-        hostId: listing?.userId,
-        hostName:listing?.user.name,
-        hostPhoto: listing?.user.image
-      })
+    axios.post('/api/reservations', {
+      totalPrice,
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+      listingId: listing?.id,
+      hostId: listing?.userId,
+      hostName: listing?.user.name,
+      hostPhoto: listing?.user.image
+    })
       .then(() => {
         toast.success('Listing reserved!');
         setDateRange(initialDateRange);
@@ -90,21 +90,21 @@ const ListingClient: React.FC<ListingClientProps> = ({
         setIsLoading(false);
       })
   },
-  [currentUser, 
-  totalPrice,
-  dateRange.startDate,
-  dateRange.endDate,
-  listing?.id,
-  listing?.userId,
-  listing?.user.name,
-  listing?.user.image,
-  loginModal,
-  router]);
+    [currentUser,
+      totalPrice,
+      dateRange.startDate,
+      dateRange.endDate,
+      listing?.id,
+      listing?.userId,
+      listing?.user.name,
+      listing?.user.image,
+      loginModal,
+      router]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInDays(
-        dateRange.endDate, 
+        dateRange.endDate,
         dateRange.startDate
       );
       //price calculation
@@ -116,9 +116,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
     }
   }, [dateRange, listing.price]);
 
-  return ( 
+  return (
     <Container>
-      <div 
+      <div
         className="
           max-w-screen-lg 
           mx-auto
@@ -132,7 +132,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             id={listing.id}
             currentUser={currentUser}
           />
-          <div 
+          <div
             className="
               grid 
               grid-cols-1 
@@ -151,7 +151,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               locationValue={listing.locationValue}
               hasSauna={listing.hasSauna}
             />
-            <div 
+            <div
               className="
                 order-first 
                 mb-10 
@@ -165,7 +165,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
-                disabled={isLoading||isOwnListing}
+                disabled={isLoading || isOwnListing}
                 disabledDates={disabledDates}
                 dayCount={differenceInDays(
                   dateRange.endDate!,
@@ -177,7 +177,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         </div>
       </div>
     </Container>
-   );
+  );
 }
- 
+
 export default ListingClient;

@@ -19,7 +19,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
         title="Favorites"
         subtitle="List of places you put on wishlist!"
       />
-      <div 
+      <div
         className="
           mt-10
           grid 
@@ -37,11 +37,11 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
             currentUser={currentUser}
             key={listing.id}
             data={listing}
-            isHost={false}          />
+            isHost={false} />
         ))}
       </div>
     </Container>
-   );
+  );
 }
- 
+
 export default FavoritesClient;
