@@ -62,7 +62,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
       />
       <div
         className="
-          mt-10
+          mt-4
           grid 
           grid-cols-1 
           sm:grid-cols-2 
@@ -70,7 +70,11 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           lg:grid-cols-4
           xl:grid-cols-5
           2xl:grid-cols-6
-          gap-8
+          gap-4
+          xl:px-8
+          md:px-4
+          sm:px-2
+          px-2
         "
       >
         <>{deleteListingDialog}</>

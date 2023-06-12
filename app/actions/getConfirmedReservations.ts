@@ -1,42 +1,28 @@
 import prisma from "@/app/utils/prismadb";
-
 interface IParams {
-  listingId?: string;
-  userId?: string;
-  hostId?: string;
-  propertyId?:string;
+  listingId?:string;
 }
 
-export default async function getReservations(
+export default async function getConfirmedReservations(
   params: IParams
 ) {
   const today = new Date();
   try {
-    const { listingId, userId, hostId, propertyId } = params;
+    const { listingId } = params;
 
     let query: any = {};
-    //get all reservation - for host
-    if (propertyId) {
-      query.listingId = propertyId;
-    }
+  
 
     //only get reservations that end after today - for guest
     if (listingId) {
       query ={
+        status: "confirmed",
         listingId : listingId,
         endDate: {
           gte: today
         }
       }
     };
-
-    if (userId) {
-      query.userId = userId;
-    }
-
-    if (hostId) {
-      query.listing = { userId: hostId };
-    }
 
     const reservations = await prisma.reservation.findMany({
       where: query,

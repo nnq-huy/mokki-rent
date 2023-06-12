@@ -4,19 +4,13 @@ import dynamic from "next/dynamic";
 import { IconType } from "react-icons";
 
 import useProvinces from "@/app/hooks/useProvinces";
-
-import Avatar from "../Avatar";
-import ListingCategory from "./ListingCategory";
-import { User } from "@prisma/client";
-import HeartButton from "../HeartButton";
+import ListingCategory from "../listings/ListingCategory";
 
 const Map = dynamic(() => import('../Map'), {
   ssr: false
 });
 
-interface ListingInfoProps {
-  user: User,
-  currentUser?: User | null;
+interface PropertyInfoProps {
   id: string,
   description: string;
   guestCount: number;
@@ -31,9 +25,8 @@ interface ListingInfoProps {
   hasSauna: boolean;
 }
 
-const ListingInfo: React.FC<ListingInfoProps> = ({
-  user,
-  currentUser,
+const ListingInfo: React.FC<PropertyInfoProps> = ({
+  
   id,
   description,
   guestCount,
@@ -48,8 +41,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   const coordinates = getByValue(locationValue)?.latlng
 
   return (
-    <div className="col-span-4 flex flex-col gap-8 pb-8">
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-8">
         <div
           className="
             text-xl 
@@ -60,14 +52,12 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             gap-2
           "
         >
-          <div>Hosted by {user?.name}</div>
-          <Avatar src={user?.image} />
         </div>
         <div className="
             flex 
             flex-row 
             items-center 
-            gap-3
+            gap-4 
             font-light
             text-neutral-500
           "
@@ -84,12 +74,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <div>
             {hasSauna ? "has sauna" : ""}
           </div>
-          <HeartButton
-            listingId={id}
-            currentUser={currentUser}
-          />
         </div>
-      </div>
+      
       <hr />
       {category && (
         <ListingCategory

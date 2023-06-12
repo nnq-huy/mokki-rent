@@ -29,7 +29,10 @@ const TripsClient: React.FC<TripsClientProps> = ({
   };
 
   const onCancel = useCallback((id: string) => {
-    axios.delete(`/api/reservations/${id}`)
+    const data = {
+      status: "cancelled"
+    }
+    axios.put(`/api/reservations/${id}`, data)
       .then(() => {
         toast.success('Reservation cancelled');
         router.refresh();
@@ -45,13 +48,13 @@ const TripsClient: React.FC<TripsClientProps> = ({
 
   return (
     <Container>
-      <Heading
-        title="Trips"
-        subtitle="Where you've been and where you're going"
-      />
-      <div
+      <div className="xl:px-8 md:px-4 sm:px-2 px-2 pt-4" >
+        <Heading
+          title="Trips"
+          subtitle="Where you've been and where you're going"
+        />
+         <div
         className="
-          mt-10
           grid 
           grid-cols-1 
           sm:grid-cols-2 
@@ -59,13 +62,13 @@ const TripsClient: React.FC<TripsClientProps> = ({
           lg:grid-cols-4
           xl:grid-cols-4
           2xl:grid-cols-5
-          gap-8
+          gap-4
         "
       >
         <>
           <ConfirmDialog
             isOpen={openDialog}
-            title="Are you sure you want to delete this?"
+            title="Are you sure you want to cancel this reservation?"
             subtitle="This action cannot be undone"
             onConfirm={() => onCancel(deletingId)}
             onDismiss={() => {
@@ -87,6 +90,9 @@ const TripsClient: React.FC<TripsClientProps> = ({
           />
         ))}
       </div>
+      </div>
+
+     
     </Container>
   );
 }

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
-import { Listing, Reservation, User } from "@prisma/client";
+import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import ReservationCard from '../components/reservations/ReservationCard';
 import ConfirmDialog from "../components/ConfirmDialog";
 
@@ -23,14 +23,17 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
 }) => {
   const router = useRouter();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const [actionId, setActionId] = useState('');
 
   const onCancel = async () => {
-    await axios.delete(`/api/reservations/${actionId}`)
+    const data = {
+      status: ReservationStatus.cancelled
+    }
+    await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
         toast.success('Reservation cancelled');
-        setOpenDeleteDialog(false);
+        setOpenCancelDialog(false);
         router.refresh();
       })
       .catch(() => {
@@ -41,7 +44,10 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   };
 
   const onConfirm = async () => {
-    await axios.put(`/api/reservations/${actionId}`)
+    const data = {
+      status: ReservationStatus.confirmed
+    }
+    await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
         toast.success('Reservation confirmed!');
         setOpenConfirmDialog(false);
@@ -49,20 +55,22 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
       })
       .catch(() => {
         toast.error('Something went wrong.')
+      }).finally(() => {
+        setActionId('');
       })
   };
 
-  const deleteReservationDialog = (
+  const cancelReservationDialog = (
     <ConfirmDialog
-      isOpen={openDeleteDialog}
-      title="Are you sure you want to delete this reservation?"
+      isOpen={openCancelDialog}
+      title="Are you sure you want to cancel this reservation?"
       subtitle="This action cannot be undone!"
       onConfirm={onCancel}
       onDismiss={() => {
-        setOpenDeleteDialog(false);
+        setOpenCancelDialog(false);
         setActionId('');
       }}
-      actionLabel="Delete"
+      actionLabel="Confirm"
     />
   );
 
@@ -96,19 +104,23 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           lg:grid-cols-4
           xl:grid-cols-5
           2xl:grid-cols-6
-          gap-8
+          gap-4
+          xl:px-8
+          md:px-4
+          sm:px-2
+          px-2
         "
       >
         <>
           {confirmReservationDialog}
-          {deleteReservationDialog}
+          {cancelReservationDialog}
         </>
         {reservations.map((reservation: any) => (
           <ReservationCard
             key={reservation.id}
             reservation={reservation}
             actionId={reservation.id}
-            onDelete={() => { setActionId(reservation.id); setOpenDeleteDialog(true) }}
+            onDelete={() => { setActionId(reservation.id); setOpenCancelDialog(true) }}
             onConfirm={() => { setActionId(reservation.id); setOpenConfirmDialog(true) }}
             disabled={actionId === reservation.id}
             actionLabel="Cancel reservation"

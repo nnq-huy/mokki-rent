@@ -9,7 +9,9 @@ export interface IListingsParams {
   endDate?: string;
   locationValue?: string;
   category?: string;
-  needSauna?:boolean
+  needSauna?:boolean;
+  startPrice?:number;
+  stopPrice?:number;
 }
 
 export default async function getListings(
@@ -26,6 +28,8 @@ export default async function getListings(
       endDate,
       category,
       needSauna,
+      startPrice,
+      stopPrice
     } = params;
 
     let query: any = {};
@@ -61,6 +65,13 @@ export default async function getListings(
 
     if (locationValue) {
       query.locationValue = locationValue;
+    }
+
+    if (startPrice && stopPrice) {
+      query.price = {
+        gte: + startPrice,
+        lte: + stopPrice
+      }
     }
 
     if (startDate && endDate) {

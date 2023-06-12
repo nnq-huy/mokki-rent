@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/utils/prismadb";
+import { ReservationStatus } from "@prisma/client";
 
 interface IParams {
   reservationId?: string;
@@ -11,6 +12,8 @@ export async function PUT(
   { params }: { params: IParams }
 ){
   const currentUser = await getCurrentUser();
+  const body = await request.json();
+  const {status} = body;
 
   if (!currentUser) {
     return NextResponse.error();
@@ -21,12 +24,13 @@ export async function PUT(
   if (!reservationId || typeof reservationId !== 'string') {
     throw new Error('Invalid ID');
   }
+
   const confirmation = await prisma.reservation.update({
     where: {
       id: reservationId,
     },
     data:{
-      confirmed:true
+      status:status
     }
   })
   return NextResponse.json(confirmation);

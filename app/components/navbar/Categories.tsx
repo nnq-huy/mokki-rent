@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import { TbBeach, TbMountain, TbPool } from 'react-icons/tb';
+import { TbBeach, TbPool } from 'react-icons/tb';
 import {
   GiBarn,
   GiBoatFishing,
@@ -81,7 +81,7 @@ export const categories = [
     description: 'This property is brand new and luxurious!'
   },
   {
-    label: 'National Park',
+    label: 'Park',
     icon: GiForest,
     description: 'This property is near a national park'
   }
@@ -101,12 +101,16 @@ const Categories = () => {
     <Container>
       <div
         className="
-          pt-4
+          pt-2
+          flex-row 
           flex
-          flex-row
+          h-18
           items-center
           justify-between
           overflow-x-auto
+          bg-white
+          rounded-md
+          
         "
       >
         {categories.map((item) => (

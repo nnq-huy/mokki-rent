@@ -8,7 +8,7 @@ import { differenceInDays, format } from 'date-fns';
 import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
-import { Listing, Reservation, User } from "@prisma/client";
+import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import { AiOutlineDelete, AiOutlineMessage } from "react-icons/ai";
 import Avatar from "../Avatar";
 import { BsHouseCheckFill } from "react-icons/bs";
@@ -74,8 +74,6 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       onConfirm?.(actionId)
     }, [disabled, onConfirm, actionId]);
 
-
-
   const start = new Date(reservation.startDate);
   const end = new Date(reservation.endDate);
   const checkinDate = `${format(start, 'PP')}`;
@@ -88,7 +86,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     >
       <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
         <div
-          onClick={() => router.push(`/listings/${reservation.listing!.id}`)}
+          onClick={() => router.push(`/properties/${reservation.listing!.id}`)}
           className="
             cursor-pointer group
             aspect-square 
@@ -128,9 +126,9 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           <Avatar src={guest?.image} />
         </div>
         <div className="font-bold">
-          {reservation?.confirmed ? 'Booking confirmed' : 'Confirmation pending...'}
+          {reservation?.status.toUpperCase()}
         </div>
-        {!reservation?.confirmed && <Button
+        {(reservation?.status === ReservationStatus.unconfirmed) && <Button
           icon={BsHouseCheckFill}
           disabled={disabled}
           small

@@ -17,8 +17,9 @@ const Navbar: React.FC<NavbarProps> = ({
         fixed
         w-full
         bg-white
+        shadow-sm
         z-10
-        shadow-sm">
+        px-4">
       <div
         className="
           py-4
@@ -28,12 +29,14 @@ const Navbar: React.FC<NavbarProps> = ({
         <Container>
           <div
             className="
+            w-full
             flex
             flex-row
             items-center
             justify-between
             gap-3
             md:gap-0
+            bg-white
           "
           >
             <Logo />

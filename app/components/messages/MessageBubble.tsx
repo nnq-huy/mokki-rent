@@ -15,14 +15,14 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isLeft })
 				<div className="justify-end">
 					{
 						message.isPicture
-							? <div className="rounded-xl shadow">
-								<Image
-									width={300}
-									height={300}
-									src={message.content}
-									alt={'picture message'}>
-								</Image>
-							</div>
+							?
+							<Image
+								className='rounded-xl shadow'
+								width={300}
+								height={300}
+								src={message.content}
+								alt={'picture message'}>
+							</Image>
 							: <div className="bg-white dark:bg-gray-500 p-3 rounded-r-lg shadow rounded-bl-lg">
 								<p className="text-sm text-gray-800 dark:text-gray-100">
 									{message.content}
@@ -40,14 +40,14 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isLeft })
 			<div className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
 				<div>
 					{message.isPicture
-						? <div className="rounded-xl shadow shrink">
-							<Image
-								width={400}
-								height={400}
-								src={message.content}
-								alt={'picture message'}>
-							</Image>
-						</div>
+						?
+						<Image
+							className="rounded-xl shadow shrink"
+							width={400}
+							height={400}
+							src={message.content}
+							alt={'picture message'}>
+						</Image>
 						:
 						<div className="bg-mokki-green text-white p-3 rounded-l-lg shadow rounded-br-lg">
 							<p className="text-sm">{message.content}</p>

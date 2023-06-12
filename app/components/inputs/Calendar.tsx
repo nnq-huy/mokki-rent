@@ -5,7 +5,7 @@ import {
   Range,
   RangeKeyDict
 } from 'react-date-range';
-
+import {enGB} from 'date-fns/locale'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
@@ -22,6 +22,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 }) => {
   return (
     <DateRange
+      locale={enGB}
       rangeColors={['#028446']}
       ranges={[value]}
       date={new Date()}

@@ -37,7 +37,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
       <div className="
         overflow-y-auto 
         shadow-sm
-        bg-gray-50
+        bg-white
         w-16
         sm:w-16
         md:w-[17rem]

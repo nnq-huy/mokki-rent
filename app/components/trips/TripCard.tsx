@@ -8,13 +8,15 @@ import { differenceInDays, format } from 'date-fns';
 import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
-import { Listing, Reservation, User } from "@prisma/client";
+import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import { AiOutlineDelete, AiOutlineMessage } from "react-icons/ai";
 import HeartButton from "../HeartButton";
 import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
+import { MdOutlineMeetingRoom } from "react-icons/md";
+import { BsPersonFill, BsStar } from "react-icons/bs";
 
 interface TripCardProps {
   reservation: Reservation & { user?: User, listing?: Listing };
@@ -43,6 +45,7 @@ const TripCard: React.FC<TripCardProps> = ({
   const { getByValue } = useProvinces();
 
   const location = getByValue(reservation.listing!.locationValue);
+  const isCancellable = (reservation.status == ReservationStatus.unconfirmed || reservation.status == ReservationStatus.confirmed)
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -106,8 +109,14 @@ const TripCard: React.FC<TripCardProps> = ({
             />
           </div>
         </div>
-        <div className="font-semibold text-lg">
-          {location?.label}
+       <div className="font-semibold text-lg flex flex-row justify-between">
+          <div>{location?.label} </div>
+          <div className="flex flex-row gap-1 items-center text-sm text-neutral-500">
+            {<BsStar />}{reservation.listing!.rating.toFixed(1)}
+          </div>
+        </div>
+        <div className="flex flex-row items-center gap-1 text-neutral-500">
+          {<MdOutlineMeetingRoom />} {reservation.listing!.roomCount} {<BsPersonFill />} {reservation.listing!.guestCount}
         </div>
         <div className="font-light text-neutral-500">
           Check-in: {checkinDate} <br />
@@ -117,11 +126,11 @@ const TripCard: React.FC<TripCardProps> = ({
           Total: {reservation.totalPrice}€, {bookedDays} {bookedDays > 1 ? 'nights' : 'night'}
         </div>
         <div className="flex min-w-full items-center">
-          <p className="truncate pr-1">Hosted by <br />{reservation.hostName}</p>
+          <p className="truncate pr-1 text-xs text-neutral-500">Hosted by <br />{reservation.hostName}</p>
           <Avatar src={reservation.hostPhoto} />
         </div>
         <div className="font-bold">
-          {reservation.confirmed ? 'Booking confirmed' : 'Confirmation pending...'}
+          {reservation.status.toUpperCase()}
         </div>
         {showMessage && <Button
           icon={AiOutlineMessage}
@@ -131,7 +140,7 @@ const TripCard: React.FC<TripCardProps> = ({
           onClick={handleOpenMessage}
         />}
 
-        {onAction && actionLabel && (
+        {onAction && actionLabel && isCancellable &&(
           <Button
             icon={AiOutlineDelete}
             disabled={disabled}

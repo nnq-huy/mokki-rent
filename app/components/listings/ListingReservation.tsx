@@ -69,15 +69,17 @@ const ListingReservation: React.FC<
           flex 
           flex-row 
           items-center 
-          justify-end
+          justify-between
           text-medium
         "
         >
-          <div className="px-2">
-            {dayCount} {dayCount == 1 ? <>night</> : <>nights</>} x
+          <div className="text-medium text-gray-500">
+            Checkin: {dateRange.startDate?.toLocaleDateString('fi')} <br />
+            Checkout: {dateRange.endDate?.toLocaleDateString('fi')} <br />
           </div>
-          <div>
-            {price}€
+          <div className="px-2 underline font-bold">
+
+            {dayCount} {dayCount == 1 ? <>night</> : <>nights</>} x {price}€
           </div>
         </div>}
         <hr />
