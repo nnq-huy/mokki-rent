@@ -26,7 +26,6 @@ const Navbar: React.FC<NavbarProps> = ({
           border-b-[1px]
         "
       >
-        <Container>
           <div
             className="
             w-full
@@ -43,7 +42,6 @@ const Navbar: React.FC<NavbarProps> = ({
             <Search />
             <UserMenu currentUser={currentUser} />
           </div>
-        </Container>
       </div>
       <Categories />
     </div>

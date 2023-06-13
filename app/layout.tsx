@@ -5,6 +5,7 @@ import { Nunito } from 'next/font/google'
 import ToasterProvider from './providers/ToasterProvider';
 import getCurrentUser from './actions/getCurrentUser';
 import ModalsProvider from './providers/ModalsProvider';
+import Footer from './components/footer/Footer';
 
 export const metadata = {
   title: 'Mökki Rent',
@@ -33,6 +34,7 @@ export default async function RootLayout({
         <div className="pt-[88px] bg-gray-50">
           {children}
         </div>
+        <Footer/>
       </body>
     </html>
   )

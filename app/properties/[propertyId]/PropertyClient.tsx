@@ -155,7 +155,7 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
 
   return (
     <Container>
-      <div className="bg-white">
+      <div className="bg-gray-50 pb-8">
         <PropertyTabs
           details={detailsContent}
           bookings={bookingsContent}

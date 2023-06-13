@@ -72,7 +72,7 @@ const TripCard: React.FC<TripCardProps> = ({
 
   return (
     <div
-      className="col-span-1 "
+      className="col-span-1 bg-white"
     >
       <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
         <div
@@ -118,7 +118,7 @@ const TripCard: React.FC<TripCardProps> = ({
         <div className="flex flex-row items-center gap-1 text-neutral-500">
           {<MdOutlineMeetingRoom />} {reservation.listing!.roomCount} {<BsPersonFill />} {reservation.listing!.guestCount}
         </div>
-        <div className="font-light text-neutral-500">
+        <div className="font-light text-neutral-500 text-sm">
           Check-in: {checkinDate} <br />
           Check-out: {checkoutDate}
         </div>

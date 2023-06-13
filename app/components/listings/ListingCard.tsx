@@ -73,7 +73,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      className="col-span-1 cursor-pointer group shadow-md p-3 rounded-md bg-white"
+      className=" max-h-fit col-span-1 cursor-pointer group shadow-md p-3 rounded-md bg-white"
     >
       <div className="flex flex-col gap-2 w-full">
         <div
@@ -90,8 +90,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
             fill
             className="
               object-cover 
-              h-full 
-              w-full 
               group-hover:scale-110 
               transition
             "

@@ -28,8 +28,8 @@ const Home = async ({ searchParams }: HomeProps) => {
   }
   return (
     <ClientOnly>
-      <ListingFilterBar />
       <Container>
+        <ListingFilterBar />
         <div
           className="
             pt-10

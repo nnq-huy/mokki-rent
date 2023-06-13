@@ -4,15 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import qs from 'query-string';
 
-
 import { LucideSettings2 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/select"
 import {
   Popover,
   PopoverContent,
@@ -23,12 +15,40 @@ import { Button } from "../ui/button";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { Label } from "../ui/Label";
+import { BiSort } from "react-icons/bi";
+import { sortOptions } from "@/app/constants";
+import { SortOption } from "@/app/types";
 
 const ListingFilterBar = () => {
   const params = useSearchParams();
   const [startPrice, setStartPrice] = useState(0);
   const [stopPrice, setStopPrice] = useState(999);
+  const [sortOption, setSortOption] = useState<SortOption>(
+    {
+      value: 'date_new_to_old',
+      label: 'Date added. newest first'
+    }
+  );
   const router = useRouter();
+
+  const handleSortOptionChange = useCallback((option:SortOption) => {
+    setSortOption(option);
+    let currentQuery = {};
+    if (params) {
+      currentQuery = qs.parse(params.toString())
+    }
+
+    const updatedQuery: any = {
+      ...currentQuery,
+      sort: option.value,
+    }
+    const url = qs.stringifyUrl({
+      url: '/',
+      query: updatedQuery
+    }, { skipNull: true });
+
+    router.push(url);
+  }, [params, router]);
 
   const handlePriceChange = useCallback(() => {
     let currentQuery = {};
@@ -100,12 +120,13 @@ const ListingFilterBar = () => {
                 borderColor: '#ffffff00',
               }
             }
-
             allowCross={false}
             value={[startPrice, stopPrice]}
             onChange={(value) => {
-              setStartPrice(value[0]);
-              setStopPrice(value[1]);
+              if (Array.isArray(value)) {
+                setStartPrice(value[0]);
+                setStopPrice(value[1]);
+              } else return;
             }}
             marks={{ 0: '0€', 100: '100€', 500: '500€', 999: '999€' }}
             startPoint={0}
@@ -123,34 +144,56 @@ const ListingFilterBar = () => {
             <Label htmlFor="maxPrice">Max price</Label>
           </div>
 
-
-          <Button
-            onClick={handlePriceChange}
-            className="bg-mokki-green hover:bg-mokki-green hover:opacity-70"
-          >Apply
-          </Button>
+          <div className="flex flex-row gap-4 justify-between">
+            <Button
+              variant="outline"
+              onClick={() => { setStartPrice(0); setStopPrice(999) }}
+            >Reset
+            </Button>
+            <Button
+              onClick={handlePriceChange}
+              className="bg-mokki-green hover:bg-mokki-green hover:opacity-70"
+            >Apply
+            </Button>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
   );
 
-  const sortSelect = (<Select>
-    <SelectTrigger className="w-[200px] bg-white shadow">
-      <SelectValue placeholder="Sort by" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="PriceAsc">Price. low to high</SelectItem>
-      <SelectItem value="PriceDesc">Price. high to low</SelectItem>
-      <SelectItem value="DateDesc">Date added. newest first</SelectItem>
-      <SelectItem value="DateAsc">Date added. oldest first</SelectItem>
-      <SelectItem value="RoomsAsc">Rooms. low to high</SelectItem>
-      <SelectItem value="RoomsDesc">Rooms. high to low</SelectItem>
-    </SelectContent>
-  </Select>);
+  const sortButton = (
+    <Popover>
+      <PopoverTrigger>
+        <Button
+          className="bg-white shadow"
+          title="Filter"
+          variant="secondary"
+          size={'sm'}
+          onClick={() => { }}
+        >
+          {'Sort by ' + sortOption.label} {<BiSort className=" text-mokki-green h-4 w-6" />}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="pr-8">
+        Sort by
+        <ul className="text-neutral-500 pl-4">
+          {sortOptions.map((option) => (
+            <li
+              key={option.value}
+              className="hover:text-mokki-green hover:font-semibold cursor-pointer py-1"
+              onClick={() => { handleSortOptionChange(option) }}
+            >
+              {option.label}
+            </li>
+          ))}
+        </ul>
+      </PopoverContent>
+    </Popover>
+  );
 
   return (
     <div
-      className="pt-28 flex-row flex h-12 items-center justify-between gap-8"
+      className="w-full pt-28 flex-row flex h-12 items-center justify-between gap-8"
     >
       <div className="w-[240px] px-4">
         {filterButton}
@@ -159,7 +202,7 @@ const ListingFilterBar = () => {
         <Input placeholder="Search" className="bg-white shadow" />
       </div>
       <div className="pr-4">
-        {sortSelect}
+        {sortButton}
       </div>
     </div>
   );

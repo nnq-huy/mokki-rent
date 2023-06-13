@@ -16,7 +16,6 @@ import useRentModal from '@/app/hooks/useRentModal';
 import Modal from "./Modal";
 import CategoryInput from '../inputs/CategoryInput';
 import ProvinceSelect from "../inputs/ProvinceSelect";
-import { categories } from '../navbar/Categories';
 import Input from '../inputs/Input';
 import Heading from '../Heading';
 import Counter from '../inputs/Counter';
@@ -24,6 +23,7 @@ import ImageUpload from '../inputs/ImageUpload';
 import SaunaToggle from '../inputs/SaunaToggle';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { MdBathroom, MdBedroomParent, MdWater } from 'react-icons/md';
+import { categories } from '@/app/constants';
 
 enum STEPS {
   CATEGORY = 0,

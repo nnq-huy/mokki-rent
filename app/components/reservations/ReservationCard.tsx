@@ -82,7 +82,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
 
   return (
     <div
-      className="col-span-1"
+      className="col-span-1 bg-white"
     >
       <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
         <div
@@ -112,7 +112,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
         <div className="font-semibold text-lg">
           {location?.label}
         </div>
-        <div className="font-light text-neutral-500">
+        <div className="font-light text-neutral-500 text-sm">
           Check-in: {checkinDate} <br />
           Check-out: {checkoutDate}
         </div>

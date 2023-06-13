@@ -12,6 +12,7 @@ export interface IListingsParams {
   needSauna?:boolean;
   startPrice?:number;
   stopPrice?:number;
+  sort?:string;
 }
 
 export default async function getListings(
@@ -29,9 +30,36 @@ export default async function getListings(
       category,
       needSauna,
       startPrice,
-      stopPrice
+      stopPrice,
+      sort
     } = params;
 
+    let sortOption :any =  {};
+
+    if (sort) {
+      switch (sort){
+        case 'price_high_to_low' :
+          sortOption.price =  "desc";
+          break;
+        case 'price_low_to_high' :
+          sortOption.price = "asc";
+          break;
+        case 'date_new_to_old' :
+          sortOption.createdAt = "asc";
+          break;
+        case 'date_old_to_new' :
+          sortOption.createdAt = "desc";
+          break;
+        case 'room_high_to_low' :
+          sortOption.roomCount = "desc";
+          break;
+        case 'room_low_to_high' :
+          sortOption.roomCount = "asc";
+          break;
+        default:
+          sortOption.createdAt = "asc";
+      }
+    }
     let query: any = {};
 
     if (userId) {
@@ -94,9 +122,7 @@ export default async function getListings(
     }
     const listings = await prisma.listing.findMany({
       where: query,
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: sortOption
     });
 
     return listings;

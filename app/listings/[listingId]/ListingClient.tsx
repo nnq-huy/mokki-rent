@@ -140,6 +140,10 @@ const ListingClient: React.FC<PropertyClientProps> = ({
         className="
           max-w-screen-lg 
           mx-auto
+          xl:px-8
+          md:px-4 
+          sm:px-2 
+          px-2 
         "
       >
         <div className="flex flex-col gap-6">
