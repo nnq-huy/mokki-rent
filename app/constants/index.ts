@@ -102,13 +102,17 @@ export const sortOptions: SortOption[] = [
   ];
 
   export const eventColors = [
-      '#228B22',
-      '#1E90FF',
-      '#CD5C5C',
-      '#778899',
-      '#DB7093',
-      '#A0522D',
-      '#FFA500',
-      '#000000',
-      '#DC143C',
+      '#228B22',//ForestGreen
+      '#1E90FF',//DodgerBlue
+      '#CD5C5C',//IndianRed
+      '#778899',//LightSlateGray
+      '#DB7093',//PaleVioletRed
+      '#A0522D',//Sienna
+      '#FFA500',//Orange
+      '#000000',//Black
+      '#DC143C',//Crimson
+      '#FAEBD7',//AntiqueWhite
+      '#00008B',//DarkBlue
+      '#66CDAA',//MediumAquaMarine
+      '#8FBC8F',//DarkSeaGreen
     ]

@@ -29,7 +29,8 @@ export const UserContext = createContext<User>({
   hashedPassword: null,
   createdAt: new Date(),
   updatedAt: new Date(),
-  favoriteIds: []
+  favoriteIds: [],
+  role: 'USER'
 })
 
 const MessagingClient: React.FC<MessagesClientProps> = ({

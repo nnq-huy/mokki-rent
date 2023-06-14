@@ -74,8 +74,8 @@ const ListingReservation: React.FC<
         "
         >
           <div className="text-medium text-gray-500">
-            Checkin: {dateRange.startDate?.toLocaleDateString('fi')} <br />
-            Checkout: {dateRange.endDate?.toLocaleDateString('fi')} <br />
+            Checkin: {dateRange.startDate?.toLocaleString('fi')} <br />
+            Checkout: {dateRange.endDate?.toLocaleString('fi')} <br />
           </div>
           <div className="px-2 underline font-bold">
 

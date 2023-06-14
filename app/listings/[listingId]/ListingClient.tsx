@@ -5,14 +5,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Range } from "react-date-range";
 import { useRouter } from "next/navigation";
-import { differenceInDays, eachDayOfInterval } from 'date-fns';
+import { differenceInDays, differenceInHours, eachDayOfInterval } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import Container from "@/app/components/Container";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
-import { Reservation, Listing, User, ReservationStatus } from "@prisma/client";
+import { Reservation, Listing, User } from "@prisma/client";
 import { categories } from "@/app/constants";
 
 const initialDateRange = {
@@ -41,30 +41,27 @@ const ListingClient: React.FC<PropertyClientProps> = ({
     //reserved dates are disabled on the calendar
     // start date of a reservation is still available as checkout date
     // end date of of a reservation is still available as a check in date
-    //todo: solve 1 night reservation case 
+    // host can cancel overlapping reservations
     let dates: Date[] = [];
 
     reservations.forEach((reservation: any) => {
       const startDate = new Date(reservation.startDate);// check in date
-      const endDate = new Date(reservation.endDate);// check out date
-      if (differenceInDays(endDate, startDate) > 1) {
+      const endDate = new Date(reservation.endDate);//check out date
+      const duration = Math.ceil(differenceInHours(endDate, startDate) / 24);
+      if (duration >= 2) {
         startDate.setDate(startDate.getDate() + 1);
         endDate.setDate(endDate.getDate() - 1);
+        endDate.setHours(16);
         const range = eachDayOfInterval({
           start: startDate,
           end: endDate,
-        });
+        })
+
         dates = [...dates, ...range];
-      } else if (differenceInDays(endDate, startDate) == 1) {
-        startDate.setDate(startDate.getDate() + 1);
-        const range = eachDayOfInterval({
-          start: startDate,
-          end: endDate,
-        });
-        dates = [...dates, ...range];
-      } else {
-        dates = [...dates]
-      }
+      } 
+
+
+
 
     });
 
@@ -122,10 +119,10 @@ const ListingClient: React.FC<PropertyClientProps> = ({
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
-      const dayCount = differenceInDays(
+      const dayCount = Math.ceil(differenceInHours(
         dateRange.endDate,
         dateRange.startDate
-      );
+      ) / 24);
       //price calculation
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
@@ -186,15 +183,26 @@ const ListingClient: React.FC<PropertyClientProps> = ({
               <ListingReservation
                 price={listing.price}
                 totalPrice={totalPrice}
-                onChangeDate={(value) => setDateRange(value)}
+                //set checkin time to 16 and check out time to 12
+                onChangeDate={(value) => {
+                  const start = value.startDate;
+                  start?.setHours(16);
+                  const end = value.endDate;
+                  end?.setHours(12);
+                  setDateRange({
+                    startDate: start,
+                    endDate: end,
+                    key: 'selection'
+                  })
+                }}
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading || isOwnListing}
                 disabledDates={disabledDates}
-                dayCount={differenceInDays(
+                dayCount={Math.ceil(differenceInHours(
                   dateRange.endDate!,
                   dateRange.startDate!
-                )}
+                ) / 24)}
               />
             </div>
           </div>

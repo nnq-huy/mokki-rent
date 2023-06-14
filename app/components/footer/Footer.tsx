@@ -17,10 +17,10 @@ const Footer: React.FC<FooterProps> = ({
             w-full
             flex
             flex-row
-            items-center
             justify-center
             gap-4
-            md:gap-0
+            md:gap-2
+            items-center
             grayscale
           "
       >

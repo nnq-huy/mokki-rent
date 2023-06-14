@@ -45,10 +45,10 @@ export default async function getListings(
           sortOption.price = "asc";
           break;
         case 'date_new_to_old' :
-          sortOption.createdAt = "asc";
+          sortOption.createdAt = "desc";
           break;
         case 'date_old_to_new' :
-          sortOption.createdAt = "desc";
+          sortOption.createdAt = "asc";
           break;
         case 'room_high_to_low' :
           sortOption.roomCount = "desc";

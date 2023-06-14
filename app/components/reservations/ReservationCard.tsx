@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, differenceInHours, format } from 'date-fns';
 
 import useProvinces from "@/app/hooks/useProvinces";
 
@@ -79,7 +79,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const end = new Date(reservation.endDate);
   const checkinDate = `${format(start, 'PP')}`;
   const checkoutDate = `${format(end, 'PP')}`;
-  const bookedDays = differenceInDays(end, start);
+  const bookedNights = Math.ceil(differenceInHours(end, start)/24);
 
   return (
     <div
@@ -122,7 +122,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
         </div>
         <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">
-            Total: {reservation.totalPrice}€, {bookedDays} {bookedDays > 1 ? 'nights' : 'night'}
+            Total: {reservation.totalPrice}€, {bookedNights} {bookedNights > 1 ? 'nights' : 'night'}
           </div>
         </div>
         <div className="flex items-center">

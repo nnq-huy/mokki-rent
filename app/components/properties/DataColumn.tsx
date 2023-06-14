@@ -16,23 +16,6 @@ import {
 
 export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }>[] = [
   {
-    id: 'place',
-    accessorKey: "listing.title",
-    header: ({ column }) => {
-      return (
-        <div className="text-gray-700 ml-[-12px]">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Place
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
-  },
-  {
     id: 'guest',
     accessorKey: "user.name",
     header: () => {
@@ -47,7 +30,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
     accessorKey: "startDate",
     header: ({ column }) => {
       return (
-        <div className="text-gray-700 text-left">
+        <div className="text-gray-700 text-center">
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -60,7 +43,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
     },
     cell: ({ row }) => {
       const checkinDate = new Date(row.getValue("startDate"))
-      const formatted = checkinDate.toLocaleString('fi')
+      const formatted = checkinDate.toLocaleDateString('fi')
       return (
         <div className="font-medium text-center text-gray-500">
           {formatted}
@@ -72,22 +55,24 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
     accessorKey: "endDate",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <div className="text-gray-700 flex">
+        <div className="text-gray-700 text-left flex ml-[-14px]">
+
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
             Checkout
             <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        </Button>
+          </Button>
+        </div>
+
       )
     },
     cell: ({ row }) => {
       const checkoutDate = new Date(row.getValue("endDate"))
-      const formatted = checkoutDate.toLocaleString('fi')
+      const formatted = checkoutDate.toLocaleDateString('fi')
       return (
-        <div className="text-center font-medium text-gray-500">
+        <div className="text-left font-medium text-gray-500">
           {formatted}
         </div>
       )
@@ -164,8 +149,8 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              Message guest
-            </DropdownMenuItem>
+                Message guest
+              </DropdownMenuItem>
             {reservation.status === 'confirmed' &&
               <DropdownMenuItem>
                 Mark as Done

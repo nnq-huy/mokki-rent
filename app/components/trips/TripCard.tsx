@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, differenceInHours, format } from 'date-fns';
 
 import useProvinces from "@/app/hooks/useProvinces";
 
@@ -15,7 +15,7 @@ import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
-import { MdOutlineMeetingRoom, MdReviews } from "react-icons/md";
+import { MdOutlineMeetingRoom, MdOutlinePlace, MdReviews } from "react-icons/md";
 import { BsPersonFill, BsStar } from "react-icons/bs";
 
 interface TripCardProps {
@@ -68,7 +68,7 @@ const TripCard: React.FC<TripCardProps> = ({
   const end = new Date(reservation.endDate);
   const checkinDate = `${format(start, 'PP')}`;
   const checkoutDate = `${format(end, 'PP')}`;
-  const bookedDays = differenceInDays(end, start);
+  const bookedNights = Math.ceil(differenceInHours(end, start)/24);
 
   return (
     <div
@@ -117,7 +117,7 @@ const TripCard: React.FC<TripCardProps> = ({
           </div>
         </div>
         <div className="flex flex-row items-center  justify-between gap-1 text-neutral-500">
-          <div>{location?.label} </div>
+          <div className="flex items-center gap-1"><MdOutlinePlace />{location?.label} </div>
           <div className="flex items-center gap-1">
             {<MdOutlineMeetingRoom />}
             {reservation.listing!.roomCount}
@@ -130,7 +130,7 @@ const TripCard: React.FC<TripCardProps> = ({
           Check-out: {checkoutDate}
         </div>
         <div className="font-semibold">
-          Total: {reservation.totalPrice}€, {bookedDays} {bookedDays > 1 ? 'nights' : 'night'}
+          Total: {reservation.totalPrice}€, {bookedNights} {bookedNights > 1 ? 'nights' : 'night'}
         </div>
         <div className="flex min-w-full items-center">
           <p className="truncate pr-1 text-xs text-neutral-500">

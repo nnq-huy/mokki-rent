@@ -99,7 +99,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
                     <Avatar src={isGuest ? reservation.hostPhoto : reservation.user!.image} />
                     <div className=" hidden md:block md:w-2/3 text-left rtl:text-right">
                       <h1 className="truncate text-sm font-semibold text-gray-700 capitalize dark:text-white">
-                        {reservation.listing!.locationValue}<br />
+                        {reservation.listing!.title}<br />
                         {reservation.startDate.toLocaleDateString('fi')} - {reservation.endDate.toLocaleDateString('fi')}
                       </h1>
                       {isGuest
