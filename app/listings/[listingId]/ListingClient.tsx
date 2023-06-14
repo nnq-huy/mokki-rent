@@ -9,11 +9,11 @@ import { differenceInDays, eachDayOfInterval } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import Container from "@/app/components/Container";
-import { categories } from "@/app/components/navbar/Categories";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Reservation, Listing, User, ReservationStatus } from "@prisma/client";
+import { categories } from "@/app/constants";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -41,6 +41,7 @@ const ListingClient: React.FC<PropertyClientProps> = ({
     //reserved dates are disabled on the calendar
     // start date of a reservation is still available as checkout date
     // end date of of a reservation is still available as a check in date
+    //todo: solve 1 night reservation case 
     let dates: Date[] = [];
 
     reservations.forEach((reservation: any) => {

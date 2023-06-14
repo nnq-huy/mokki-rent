@@ -53,8 +53,8 @@ const TripsClient: React.FC<TripsClientProps> = ({
           title="Trips"
           subtitle="Where you've been and where you're going"
         />
-         <div
-        className="
+        <div
+          className="
           grid 
           grid-cols-1 
           sm:grid-cols-2 
@@ -64,35 +64,35 @@ const TripsClient: React.FC<TripsClientProps> = ({
           2xl:grid-cols-5
           gap-4
         "
-      >
-        <>
-          <ConfirmDialog
-            isOpen={openDialog}
-            title="Are you sure you want to cancel this reservation?"
-            subtitle="This action cannot be undone"
-            onConfirm={() => onCancel(deletingId)}
-            onDismiss={() => {
-              setOpenDialog(false);
-              setDeletingId('');
-            }}
-          />
-        </>
-        {reservations.map((reservation: any) => (
-          <TripCard
-            key={reservation.id}
-            reservation={reservation}
-            actionId={reservation.id}
-            onAction={confirmDelete}
-            disabled={deletingId === reservation.id}
-            actionLabel="Cancel reservation"
-            currentUser={currentUser}
-            showMessage
-          />
-        ))}
-      </div>
+        >
+          <>
+            <ConfirmDialog
+              isOpen={openDialog}
+              title="Are you sure you want to cancel this reservation?"
+              subtitle="This action cannot be undone"
+              onConfirm={() => onCancel(deletingId)}
+              onDismiss={() => {
+                setOpenDialog(false);
+                setDeletingId('');
+              }}
+            />
+          </>
+          {reservations.map((reservation: any) => (
+            <TripCard
+              key={reservation.id}
+              reservation={reservation}
+              actionId={reservation.id}
+              onAction={confirmDelete}
+              disabled={deletingId === reservation.id}
+              actionLabel="Cancel reservation"
+              currentUser={currentUser}
+              showMessage
+            />
+          ))}
+        </div>
       </div>
 
-     
+
     </Container>
   );
 }

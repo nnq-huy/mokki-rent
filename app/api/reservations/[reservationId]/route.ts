@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/utils/prismadb";
-import { ReservationStatus } from "@prisma/client";
 
 interface IParams {
   reservationId?: string;

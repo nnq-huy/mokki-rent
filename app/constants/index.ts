@@ -100,3 +100,15 @@ export const sortOptions: SortOption[] = [
       label: 'Room count. lowest first'
     },
   ];
+
+  export const eventColors = [
+      '#228B22',
+      '#1E90FF',
+      '#CD5C5C',
+      '#778899',
+      '#DB7093',
+      '#A0522D',
+      '#FFA500',
+      '#000000',
+      '#DC143C',
+    ]

@@ -15,7 +15,7 @@ import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
-import { MdOutlineMeetingRoom } from "react-icons/md";
+import { MdOutlineMeetingRoom, MdReviews } from "react-icons/md";
 import { BsPersonFill, BsStar } from "react-icons/bs";
 
 interface TripCardProps {
@@ -109,14 +109,21 @@ const TripCard: React.FC<TripCardProps> = ({
             />
           </div>
         </div>
-       <div className="font-semibold text-lg flex flex-row justify-between">
-          <div>{location?.label} </div>
+        <div className="font-semibold text-lg flex flex-row justify-between">
+          <div>{reservation.listing?.title}</div>
           <div className="flex flex-row gap-1 items-center text-sm text-neutral-500">
-            {<BsStar />}{reservation.listing!.rating.toFixed(1)}
+            {<BsStar />}
+            {reservation.listing!.rating > 1 ? reservation.listing!.rating.toFixed(1) : ''}
           </div>
         </div>
-        <div className="flex flex-row items-center gap-1 text-neutral-500">
-          {<MdOutlineMeetingRoom />} {reservation.listing!.roomCount} {<BsPersonFill />} {reservation.listing!.guestCount}
+        <div className="flex flex-row items-center  justify-between gap-1 text-neutral-500">
+          <div>{location?.label} </div>
+          <div className="flex items-center gap-1">
+            {<MdOutlineMeetingRoom />}
+            {reservation.listing!.roomCount}
+            {<BsPersonFill />}
+            {reservation.listing!.guestCount}
+          </div>
         </div>
         <div className="font-light text-neutral-500 text-sm">
           Check-in: {checkinDate} <br />
@@ -126,7 +133,11 @@ const TripCard: React.FC<TripCardProps> = ({
           Total: {reservation.totalPrice}€, {bookedDays} {bookedDays > 1 ? 'nights' : 'night'}
         </div>
         <div className="flex min-w-full items-center">
-          <p className="truncate pr-1 text-xs text-neutral-500">Hosted by <br />{reservation.hostName}</p>
+          <p className="truncate pr-1 text-xs text-neutral-500">
+            Hosted by
+            <br />
+            {reservation.hostName}
+          </p>
           <Avatar src={reservation.hostPhoto} />
         </div>
         <div className="font-bold">
@@ -139,8 +150,16 @@ const TripCard: React.FC<TripCardProps> = ({
           label="Contact host"
           onClick={handleOpenMessage}
         />}
-
-        {onAction && actionLabel && isCancellable &&(
+        {reservation.status === 'done' &&
+          <Button
+            icon={MdReviews}
+            disabled={disabled}
+            small
+            label="Leave review"
+            onClick={handleOpenMessage}
+          />
+        }
+        {onAction && actionLabel && isCancellable && (
           <Button
             icon={AiOutlineDelete}
             disabled={disabled}

@@ -9,7 +9,7 @@ import getListings, {
 } from "@/app/actions/getListings";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "./components/ClientOnly";
-import ListingFilterBar from "./components/listings/FilterBar";
+import ListingFilterBar from "./components/listings/ListingFilterBar";
 
 interface HomeProps {
   searchParams: IListingsParams

@@ -14,21 +14,16 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Container from "@/app/components/Container";
-import { categories } from "@/app/components/navbar/Categories";
 import { Reservation, Listing, User } from "@prisma/client";
 import Heading from "@/app/components/Heading";
 import Link from "next/link";
 import PropertyTabs from "@/app/components/properties/PropertyTab";
 import PropertyInfo from "@/app/components/properties/PropertyInfo";
+import { categories, eventColors } from "@/app/constants";
+import { Booking } from "@/app/types";
 
 
-type booking = {
-  id: string;
-  title: string;
-  start: string;
-  end: string;
-  color: string;
-}
+
 
 interface PropertyClientProps {
   reservations?: (Reservation & { user: User })[];
@@ -56,27 +51,17 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
   }
   //get bookings from reservations
   const events = useMemo(() => {
-    const eventColor = [
-      '#228B22',
-      '#1E90FF',
-      '#CD5C5C',
-      '#778899',
-      '#DB7093',
-      '#A0522D',
-      '#FFA500',
-      '#000000',
-      '#DC143C',
-    ]
-    let bookings: booking[] = [];
+    
+    let bookings: Booking[] = [];
     reservations.forEach((reservation) => {
       //get random color for each event on the calendar
       const colorSeed = Math.floor(Math.random() * 9);
-      const booking: booking = {
+      const booking: Booking = {
         id: reservation.id,
         title: 'booked by ' + reservation.user!.name ?? '',
         start: dateToISOString(reservation.startDate),
         end: dateToISOString(reservation.endDate),
-        color: eventColor[colorSeed]
+        color: eventColors[colorSeed]
       }
       bookings.push(booking);
     });

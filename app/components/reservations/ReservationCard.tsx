@@ -9,12 +9,13 @@ import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import { AiOutlineDelete, AiOutlineMessage } from "react-icons/ai";
+import { AiFillMessage, AiOutlineDelete } from "react-icons/ai";
 import Avatar from "../Avatar";
-import { BsHouseCheckFill } from "react-icons/bs";
+import { BsCheckCircleFill, BsHouseCheckFill } from "react-icons/bs";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
+import { MdCancel } from "react-icons/md";
 
 interface ReservationCardProps {
 
@@ -84,7 +85,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     <div
       className="col-span-1 bg-white"
     >
-      <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
+      <div className="flex flex-col gap-1 w-full shadow-lg p-4 rounded-xl">
         <div
           onClick={() => router.push(`/properties/${reservation.listing!.id}`)}
           className="
@@ -110,6 +111,9 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           />
         </div>
         <div className="font-semibold text-lg">
+          {reservation.listing?.title}
+        </div>
+        <div className="text-neutral-500">
           {location?.label}
         </div>
         <div className="font-light text-neutral-500 text-sm">
@@ -122,7 +126,10 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           </div>
         </div>
         <div className="flex items-center">
-          <p className="truncate pr-1">Booked by<br /> {guest?.name}</p>
+          <p className="truncate pr-1 text-xs text-neutral-500">
+            Booked by
+            <br />
+            {guest?.name}</p>
           <Avatar src={guest?.image} />
         </div>
         <div className="font-bold">
@@ -135,8 +142,15 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           label="Confirm booking"
           onClick={handleConfirm}
         />}
+        {(reservation?.status === ReservationStatus.confirmed) && <Button
+          icon={BsCheckCircleFill}
+          disabled={disabled}
+          small
+          label="Mark as done"
+          onClick={handleConfirm}
+        />}
         {showMessage && <Button
-          icon={AiOutlineMessage}
+          icon={AiFillMessage}
           disabled={disabled}
           small
           label="Message guest"
@@ -144,16 +158,24 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
         />}
         {onDelete && actionLabel && (
           <Button
-            icon={AiOutlineDelete}
+            icon={MdCancel}
             disabled={disabled}
             small
             label={actionLabel}
             onClick={handleDelete}
           />
         )}
+        {(reservation?.status === ReservationStatus.cancelled) && <Button
+          icon={AiOutlineDelete}
+          disabled={disabled}
+          small
+          label="Delete reservation"
+          onClick={handleDelete}
+        />}
       </div>
     </div>
   );
 }
 
 export default ReservationCard;
+//todo: implement delete & mark as done actions

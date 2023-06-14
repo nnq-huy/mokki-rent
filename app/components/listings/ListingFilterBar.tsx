@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import qs from 'query-string';
 
@@ -31,7 +31,7 @@ const ListingFilterBar = () => {
   );
   const router = useRouter();
 
-  const handleSortOptionChange = useCallback((option:SortOption) => {
+  const handleSortOptionChange = useCallback((option: SortOption) => {
     setSortOption(option);
     let currentQuery = {};
     if (params) {
@@ -81,12 +81,12 @@ const ListingFilterBar = () => {
           size={'sm'}
           onClick={() => { }}
         >
-          {'Filter  '} {<LucideSettings2 className=" text-mokki-green h-4 w-6" />}
+          {'Price'} {<LucideSettings2 className=" text-mokki-green h-4 w-6" />}
         </Button>
       </PopoverTrigger>
       <PopoverContent >
         <div className="gap 4 flex flex-col gap-4">
-          Price
+          Price per night
           <Slider
             trackStyle={[{
               backgroundColor: '#028446',
@@ -171,16 +171,16 @@ const ListingFilterBar = () => {
           size={'sm'}
           onClick={() => { }}
         >
-          {'Sort by ' + sortOption.label} {<BiSort className=" text-mokki-green h-4 w-6" />}
+          {sortOption.label} {<BiSort className=" text-mokki-green h-4 w-6" />}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="pr-8">
+      <PopoverContent className="w-56">
         Sort by
-        <ul className="text-neutral-500 pl-4">
+        <ul className="text-neutral-500 px-2">
           {sortOptions.map((option) => (
             <li
               key={option.value}
-              className="hover:text-mokki-green hover:font-semibold cursor-pointer py-1"
+              className="hover:text-mokki-green hover:font-semibold text-sm font-light cursor-pointer py-1"
               onClick={() => { handleSortOptionChange(option) }}
             >
               {option.label}
@@ -195,10 +195,10 @@ const ListingFilterBar = () => {
     <div
       className="w-full pt-28 flex-row flex h-12 items-center justify-between gap-8"
     >
-      <div className="w-[240px] px-4">
+      <div className="w-[120px] px-4">
         {filterButton}
       </div>
-      <div className="w-[240px]">
+      <div className="w-[200px]">
         <Input placeholder="Search" className="bg-white shadow" />
       </div>
       <div className="pr-4">

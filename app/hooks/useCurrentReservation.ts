@@ -1,4 +1,4 @@
-import { Listing, Reservation, User } from '@prisma/client';
+import { Listing, Reservation, ReservationStatus, User } from '@prisma/client';
 import {create} from 'zustand';
 
 interface CurrentReservationStore {
@@ -26,8 +26,9 @@ const useCurrentReservation = create<CurrentReservationStore>((set)=>({
       startDate:new Date(),
       endDate: new Date(),
       totalPrice: 0,
-      confirmed: false,
+      status: ReservationStatus.unconfirmed,
       createdAt: new Date(),
+      rating:0
     } 
     
   ) ,
@@ -42,8 +43,9 @@ const useCurrentReservation = create<CurrentReservationStore>((set)=>({
       startDate:new Date(),
       endDate: new Date(),
       totalPrice: 0,
-      confirmed: false,
+      status: ReservationStatus.unconfirmed,
       createdAt: new Date(),
+      rating:0
     } })
 }));
 

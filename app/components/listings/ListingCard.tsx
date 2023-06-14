@@ -13,6 +13,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { Edit, Star, StarIcon, } from "lucide-react";
 import { BsPersonFill, BsStar } from "react-icons/bs";
 import { MdOutlineMeetingRoom } from "react-icons/md";
+import HeartButton from "../HeartButton";
 
 interface ListingCardProps {
   data: Listing;
@@ -32,7 +33,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
   disabled,
   actionLabel,
   actionId = '',
-  isHost
+  isHost,
+  currentUser
 }) => {
   const router = useRouter();
   const { getByValue } = useProvinces();
@@ -96,16 +98,25 @@ const ListingCard: React.FC<ListingCardProps> = ({
             src={data.imageSrc}
             alt="Listing"
           />
-
+          <div className="
+            absolute
+            top-3
+            right-3
+          ">
+            <HeartButton
+              listingId={data.id}
+              currentUser={currentUser!}
+            />
+          </div>
         </div>
         <div className="font-semibold text-lg flex flex-row justify-between">
-          <div>{location?.label} </div>
+          <div>{data.title}</div>
           <div className="flex flex-row gap-1 items-center text-sm text-neutral-500">
-            {<BsStar />}{data.rating>1 ? data.rating.toFixed(1) : 'no rating'}
+            {<BsStar />}{data.rating > 1 ? data.rating.toFixed(1) : ''}
           </div>
         </div>
         <div className="font-light text-neutral-500">
-          {reservationDate || data.category}
+          {location?.value} {reservationDate || data.category}
         </div>
         <div className="flex flex-row items-center gap-1 text-neutral-500">
           {<MdOutlineMeetingRoom />} {data.roomCount} {<BsPersonFill />} {data.guestCount}
@@ -139,3 +150,4 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }
 
 export default ListingCard;
+//todo: handle review

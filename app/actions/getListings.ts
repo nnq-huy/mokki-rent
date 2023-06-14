@@ -106,6 +106,7 @@ export default async function getListings(
       query.NOT = {
         reservations: {
           some: {
+            status: "confirmed",
             OR: [
               {
                 endDate: { gte: startDate },
