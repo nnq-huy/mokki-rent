@@ -15,7 +15,7 @@ import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
-import { MdOutlineMeetingRoom, MdOutlinePlace, MdReviews } from "react-icons/md";
+import { MdCancel, MdOutlineMeetingRoom, MdOutlinePlace, MdReviews } from "react-icons/md";
 import { BsPersonFill, BsStar } from "react-icons/bs";
 
 interface TripCardProps {
@@ -161,7 +161,7 @@ const TripCard: React.FC<TripCardProps> = ({
         }
         {onAction && actionLabel && isCancellable && (
           <Button
-            icon={AiOutlineDelete}
+            icon={MdCancel}
             disabled={disabled}
             small
             label={actionLabel}

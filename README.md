@@ -2,21 +2,24 @@
 
 ## Introduction
 
-A simple fullstack site for summer cottage listing and renting built with Next.JS with server components, React, Tailwind CSS,Image upload on Cloudinary,  Prisma with PostgreSQL hosted on Neon.tech
+A simple fullstack site for summer cottage listing and renting built with Next.JS with server components, React, Tailwind CSS,Image upload on Cloudinary,  Prisma with PostgreSQL hosted on Neon.tech/Supabase
 
 Main features:
 
+- full stack Next.js with Server Side rendering and App Router
 - authentication with next-auth
 - user can login/signup using an email/password or a Google & Github account.
 - host can create listing with location, category, a picture and amenities info
 - host can delete cottage listing
 - user can add cottage to favorites list
-- listing filter by location, category, price, room count, guest count, sauna availablility...
+- advanced search by location, amenities, number of guest and by date
+- search url can be shared to show filtered listings to other users
+- listing filter and sort by location, category, price, room count, guest count, sauna availablility
 - simple price calculation
-- user can reserve a cottage for a time, it will be made unavailable to other users
+- user can reserve a cottage for a time, it will be made unavailable to other users once confirmed by host
 - user and host can cancel reservations
 - guest and host can send messages, confirm and cancel reservations in the messages center
-- search url can be shared to show filtered listings to other users
+- host can mangage their bookings and properties in dedicated pages with calendar and list view
 - responsive design
 
 ## To dos:
@@ -27,7 +30,8 @@ Main features:
 - more images per listing
 - advanced price calculation
 - map view of all listings
-- calendar view to manage listing's reservations
+- ~~calendar view to manage listing's reservations~~
+- user review
 - multilangues
 - cookies consent
 - dark theme

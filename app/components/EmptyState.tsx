@@ -36,7 +36,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className="
-        h-[75vh]
+        h-[80vh]
         flex
         flex-col
         gap-2

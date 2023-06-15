@@ -22,11 +22,28 @@ const ReservationPanel: React.FC<ReservationPanelProps> = ({ reservation }) => {
   const router = useRouter();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
   const [actionId, setActionId] = useState('');
 
+  const onDelete = async () => {
+    await axios.delete(`/api/reservations/${actionId}`)
+      .then(() => {
+        toast.success('Reservation deleted');
+        setOpenDeleteDialog(false);
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error('Something went wrong.')
+      }).finally(() => {
+        setActionId('');
+      })
+  };
+
+
   const onCancel = async () => {
-    const data ={
-      status : ReservationStatus.cancelled
+    const data = {
+      status: ReservationStatus.cancelled
     }
     await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
@@ -42,8 +59,8 @@ const ReservationPanel: React.FC<ReservationPanelProps> = ({ reservation }) => {
   };
 
   const onConfirm = async () => {
-    const data ={
-      status : ReservationStatus.confirmed
+    const data = {
+      status: ReservationStatus.confirmed
     }
     await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
@@ -57,6 +74,21 @@ const ReservationPanel: React.FC<ReservationPanelProps> = ({ reservation }) => {
         setActionId('');
       })
   };
+
+
+  const deleteReservationDialog = (
+    <ConfirmDialog
+      isOpen={openDeleteDialog}
+      title="Are you sure you want to permanently delete this reservation?"
+      subtitle="This cannot be undone."
+      onConfirm={onDelete}
+      onDismiss={() => {
+        setOpenDeleteDialog(false);
+        setActionId('');
+      }}
+      actionLabel="Delete"
+    />
+  );
 
   const cancelReservationDialog = (
     <ConfirmDialog
@@ -91,6 +123,7 @@ const ReservationPanel: React.FC<ReservationPanelProps> = ({ reservation }) => {
       {reservation.listing
         && <div>
           <>
+            {deleteReservationDialog}
             {confirmReservationDialog}
             {cancelReservationDialog}
           </>
@@ -98,16 +131,17 @@ const ReservationPanel: React.FC<ReservationPanelProps> = ({ reservation }) => {
           {isGuest
             ? <TripCard
               disabled={actionId === reservation.id}
-              onAction={ isCancellable ? () => { setActionId(reservation.id); setOpenCancelDialog(true) } : undefined}
+              onAction={isCancellable ? () => { setActionId(reservation.id); setOpenCancelDialog(true) } : undefined}
               actionLabel={isCancellable ? "Cancel reservation" : ""}
               reservation={reservation} />
             : <ReservationCard
               disabled={actionId === reservation.id}
               key={reservation.id}
               reservation={reservation}
-              onDelete={isCancellable?() => { setActionId(reservation.id); setOpenCancelDialog(true) }:undefined}
+              onDelete={() => { setActionId(reservation.id); setOpenDeleteDialog(true) }}
+              onCancel={isCancellable ? () => { setActionId(reservation.id); setOpenCancelDialog(true) } : undefined}
               onConfirm={() => { setActionId(reservation.id); setOpenConfirmDialog(true) }}
-              actionLabel={isCancellable?"Cancel reservation" :""}
+              actionLabel={isCancellable ? "Cancel reservation" : ""}
             />}
         </div>}
     </div>

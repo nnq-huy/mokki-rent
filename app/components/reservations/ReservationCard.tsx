@@ -21,7 +21,9 @@ interface ReservationCardProps {
 
   reservation: Reservation & { user?: User, listing?: Listing };
   onDelete?: (id: string) => void;
+  onCancel?: (id: string) => void;
   onConfirm?: (id: string) => void;
+  onMarkDone?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
@@ -31,8 +33,10 @@ interface ReservationCardProps {
 const ReservationCard: React.FC<ReservationCardProps> = ({
   showMessage,
   reservation,
+  onCancel,
   onDelete,
   onConfirm,
+  onMarkDone,
   disabled,
   actionLabel,
   actionId = '',
@@ -43,7 +47,8 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const IsGuest = useIsGuest();
   const messageModal = useMessageModal();
   const { setCurrentReservation } = useCurrentReservation();
-
+  const today = new Date();
+  const canMarkDone = reservation.endDate < today;
 
   const location = getByValue(reservation.listing!.locationValue);
 
@@ -53,6 +58,28 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     setCurrentReservation(reservation);
     messageModal.onOpen();
   }
+  const handleMarkDone = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+
+      if (disabled) {
+        return;
+      }
+
+      onMarkDone?.(actionId)
+    }, [disabled, onMarkDone, actionId]);
+
+  const handleCancel = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+
+      if (disabled) {
+        return;
+      }
+
+      onCancel?.(actionId)
+    }, [disabled, onCancel, actionId]);
+
   const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
@@ -79,7 +106,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const end = new Date(reservation.endDate);
   const checkinDate = `${format(start, 'PP')}`;
   const checkoutDate = `${format(end, 'PP')}`;
-  const bookedNights = Math.ceil(differenceInHours(end, start)/24);
+  const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
 
   return (
     <div
@@ -142,12 +169,12 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           label="Confirm booking"
           onClick={handleConfirm}
         />}
-        {(reservation?.status === ReservationStatus.confirmed) && <Button
+        {(reservation?.status === ReservationStatus.confirmed && canMarkDone) && <Button
           icon={BsCheckCircleFill}
           disabled={disabled}
           small
           label="Mark as done"
-          onClick={handleConfirm}
+          onClick={handleMarkDone}
         />}
         {showMessage && <Button
           icon={AiFillMessage}
@@ -156,13 +183,13 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           label="Message guest"
           onClick={handleOpenMessage}
         />}
-        {onDelete && actionLabel && (
+        {onCancel && actionLabel && (
           <Button
             icon={MdCancel}
             disabled={disabled}
             small
             label={actionLabel}
-            onClick={handleDelete}
+            onClick={handleCancel}
           />
         )}
         {(reservation?.status === ReservationStatus.cancelled) && <Button

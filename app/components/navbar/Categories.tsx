@@ -16,9 +16,10 @@ const Categories = () => {
   }
 
   return (
-    <Container>
       <div
         className="
+          max-w-[2520px]
+          mx-auto
           pt-2
           flex-row 
           flex
@@ -39,7 +40,6 @@ const Categories = () => {
           />
         ))}
       </div>
-    </Container>
   );
 }
 

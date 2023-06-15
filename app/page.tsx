@@ -29,9 +29,10 @@ const Home = async ({ searchParams }: HomeProps) => {
   return (
     <ClientOnly>
       <Container>
-        <ListingFilterBar />
-        <div
-          className="
+        <div className="min-h-[80vh]">
+          <ListingFilterBar />
+          <div
+            className="
             pt-10
             grid 
             grid-cols-1 
@@ -46,14 +47,15 @@ const Home = async ({ searchParams }: HomeProps) => {
             sm:px-2
             px-2
         ">
-          {listings.map((listing: any) => (
-            <ListingCard
-              currentUser={currentUser}
-              key={listing.id}
-              data={listing}
-              isHost={false}
-            />
-          ))}
+            {listings.map((listing: any) => (
+              <ListingCard
+                currentUser={currentUser}
+                key={listing.id}
+                data={listing}
+                isHost={false}
+              />
+            ))}
+          </div>
         </div>
       </Container>
     </ClientOnly>

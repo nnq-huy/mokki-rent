@@ -11,6 +11,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
         bg-gray-50
         max-w-[2520px]
         mx-auto
+        min-h-[80vh]
       "
     >
       {children}

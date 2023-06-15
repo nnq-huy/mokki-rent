@@ -42,7 +42,7 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
   const router = useRouter();
 
   const reservationsNoCancelled = reservations.filter((rerservation) => {
-     return rerservation.status != 'cancelled'; 
+    return rerservation.status != 'cancelled';
   });
 
   function dateToISOString(date: Date) {
@@ -124,11 +124,11 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
         initialView='dayGridMonth'
         eventColor='#028446'
       />
-      <ul>
+      {/*      <ul>
         {events.map((res)=>
           <li key={res.id}>Start {res.start.toLocaleString()} end{res.end.toLocaleString()}</li>
         )}
-      </ul>
+      </ul> */}
     </div>
   );
   const bookingsContent = (
@@ -160,3 +160,4 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
 }
 
 export default PropertyClient;
+//todo: setting page, actions on booking list

@@ -28,9 +28,44 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   const router = useRouter();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openMarkDoneDialog, setOpenMarkDoneDialog] = useState(false);
+
+
   const [actionId, setActionId] = useState('');
   const [showCancelled, setShowCancelled] = useState(false);
   const [listView, setListView] = useState(true);
+
+  const onMarkDone = async () => {
+    const data = {
+      status: ReservationStatus.done
+    }
+    await axios.put(`/api/reservations/${actionId}`, data)
+      .then(() => {
+        toast.success('Reservation marked as done');
+        setOpenMarkDoneDialog(false);
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error('Something went wrong.')
+      }).finally(() => {
+        setActionId('');
+      })
+  }
+
+  const onDelete = async () => {
+    await axios.delete(`/api/reservations/${actionId}`)
+      .then(() => {
+        toast.success('Reservation deleted');
+        setOpenDeleteDialog(false);
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error('Something went wrong.')
+      }).finally(() => {
+        setActionId('');
+      })
+  };
 
   const onCancel = async () => {
     const data = {
@@ -65,7 +100,32 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         setActionId('');
       })
   };
-
+  const markDoneReservationDialog = (
+    <ConfirmDialog
+      isOpen={openMarkDoneDialog}
+      title="Are you sure you want to mark this reservation as completed?"
+      subtitle="This cannot be undone."
+      onConfirm={onMarkDone}
+      onDismiss={() => {
+        setOpenMarkDoneDialog(false);
+        setActionId('');
+      }}
+      actionLabel="Continue"
+    />
+  );
+  const deleteReservationDialog = (
+    <ConfirmDialog
+      isOpen={openDeleteDialog}
+      title="Are you sure you want to permanently delete this reservation?"
+      subtitle="This cannot be undone."
+      onConfirm={onDelete}
+      onDismiss={() => {
+        setOpenDeleteDialog(false);
+        setActionId('');
+      }}
+      actionLabel="Delete"
+    />
+  );
   const cancelReservationDialog = (
     <ConfirmDialog
       isOpen={openCancelDialog}
@@ -99,12 +159,14 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     else return rerservation.status
   });
   return (
-    <Container>
+    <div className="min-h-[80vh]">
       <Heading
         title="Reservations"
         subtitle="Bookings on your properties"
       />
       <>
+        {markDoneReservationDialog}
+        {deleteReservationDialog}
         {confirmReservationDialog}
         {cancelReservationDialog}
       </>
@@ -120,7 +182,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           small
           outline
           icon={listView ? BsListUl : BsFillGridFill}
-          label={listView? 'List View' : 'Grid View'}
+          label={listView ? 'List View' : 'Grid View'}
           onClick={() => setListView(!listView)}
         />
       </div>
@@ -150,16 +212,18 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
               key={reservation.id}
               reservation={reservation}
               actionId={reservation.id}
-              onDelete={() => { setActionId(reservation.id); setOpenCancelDialog(true) }}
+              onMarkDone={() => { setActionId(reservation.id); setOpenMarkDoneDialog(true) }}
+              onDelete={() => { setActionId(reservation.id); setOpenDeleteDialog(true) }}
+              onCancel={() => { setActionId(reservation.id); setOpenCancelDialog(true) }}
               onConfirm={() => { setActionId(reservation.id); setOpenConfirmDialog(true) }}
               disabled={actionId === reservation.id}
-              actionLabel={reservation.status != ReservationStatus.cancelled ? "Cancel reservation" : ""}
+              actionLabel={(reservation.status != 'cancelled' && reservation.status !='done') ? "Cancel reservation" : ""}
               showMessage
             />
           ))}
         </div>}
 
-    </Container>
+    </div>
   );
 }
 
