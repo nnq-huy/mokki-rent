@@ -2,19 +2,20 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
-import { format } from 'date-fns';
+import { useCallback } from "react";
 
 import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
-import { Listing, Reservation, User } from "@prisma/client";
+import { Listing, User } from "@prisma/client";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Edit } from "lucide-react";
+import { BsPersonFill, BsStar } from "react-icons/bs";
+import { MdOutlineMeetingRoom, MdOutlinePlace } from "react-icons/md";
+import HeartButton from "../HeartButton";
 
 interface ListingCardProps {
   data: Listing;
-  reservation?: Reservation;
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
@@ -25,19 +26,21 @@ interface ListingCardProps {
 
 const ListingCard: React.FC<ListingCardProps> = ({
   data,
-  reservation,
   onAction,
   disabled,
   actionLabel,
   actionId = '',
-  isHost
+  isHost,
+  currentUser
 }) => {
   const router = useRouter();
   const { getByValue } = useProvinces();
 
   const location = getByValue(data.locationValue);
 
-  const handleCancel = useCallback(
+  const path = isHost ? 'properties' : 'listings';
+
+  const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
 
@@ -48,32 +51,15 @@ const ListingCard: React.FC<ListingCardProps> = ({
       onAction?.(actionId)
     }, [disabled, onAction, actionId]);
 
-  const price = useMemo(() => {
-    if (reservation) {
-      return reservation.totalPrice;
-    }
 
-    return data.price;
-  }, [reservation, data.price]);
-
-  const reservationDate = useMemo(() => {
-    if (!reservation) {
-      return null;
-    }
-
-    const start = new Date(reservation.startDate);
-    const end = new Date(reservation.endDate);
-
-    return `${format(start, 'PP')} - ${format(end, 'PP')}`;
-  }, [reservation]);
 
   return (
     <div
-      className="col-span-1 cursor-pointer group"
+      className="col-span-1 cursor-pointer group shadow-md p-3 rounded-md bg-white"
     >
       <div className="flex flex-col gap-2 w-full">
         <div
-          onClick={() => router.push(`/listings/${data.id}`)}
+          onClick={() => router.push(`/${path}/${data.id}`)}
           className="
             aspect-square 
             w-full 
@@ -86,29 +72,42 @@ const ListingCard: React.FC<ListingCardProps> = ({
             fill
             className="
               object-cover 
-              h-full 
-              w-full 
               group-hover:scale-110 
               transition
             "
             src={data.imageSrc}
             alt="Listing"
           />
-
+          <div className="
+            absolute
+            top-3
+            right-3
+          ">
+            <HeartButton
+              listingId={data.id}
+              currentUser={currentUser!}
+            />
+          </div>
         </div>
-        <div className="font-semibold text-lg">
-          {location?.label}
+        <div className="font-semibold text-lg flex flex-row justify-between">
+          <div>{data.title}</div>
+          <div className="flex flex-row gap-1 items-center text-sm text-neutral-500">
+            {<BsStar />}{data.rating > 1 ? data.rating.toFixed(1) : ''}
+          </div>
         </div>
-        <div className="font-light text-neutral-500">
-          {reservationDate || data.category}
+        <div className="font-light text-neutral-500 flex  justify-between">
+          <div className="flex items-center gap-1">
+            <MdOutlinePlace />{location?.value}
+          </div>
+          {data.category}
+        </div>
+        <div className="flex flex-row items-center gap-1 text-neutral-500">
+          {<MdOutlineMeetingRoom />} {data.roomCount} {<BsPersonFill />} {data.guestCount}
         </div>
         <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">
-            {price}€
+          <div className="font-semibold flex gap-1">
+            {data.price}€ <p className="text-gray-500 font-normal">night</p>
           </div>
-          {!reservation && (
-            <div className="font-light">night</div>
-          )}
         </div>
         {isHost && <Button
           label="Edit info"
@@ -122,7 +121,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             disabled={disabled}
             small
             label={actionLabel}
-            onClick={handleCancel}
+            onClick={handleDelete}
           />
         )}
       </div>
@@ -131,3 +130,4 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }
 
 export default ListingCard;
+//todo: handle review

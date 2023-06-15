@@ -20,6 +20,7 @@ model User {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   favoriteIds     String[]
+  role            Role @default(USER)
 
   accounts Account[]
   listings Listing[]
@@ -59,6 +60,8 @@ model Listing {
   locationValue       String
   userId              String
   price               Int
+  status              ListingStatus @default(available)
+  rating              Float @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations Reservation[]
@@ -74,8 +77,9 @@ model Reservation {
   startDate           DateTime
   endDate             DateTime
   totalPrice          Int
-  confirmed           Boolean
+  status              ReservationStatus @default(unconfirmed)
   createdAt           DateTime @default(now())
+  rating              Float @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
@@ -94,4 +98,21 @@ model Message {
   isPicture           Boolean
 
   reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ReservationStatus {
+  unconfirmed
+  confirmed
+  cancelled
+  done
+}
+
+enum ListingStatus {
+  available
+  unavailable
 }

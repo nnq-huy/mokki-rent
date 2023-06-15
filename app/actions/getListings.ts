@@ -9,7 +9,10 @@ export interface IListingsParams {
   endDate?: string;
   locationValue?: string;
   category?: string;
-  needSauna?:boolean
+  needSauna?:boolean;
+  startPrice?:number;
+  stopPrice?:number;
+  sort?:string;
 }
 
 export default async function getListings(
@@ -26,8 +29,37 @@ export default async function getListings(
       endDate,
       category,
       needSauna,
+      startPrice,
+      stopPrice,
+      sort
     } = params;
 
+    let sortOption :any =  {};
+
+    if (sort) {
+      switch (sort){
+        case 'price_high_to_low' :
+          sortOption.price =  "desc";
+          break;
+        case 'price_low_to_high' :
+          sortOption.price = "asc";
+          break;
+        case 'date_new_to_old' :
+          sortOption.createdAt = "desc";
+          break;
+        case 'date_old_to_new' :
+          sortOption.createdAt = "asc";
+          break;
+        case 'room_high_to_low' :
+          sortOption.roomCount = "desc";
+          break;
+        case 'room_low_to_high' :
+          sortOption.roomCount = "asc";
+          break;
+        default:
+          sortOption.createdAt = "asc";
+      }
+    }
     let query: any = {};
 
     if (userId) {
@@ -63,10 +95,18 @@ export default async function getListings(
       query.locationValue = locationValue;
     }
 
+    if (startPrice && stopPrice) {
+      query.price = {
+        gte: + startPrice,
+        lte: + stopPrice
+      }
+    }
+
     if (startDate && endDate) {
       query.NOT = {
         reservations: {
           some: {
+            status: "confirmed",
             OR: [
               {
                 endDate: { gte: startDate },
@@ -83,9 +123,7 @@ export default async function getListings(
     }
     const listings = await prisma.listing.findMany({
       where: query,
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: sortOption
     });
 
     return listings;

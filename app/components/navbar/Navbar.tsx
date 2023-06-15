@@ -15,32 +15,33 @@ const Navbar: React.FC<NavbarProps> = ({
   return (
     <div className="
         fixed
-        w-full
+        w-[100vw]
         bg-white
+        shadow-sm
         z-10
-        shadow-sm">
+        px-4">
       <div
         className="
           py-4
           border-b-[1px]
         "
       >
-        <Container>
           <div
             className="
+            w-full
             flex
             flex-row
             items-center
             justify-between
             gap-3
             md:gap-0
+            bg-white
           "
           >
             <Logo />
             <Search />
             <UserMenu currentUser={currentUser} />
           </div>
-        </Container>
       </div>
       <Categories />
     </div>

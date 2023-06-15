@@ -4,18 +4,30 @@ interface IParams {
   listingId?: string;
   userId?: string;
   hostId?: string;
+  propertyId?:string;
 }
 
 export default async function getReservations(
   params: IParams
 ) {
+  const today = new Date();
   try {
-    const { listingId, userId, hostId } = params;
+    const { listingId, userId, hostId, propertyId } = params;
 
-    const query: any = {};
+    let query: any = {};
+    //get all reservation - for host
+    if (propertyId) {
+      query.listingId = propertyId;
+    }
 
+    //only get reservations that end after today - for guest
     if (listingId) {
-      query.listingId = listingId;
+      query ={
+        listingId : listingId,
+        endDate: {
+          gte: today
+        }
+      }
     };
 
     if (userId) {

@@ -1,19 +1,19 @@
 'use client';
-
+// this page is for guest viewing the listing
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Range } from "react-date-range";
 import { useRouter } from "next/navigation";
-import { differenceInDays, eachDayOfInterval } from 'date-fns';
+import { differenceInDays, differenceInHours, eachDayOfInterval } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import Container from "@/app/components/Container";
-import { categories } from "@/app/components/navbar/Categories";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Reservation, Listing, User } from "@prisma/client";
+import { categories } from "@/app/constants";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -21,7 +21,7 @@ const initialDateRange = {
   key: 'selection'
 };
 
-interface ListingClientProps {
+interface PropertyClientProps {
   reservations?: Reservation[];
   listing: Listing & {
     user: User;
@@ -29,7 +29,7 @@ interface ListingClientProps {
   currentUser?: User | null;
 }
 
-const ListingClient: React.FC<ListingClientProps> = ({
+const ListingClient: React.FC<PropertyClientProps> = ({
   listing,
   reservations = [],
   currentUser
@@ -38,15 +38,31 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const router = useRouter();
 
   const disabledDates = useMemo(() => {
+    //reserved dates are disabled on the calendar
+    // start date of a reservation is still available as checkout date
+    // end date of of a reservation is still available as a check in date
+    // host can cancel overlapping reservations
     let dates: Date[] = [];
 
     reservations.forEach((reservation: any) => {
-      const range = eachDayOfInterval({
-        start: new Date(reservation.startDate),
-        end: new Date(reservation.endDate)
-      });
+      const startDate = new Date(reservation.startDate);// check in date
+      const endDate = new Date(reservation.endDate);//check out date
+      const duration = Math.ceil(differenceInHours(endDate, startDate) / 24);
+      if (duration >= 2) {
+        startDate.setDate(startDate.getDate() + 1);
+        endDate.setDate(endDate.getDate() - 1);
+        endDate.setHours(16);
+        const range = eachDayOfInterval({
+          start: startDate,
+          end: endDate,
+        })
 
-      dates = [...dates, ...range];
+        dates = [...dates, ...range];
+      } 
+
+
+
+
     });
 
     return dates;
@@ -103,10 +119,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
-      const dayCount = differenceInDays(
+      const dayCount = Math.ceil(differenceInHours(
         dateRange.endDate,
         dateRange.startDate
-      );
+      ) / 24);
       //price calculation
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
@@ -122,6 +138,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
         className="
           max-w-screen-lg 
           mx-auto
+          xl:px-8
+          md:px-4 
+          sm:px-2 
+          px-2 
         "
       >
         <div className="flex flex-col gap-6">
@@ -129,8 +149,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
             title={listing.title}
             imageSrc={listing.imageSrc}
             locationValue={listing.locationValue}
-            id={listing.id}
-            currentUser={currentUser}
           />
           <div
             className="
@@ -142,6 +160,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             "
           >
             <ListingInfo
+              id={listing.id}
               user={listing.user}
               category={category}
               description={listing.description}
@@ -150,11 +169,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
               bathroomCount={listing.bathroomCount}
               locationValue={listing.locationValue}
               hasSauna={listing.hasSauna}
+              currentUser={currentUser}
+
             />
             <div
               className="
                 order-first 
-                mb-10 
+                mb-10
                 md:order-last 
                 md:col-span-3
               "
@@ -162,15 +183,26 @@ const ListingClient: React.FC<ListingClientProps> = ({
               <ListingReservation
                 price={listing.price}
                 totalPrice={totalPrice}
-                onChangeDate={(value) => setDateRange(value)}
+                //set checkin time to 16 and check out time to 12
+                onChangeDate={(value) => {
+                  const start = value.startDate;
+                  start?.setHours(16);
+                  const end = value.endDate;
+                  end?.setHours(12);
+                  setDateRange({
+                    startDate: start,
+                    endDate: end,
+                    key: 'selection'
+                  })
+                }}
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading || isOwnListing}
                 disabledDates={disabledDates}
-                dayCount={differenceInDays(
+                dayCount={Math.ceil(differenceInHours(
                   dateRange.endDate!,
                   dateRange.startDate!
-                )}
+                ) / 24)}
               />
             </div>
           </div>

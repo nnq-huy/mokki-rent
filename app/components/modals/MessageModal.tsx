@@ -6,18 +6,18 @@ import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import Heading from "../Heading";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { MessageInput } from "../messages/MessageInput";
+import Link from "next/link";
 
 
 const MessageModal = () => {
   const messageModal = useMessageModal();
   const { isGuest } = useIsGuest();
   const { currentReservation } = useCurrentReservation();
-
   const bodyContent = (
     <div className="flex flex-col gap-1">
       <Heading
         title={isGuest ? "Ask your host" : "Send a message  to your guest"}
-        subtitle={isGuest ? currentReservation.hostName : ""}
+        subtitle={isGuest ? currentReservation.hostName : currentReservation.user!.name??''}
       />
       <div>
         <MessageInput />
@@ -25,7 +25,10 @@ const MessageModal = () => {
     </div>
   );
   const footerContent = (
-    <div className="text-neutral-400 font-light text-sm text-center">You can view your past messages in the messages page</div>
+    <div className="text-neutral-400 font-light text-sm text-center">
+      You can view your past messages in the 
+      <Link href={'/messages'}> <p className="text-mokki-green font-medium">messages page</p></Link>
+    </div>
   )
 
   return (

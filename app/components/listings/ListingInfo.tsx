@@ -8,6 +8,7 @@ import useProvinces from "@/app/hooks/useProvinces";
 import Avatar from "../Avatar";
 import ListingCategory from "./ListingCategory";
 import { User } from "@prisma/client";
+import HeartButton from "../HeartButton";
 
 const Map = dynamic(() => import('../Map'), {
   ssr: false
@@ -15,6 +16,8 @@ const Map = dynamic(() => import('../Map'), {
 
 interface ListingInfoProps {
   user: User,
+  currentUser?: User | null;
+  id: string,
   description: string;
   guestCount: number;
   roomCount: number;
@@ -30,6 +33,8 @@ interface ListingInfoProps {
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
   user,
+  currentUser,
+  id,
   description,
   guestCount,
   roomCount,
@@ -43,7 +48,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   const coordinates = getByValue(locationValue)?.latlng
 
   return (
-    <div className="col-span-4 flex flex-col gap-8">
+    <div className="col-span-4 flex flex-col gap-8 pb-8">
       <div className="flex flex-col gap-2">
         <div
           className="
@@ -62,7 +67,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             flex 
             flex-row 
             items-center 
-            gap-4 
+            gap-3
             font-light
             text-neutral-500
           "
@@ -79,6 +84,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <div>
             {hasSauna ? "has sauna" : ""}
           </div>
+          <HeartButton
+            listingId={id}
+            currentUser={currentUser}
+          />
         </div>
       </div>
       <hr />

@@ -4,23 +4,17 @@ import Image from "next/image";
 
 import useProvinces from "@/app/hooks/useProvinces";
 import Heading from "../Heading";
-import HeartButton from "../HeartButton";
-import { User } from "@prisma/client";
 
 interface ListingHeadProps {
   title: string;
   locationValue: string;
   imageSrc: string;
-  id: string;
-  currentUser?: User | null
 }
 
 const ListingHead: React.FC<ListingHeadProps> = ({
   title,
   locationValue,
   imageSrc,
-  id,
-  currentUser
 }) => {
   const { getByValue } = useProvinces();
 
@@ -28,15 +22,12 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 
   return (
     <>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 mt-4">
         <Heading
           title={title}
           subtitle={`${location?.label}, ${location?.english}`}
         />
-        <HeartButton
-          listingId={id}
-          currentUser={currentUser}
-        />
+
       </div>
 
       <div className="

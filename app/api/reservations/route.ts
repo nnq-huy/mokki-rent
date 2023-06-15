@@ -38,7 +38,6 @@ export async function POST(
           startDate,
           endDate,
           totalPrice,
-          confirmed: false,
           hostId,
           hostName,
           hostPhoto
