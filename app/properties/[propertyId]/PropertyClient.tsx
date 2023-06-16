@@ -110,11 +110,11 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
       <h1 className="font-semibold text-xl">Bookings for {listing.title}</h1>
 
       <FullCalendar
-        buttonText={{ today: 'today', dayGridMonth: 'Home', listWeek: 'Week List', listMonth: ' Month List ' }}
+        buttonText={{ today: 'today', dayGridMonth: 'Home', listWeek: 'Week List'}}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,listWeek,listMonth'
+          right: 'dayGridMonth,listWeek'
         }}
         weekNumbers={true}
         firstDay={1}
@@ -160,4 +160,4 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
 }
 
 export default PropertyClient;
-//todo: setting page, actions on booking list
+//todo: setting page

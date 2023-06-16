@@ -43,7 +43,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   const deleteListingDialog = (
     <ConfirmDialog
       isOpen={openDeleteDialog}
-      title="Are you sure you want to delete this reservation?"
+      title="Are you sure you want to delete this listing?"
       subtitle="This action cannot be undone!"
       onConfirm={onDelete}
       onDismiss={() => {
@@ -55,7 +55,12 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   );
 
   return (
-    <Container>
+    <div className="
+        min-h-[80vh] 
+        xl:px-8
+        md:px-4
+        sm:px-2
+        px-2">
       <Heading
         title="Properties"
         subtitle="List of your properties"
@@ -71,10 +76,6 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           xl:grid-cols-5
           2xl:grid-cols-6
           gap-4
-          xl:px-8
-          md:px-4
-          sm:px-2
-          px-2
         "
       >
         <>{deleteListingDialog}</>
@@ -90,7 +91,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           />
         ))}
       </div>
-    </Container>
+    </div>
   );
 }
 

@@ -21,10 +21,13 @@ import { signupSchema } from "@/app/validations/signup.validation";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormInput } from "../auth/FormInput";
+import { BiTestTube } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   type FormData = Yup.InferType<typeof signupSchema>;
@@ -50,6 +53,31 @@ const RegisterModal = () => {
         setIsLoading(false);
       })
   }
+
+  const onSignInWithTestAccount = async () => {
+    setIsLoading(true);
+    const data = {
+      email: 'publictester@test.test',
+      password: 'aA123456'
+    }
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    })
+      .then((callback) => {
+        setIsLoading(false);
+
+        if (callback?.ok) {
+          toast.success('Logged in');
+          router.refresh();
+          registerModal.onClose();
+        }
+
+        if (callback?.error) {
+          toast.error(callback.error);
+        }
+      });
+  };
 
   const onToggle = useCallback(() => {
     registerModal.onClose();
@@ -110,6 +138,13 @@ const RegisterModal = () => {
 
   const footerContent = (
     <div className="flex flex-col gap-4">
+      <hr />
+      <Button
+        outline
+        label="Continue with test account"
+        icon={BiTestTube}
+        onClick={onSignInWithTestAccount}
+      />
       <hr />
       <Button
         outline

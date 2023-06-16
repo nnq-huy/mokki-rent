@@ -17,7 +17,7 @@ const MessageModal = () => {
     <div className="flex flex-col gap-1">
       <Heading
         title={isGuest ? "Ask your host" : "Send a message  to your guest"}
-        subtitle={isGuest ? currentReservation.hostName : currentReservation.user!.name??''}
+        subtitle={isGuest ? currentReservation.hostName : ''}
       />
       <div>
         <MessageInput />

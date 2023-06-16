@@ -21,6 +21,7 @@ import { FormInput } from "../auth/FormInput";
 import { loginSchema } from "@/app/validations/login.validation";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { BiTestTube } from "react-icons/bi";
 
 
 
@@ -42,6 +43,30 @@ const LoginModal = () => {
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    })
+      .then((callback) => {
+        setIsLoading(false);
+
+        if (callback?.ok) {
+          toast.success('Logged in');
+          router.refresh();
+          loginModal.onClose();
+        }
+
+        if (callback?.error) {
+          toast.error(callback.error);
+        }
+      });
+  };
+  const onSignInWithTestAccount = async () => {
+    setIsLoading(true);
+    const data = {
+      email: 'publictester@test.test',
+      password: 'aA123456'
+    }
     signIn('credentials', {
       ...data,
       redirect: false,
@@ -108,6 +133,13 @@ const LoginModal = () => {
       <hr />
       <Button
         outline
+        label="Continue with test account"
+        icon={BiTestTube}
+        onClick={onSignInWithTestAccount}
+      />
+      <hr />
+      <Button
+        outline
         label="Continue with Google"
         icon={FcGoogle}
         onClick={() => signIn('google')}
@@ -118,6 +150,7 @@ const LoginModal = () => {
         icon={FaGithub}
         onClick={() => signIn('github')}
       />
+
       <div className="
       text-neutral-500 text-center mt-4 font-light">
         <p>First time here?

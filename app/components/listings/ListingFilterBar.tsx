@@ -165,7 +165,7 @@ const ListingFilterBar = () => {
     <Popover>
       <PopoverTrigger>
         <Button
-          className="bg-white shadow"
+          className="bg-white shadow truncate"
           title="Filter"
           variant="secondary"
           size={'sm'}
