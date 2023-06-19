@@ -17,6 +17,7 @@ module.exports = {
     extend: {
       colors: {
         'mokki-green': '#028446',
+        'mokki-light':'#cce6da',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

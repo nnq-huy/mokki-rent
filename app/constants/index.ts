@@ -5,6 +5,7 @@ import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla, MdCastle } from "react-icons/md";
 import { TbBeach, TbPool } from "react-icons/tb";
 import { SortOption } from "../types";
+import { ArrowUpCircle, CheckCircle2, HelpCircle, XCircle } from "lucide-react";
 
 export const categories = [
   {
@@ -74,45 +75,69 @@ export const categories = [
   }
 ];
 
+//listing view sort options
 export const sortOptions: SortOption[] = [
-    {
-      value: 'price_high_to_low',
-      label: 'Price. highest first'
-    },
-    {
-      value: 'price_low_to_high',
-      label: 'Price. lowest first'
-    },
-    {
-      value: 'date_new_to_old',
-      label: 'Date added. newest first'
-    },
-    {
-      value: 'date_old_to_new',
-      label: 'Date added. oldest first'
-    },
-    {
-      value: 'room_high_to_low',
-      label: 'Room count. highest first'
-    },
-    {
-      value: 'room_low_to_high',
-      label: 'Room count. lowest first'
-    },
-  ];
-
-  export const eventColors = [
-      '#228B22',//ForestGreen
-      '#1E90FF',//DodgerBlue
-      '#CD5C5C',//IndianRed
-      '#778899',//LightSlateGray
-      '#DB7093',//PaleVioletRed
-      '#A0522D',//Sienna
-      '#FFA500',//Orange
-      '#000000',//Black
-      '#DC143C',//Crimson
-      '#FAEBD7',//AntiqueWhite
-      '#00008B',//DarkBlue
-      '#66CDAA',//MediumAquaMarine
-      '#8FBC8F',//DarkSeaGreen
-    ]
+  {
+    value: 'price_high_to_low',
+    label: 'Price. highest first'
+  },
+  {
+    value: 'price_low_to_high',
+    label: 'Price. lowest first'
+  },
+  {
+    value: 'date_new_to_old',
+    label: 'Date added. newest first'
+  },
+  {
+    value: 'date_old_to_new',
+    label: 'Date added. oldest first'
+  },
+  {
+    value: 'room_high_to_low',
+    label: 'Room count. highest first'
+  },
+  {
+    value: 'room_low_to_high',
+    label: 'Room count. lowest first'
+  },
+];
+//colors seed for events in calendar views
+export const eventColors = [
+  '#228B22',//ForestGreen
+  '#1E90FF',//DodgerBlue
+  '#CD5C5C',//IndianRed
+  '#778899',//LightSlateGray
+  '#DB7093',//PaleVioletRed
+  '#A0522D',//Sienna
+  '#FFA500',//Orange
+  '#000000',//Black
+  '#DC143C',//Crimson
+  '#FAEBD7',//AntiqueWhite
+  '#00008B',//DarkBlue
+  '#66CDAA',//MediumAquaMarine
+  '#8FBC8F',//DarkSeaGreen
+]
+//reservation statuses
+export const statuses = [
+  {
+    value: "unconfirmed",
+    label: "Unconfirmed",
+    icon: HelpCircle,
+  },
+  {
+    value: "confirmed",
+    label: "Confirmed",
+    icon: ArrowUpCircle,
+  },
+  {
+    value: "done",
+    label: "Done",
+    icon: CheckCircle2,
+  },
+  {
+    value: "cancelled",
+    label: "Cancelled",
+    icon: XCircle,
+  },
+]

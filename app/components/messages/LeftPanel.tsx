@@ -45,22 +45,6 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
         border-gray-200
         rounded-lg
       ">
-        <div className="flex px-5 py-2 justify-between">
-          <h2 className="
-            text-center
-            overflow-hidden 
-            -z-10 
-            sm:-z-10 
-            md:z-0 
-            sm:p-0 
-            md:px-5 
-            text-md 
-            font-semibold
-            text-gray-600 
-          ">
-
-          </h2>
-        </div>
         <div className="md:px-12 pb-2">
           <Button
             icon={AiOutlineUserSwitch}
@@ -79,7 +63,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
         </div>
         <div className="space-y-4">
           <hr />
-          <div className="px-2">Reservations</div>
+          <div className="px-2 hidden sm:hidden md:visible ">Reservations</div>
           {reservationsList.length ?
             <ul>
               {reservationsList.map((reservation) => (

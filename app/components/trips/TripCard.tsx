@@ -9,7 +9,7 @@ import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import { AiOutlineDelete, AiOutlineMessage } from "react-icons/ai";
+import {  AiOutlineMessage } from "react-icons/ai";
 import HeartButton from "../HeartButton";
 import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
@@ -17,6 +17,7 @@ import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { MdCancel, MdOutlineMeetingRoom, MdOutlinePlace, MdReviews } from "react-icons/md";
 import { BsPersonFill, BsStar } from "react-icons/bs";
+import { XCircle } from "lucide-react";
 
 interface TripCardProps {
   reservation: Reservation & { user?: User, listing?: Listing };
@@ -161,7 +162,7 @@ const TripCard: React.FC<TripCardProps> = ({
         }
         {onAction && actionLabel && isCancellable && (
           <Button
-            icon={MdCancel}
+            icon={XCircle}
             disabled={disabled}
             small
             label={actionLabel}

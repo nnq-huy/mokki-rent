@@ -81,7 +81,10 @@ const ListingFilterBar = () => {
           size={'sm'}
           onClick={() => { }}
         >
-          {'Price'} {<LucideSettings2 className=" text-mokki-green h-4 w-6" />}
+          <div className="truncate text-sm text-gray-500">
+            Price
+          </div>
+          {<LucideSettings2 className=" text-mokki-green h-4 w-6" />}
         </Button>
       </PopoverTrigger>
       <PopoverContent >
@@ -165,13 +168,13 @@ const ListingFilterBar = () => {
     <Popover>
       <PopoverTrigger>
         <Button
-          className="bg-white shadow truncate"
+          className="bg-white shadow"
           title="Filter"
           variant="secondary"
           size={'sm'}
           onClick={() => { }}
-        >
-          {sortOption.label} {<BiSort className=" text-mokki-green h-4 w-6" />}
+        ><div className="truncate text-sm text-gray-500 flex-shrink">{sortOption.label} </div>{<BiSort className=" text-mokki-green h-4 w-6" />}
+
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-56">
@@ -195,13 +198,10 @@ const ListingFilterBar = () => {
     <div
       className="w-full pt-28 flex-row flex h-12 items-center justify-between gap-8"
     >
-      <div className="w-[120px] px-4">
+      <div className="w-[120px] px-2">
         {filterButton}
       </div>
-      <div className="w-[200px]">
-        <Input placeholder="Search" className="bg-white shadow" />
-      </div>
-      <div className="pr-4">
+      <div className="pr-2">
         {sortButton}
       </div>
     </div>

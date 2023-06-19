@@ -21,81 +21,43 @@ import toast from "react-hot-toast"
 import useIsGuest from "@/app/hooks/useIsGuest"
 import useCurrentReservation from "@/app/hooks/useCurrentReservation"
 import useMessageModal from "@/app/hooks/useMessageModal"
+import { statuses } from "@/app/constants"
+import { DataTableColumnHeader } from "../ui/data-table-column-header"
 
 export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }>[] = [
   {
     id: 'place',
     accessorKey: "listing.title",
-    header: ({ column }) => {
-      return (
-        <div className="text-gray-700 ml-[-12px]">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Place
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
+    header: ({ column }) => (<DataTableColumnHeader column={column} title="Place" />),
   },
   {
     id: 'guest',
     accessorKey: "user.name",
-    header: () => {
-      return (
-        <div className="text-gray-700">
-          Guest
-        </div>
-      )
-    },
+    header: ({ column }) => (<DataTableColumnHeader column={column} title="Guest" />),
+    enableSorting: false
   },
   {
     accessorKey: "startDate",
-    header: ({ column }) => {
-      return (
-        <div className="text-gray-700 text-left">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Checkin
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
+    header: ({ column }) => (<DataTableColumnHeader column={column} title="Checkin" />),
     cell: ({ row }) => {
       const checkinDate = new Date(row.getValue("startDate"))
       const formatted = checkinDate.toLocaleString('fi')
       return (
-        <div className="font-medium text-center text-gray-500">
+        <div className="font-medium text-gray-500">
           {formatted}
         </div>
       )
     },
+    enableHiding: false,
   },
   {
     accessorKey: "endDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <div className="text-gray-700 flex">
-            Checkout
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        </Button>
-      )
-    },
+    header: ({ column }) => (<DataTableColumnHeader column={column} title="Checkout" />),
     cell: ({ row }) => {
       const checkoutDate = new Date(row.getValue("endDate"))
       const formatted = checkoutDate.toLocaleString('fi')
       return (
-        <div className="text-center font-medium text-gray-500">
+        <div className="font-medium text-gray-500">
           {formatted}
         </div>
       )
@@ -103,45 +65,32 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
   },
   {
     accessorKey: "status",
-    header: ({ column }) => {
+    header: ({ column }) => (<DataTableColumnHeader column={column} title="Status" />),
+    cell: ({ row }) => {
+      const status = statuses.find(
+        (status) => status.value === row.getValue("status")
+      )
+      if (!status) {
+        return null
+      }
+
       return (
-        <div className="text-gray-700 flex ml-[-12px]">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-
-            Status
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-
-          </Button>
+        <div className="flex w-[110px] items-center">
+          {status.icon && (
+            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+          )}
+          <span>{status.label}</span>
         </div>
       )
     },
-    cell: ({ row }) => {
-      return (
-        <div className="text-justify">
-          {row.getValue("status")}
-        </div>
-      )
-    }
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
   },
 
   {
     accessorKey: "totalPrice",
-    header: ({ column }) => {
-      return (
-        <div className="text-right mr-[-10px]">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Amount
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
+    header: ({ column }) => (<DataTableColumnHeader column={column} title="Amount" />),
     cell: ({ row }) => {
       const total = parseFloat(row.getValue("totalPrice"))
       const formatted = new Intl.NumberFormat("fi", {
@@ -150,7 +99,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
       }).format(total)
 
       return (
-        <div className="text-right font-medium">
+        <div className="font-medium">
           {formatted}
         </div>
       )

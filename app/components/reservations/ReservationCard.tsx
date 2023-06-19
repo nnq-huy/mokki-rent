@@ -9,13 +9,11 @@ import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import { AiFillMessage, AiOutlineDelete } from "react-icons/ai";
 import Avatar from "../Avatar";
-import { BsCheckCircleFill, BsHouseCheckFill } from "react-icons/bs";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
-import { MdCancel } from "react-icons/md";
+import { CalendarCheck, CheckCircle, MessageCircle, Trash2, XCircle } from "lucide-react";
 
 interface ReservationCardProps {
 
@@ -163,21 +161,21 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           {reservation?.status.toUpperCase()}
         </div>
         {(reservation?.status === ReservationStatus.unconfirmed) && <Button
-          icon={BsHouseCheckFill}
+          icon={CalendarCheck}
           disabled={disabled}
           small
           label="Confirm booking"
           onClick={handleConfirm}
         />}
         {(reservation?.status === ReservationStatus.confirmed && canMarkDone) && <Button
-          icon={BsCheckCircleFill}
+          icon={CheckCircle}
           disabled={disabled}
           small
           label="Mark as done"
           onClick={handleMarkDone}
         />}
         {showMessage && <Button
-          icon={AiFillMessage}
+          icon={MessageCircle}
           disabled={disabled}
           small
           label="Message guest"
@@ -185,7 +183,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
         />}
         {onCancel && actionLabel && (
           <Button
-            icon={MdCancel}
+            icon={XCircle}
             disabled={disabled}
             small
             label={actionLabel}
@@ -193,7 +191,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           />
         )}
         {(reservation?.status === ReservationStatus.cancelled) && <Button
-          icon={AiOutlineDelete}
+          icon={Trash2}
           disabled={disabled}
           small
           label="Delete reservation"

@@ -18,11 +18,13 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "underline-offset-4 hover:underline text-primary",
+        badge:"hover:bg-mokki-green text-white h-2 w-2 mr-[-4px]"
       },
       size: {
         default: "h-10 py-2 px-4",
         sm: "h-9 px-3 rounded-md",
         lg: "h-11 px-8 rounded-md",
+        xs: "h-6 px-3 rounded-md",
       },
     },
     defaultVariants: {
