@@ -170,7 +170,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         {confirmReservationDialog}
         {cancelReservationDialog}
       </>
-      <div className="flex flex-row justify-between gap-4 px-4 w-[100vw]">
+      <div className="flex flex-row justify-between gap-4 px-4 w-full">
         <Button
           small
           outline

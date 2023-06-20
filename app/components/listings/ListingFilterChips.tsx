@@ -7,7 +7,7 @@ import qs from 'query-string';
 import { Badge } from "@/app/components/ui/badge"
 import { Button } from "../ui/button";
 
-const ListingSearchChips = () => {
+const ListingFilterChips = () => {
   const params = useSearchParams();
   const router = useRouter();
   const category = params?.get('category');
@@ -158,7 +158,7 @@ const ListingSearchChips = () => {
           x
         </Button></Badge>
       }
-      {!anyFilter && <Badge>Clear all<Button
+      {!anyFilter && <Badge>Clear all filters<Button
         variant={'badge'}
         size={'xs'}
         onClick={() => handleParamsChange('all')}
@@ -169,4 +169,4 @@ const ListingSearchChips = () => {
   )
 }
 
-export default ListingSearchChips;
+export default ListingFilterChips;

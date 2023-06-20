@@ -83,6 +83,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 label="Rent your mökki out"
                 onClick={() => rentModal.onOpen()}
               />
+              <MenuItem
+                label="Dashboard"
+                onClick={() => router.push('/dashboard')}
+              />
               <hr />
               <MenuItem
                 label="Home"

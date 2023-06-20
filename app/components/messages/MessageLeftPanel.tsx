@@ -7,7 +7,7 @@ import Button from "../Button";
 import { useEffect, useState } from "react";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 
-interface LeftPanelProps {
+interface MessageLeftPanelProps {
   reservationsAsGuest: (Reservation & {
     user?: User;
     listing?: Listing;
@@ -18,7 +18,7 @@ interface LeftPanelProps {
   })[];
 }
 
-const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservationsAsHost }) => {
+const MessageLeftPanel: React.FC<MessageLeftPanelProps> = ({ reservationsAsGuest, reservationsAsHost }) => {
   const { setCurrentReservation, resetCurrentReservation } = useCurrentReservation();
   const { isGuest, switchToGuest, switchToHost } = useIsGuest();
   const [reservationsList, setReservationList] = useState(reservationsAsGuest);
@@ -109,4 +109,4 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
   );
 }
 
-export default LeftPanel;
+export default MessageLeftPanel;
