@@ -15,8 +15,6 @@ export const signupSchema = Yup.object({
 		.matches(UPPERCASE_REGEX, "At least one uppercase letter required.")
 		.matches(NUMERIC_REGEX, "At least one number required.")
 		.min(8, "Minimum 8 characters required"),
-	photoUrl: Yup.string()
-	.optional(),
 	confirm_password: Yup.string()
 		.required("Re-enter your password")
 		.oneOf([Yup.ref("password")], "Passwords must match."),
