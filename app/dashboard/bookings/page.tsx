@@ -4,10 +4,10 @@ import ClientOnly from "@/app/components/ClientOnly";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getReservations from "@/app/actions/getReservations";
+import BookingsClient from "./BookingsClient";
 
-import ReservationsClient from "./ReservationsClient";
 
-const ReservationsPage = async () => {
+const BookingsPage = async () => {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -38,11 +38,11 @@ const ReservationsPage = async () => {
 
   return (
     <ClientOnly>
-      <ReservationsClient
+      <BookingsClient
         reservations={reservations}
       />
     </ClientOnly>
   );
 }
 
-export default ReservationsPage;
+export default BookingsPage;

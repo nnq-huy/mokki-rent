@@ -9,7 +9,7 @@ import useProvinces from "@/app/hooks/useProvinces";
 
 import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import {  AiOutlineMessage } from "react-icons/ai";
+import { AiOutlineMessage } from "react-icons/ai";
 import HeartButton from "../HeartButton";
 import Avatar from "../Avatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
@@ -18,6 +18,7 @@ import useIsGuest from "@/app/hooks/useIsGuest";
 import { MdCancel, MdOutlineMeetingRoom, MdOutlinePlace, MdReviews } from "react-icons/md";
 import { BsPersonFill, BsStar } from "react-icons/bs";
 import { XCircle } from "lucide-react";
+import { statuses } from "@/app/constants";
 
 interface TripCardProps {
   reservation: Reservation & { user?: User, listing?: Listing };
@@ -69,7 +70,8 @@ const TripCard: React.FC<TripCardProps> = ({
   const end = new Date(reservation.endDate);
   const checkinDate = `${format(start, 'PP')}`;
   const checkoutDate = `${format(end, 'PP')}`;
-  const bookedNights = Math.ceil(differenceInHours(end, start)/24);
+  const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
+  const status = statuses.find((status) => status.value === reservation.status);
 
   return (
     <div
@@ -141,8 +143,10 @@ const TripCard: React.FC<TripCardProps> = ({
           </p>
           <Avatar src={reservation.hostPhoto} />
         </div>
-        <div className="font-bold">
-          {reservation.status.toUpperCase()}
+        <div className="font-bold flex items-center gap-1">
+          {status && (
+            <status.icon className=" h-4 w-4 text-muted-foreground" />
+          )}{status?.label.toUpperCase()}
         </div>
         {showMessage && <Button
           icon={AiOutlineMessage}

@@ -4,12 +4,12 @@ import { User, Message, Reservation, Listing } from "@prisma/client";
 import ConversationPanel from "@/app/components/messages/ConversationPanel";
 import ReservationPanel from "@/app/components/messages/ReservationDetailsPanel";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
-import Avatar from "../Avatar";
-import Heading from "../Heading";
+import Avatar from "../../components/Avatar";
+import Heading from "../../components/Heading";
 import useIsGuest from "@/app/hooks/useIsGuest";
-import { Separator } from "../ui/separator";
+import { Separator } from "../../components/ui/separator";
 
-interface DashboardMessagesProps {
+interface MessagesClientProps {
   reservationsAsHost: (Reservation & {
     user: User;
     listing: Listing;
@@ -17,7 +17,7 @@ interface DashboardMessagesProps {
   messsages: Message[]
 }
 
-const DashboardMessages: React.FC<DashboardMessagesProps> = ({
+const MessagesClient: React.FC<MessagesClientProps> = ({
   reservationsAsHost,
   messsages,
 }) => {
@@ -42,12 +42,12 @@ const DashboardMessages: React.FC<DashboardMessagesProps> = ({
               <li key={reservation.id}>
                 <button
                   className="
-                  p-2
+                    p-2
                     w-full
                     flex 
                     justify-evenly
                     items-center 
-                    gap-x-2 
+                    gap-x-1
                     hover:bg-gray-100 
                     focus:outline-none"
                   onClick={() => {
@@ -89,4 +89,4 @@ const DashboardMessages: React.FC<DashboardMessagesProps> = ({
   );
 }
 
-export default DashboardMessages;
+export default MessagesClient;

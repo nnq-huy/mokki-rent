@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import { differenceInDays, differenceInHours, format } from 'date-fns';
 
 import useProvinces from "@/app/hooks/useProvinces";
+import { statuses } from "@/app/constants"
+
 
 import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
@@ -105,6 +107,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const checkinDate = `${format(start, 'PP')}`;
   const checkoutDate = `${format(end, 'PP')}`;
   const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
+  const status = statuses.find((status) => status.value === reservation.status);
 
   return (
     <div
@@ -157,8 +160,10 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             {guest?.name}</p>
           <Avatar src={guest?.image} />
         </div>
-        <div className="font-bold">
-          {reservation?.status.toUpperCase()}
+        <div className="font-bold flex items-center gap-1">
+          {status && (
+            <status.icon className=" h-4 w-4 text-muted-foreground" />
+          )}{status?.label.toUpperCase()}
         </div>
         {(reservation?.status === ReservationStatus.unconfirmed) && <Button
           icon={CalendarCheck}

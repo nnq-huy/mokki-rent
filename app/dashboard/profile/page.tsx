@@ -1,12 +1,9 @@
-
-import EmptyState from "@/app/components/EmptyState";
-import ClientOnly from "@/app/components/ClientOnly";
-
+import ProfilePage from "../ProfilePage"
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import ProfilePage from "./ProfilePage";
+import ClientOnly from "@/app/components/ClientOnly";
+import EmptyState from "@/app/components/EmptyState";
 
-
-const HostDashboard = async () => {
+export default async function AccountPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -20,14 +17,9 @@ const HostDashboard = async () => {
       </ClientOnly>
     )
   }
-
   return (
     <ClientOnly>
-      <ProfilePage
-        currentUser={currentUser}
-      />
+      <ProfilePage currentUser={currentUser} />
     </ClientOnly>
-  );
+  )
 }
-
-export default HostDashboard;

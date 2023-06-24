@@ -34,7 +34,6 @@ const ConversationPanel: React.FC<ConversationPanelProps> = ({ messages }) => {
     <div className="flex w-full flex-col bg-gray-50 justify-between p-2 rounded-lg shadow-sm">
       <div className="flex flex-col items-center">
         <div className="flex justify-between items-center w-full h-[40px] bg-gray-100 rounded-xl shadow-lg">
-          <p className="font-semibold text-neutral-500 px-2">Messages with </p>
         {isGuest
           ? <div className="p-2 flex items-center">
             <Avatar src={currentReservation.hostPhoto} />
