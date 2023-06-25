@@ -36,6 +36,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className="
+        min-w-[80vw]
         min-h-[80vh]
         flex
         flex-col

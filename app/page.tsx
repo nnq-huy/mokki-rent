@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic'
 
-import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
 import EmptyState from "@/app/components/EmptyState";
 
@@ -10,7 +9,7 @@ import getListings, {
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "./components/ClientOnly";
 import ListingFilterBar from "./components/listings/ListingFilterBar";
-import ListingSearchChips from "./components/listings/ListingSearchChips";
+import ListingFilterChips from "./components/listings/ListingFilterChips";
 
 interface HomeProps {
   searchParams: IListingsParams
@@ -32,7 +31,7 @@ const Home = async ({ searchParams }: HomeProps) => {
       <div className="min-h-[80vh] xl:px-8 md:px-4 sm:px-2 px-2">
         <ListingFilterBar />
         <h1 className="pt-6 text-gray-500">Showing {listings.length} listings</h1>
-        <ListingSearchChips/>
+        <ListingFilterChips/>
         <div
           className="
             pt-2

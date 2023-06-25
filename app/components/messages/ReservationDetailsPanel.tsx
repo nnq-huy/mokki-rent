@@ -119,7 +119,7 @@ const ReservationPanel: React.FC<ReservationPanelProps> = ({ reservation }) => {
   const isCancellable = (reservation.status == ReservationStatus.unconfirmed || reservation.status == ReservationStatus.confirmed)
 
   return (
-    <div className="bg-white rounded-lg shadow-sm w-0 collapse md:visible md:w-[24rem] lg:w-[24rem]">
+    <div className="bg-white shrink-0 rounded-lg shadow-sm hidden md:block md:w-[16rem] lg:w-[20rem]">
       {reservation.listing
         && <div>
           <>

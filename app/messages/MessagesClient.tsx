@@ -2,7 +2,7 @@
 
 import Container from "@/app/components/Container";
 import { User, Message, Reservation, Listing } from "@prisma/client";
-import LeftPanel from "../components/messages/LeftPanel";
+import MessageLeftPanel from "../components/messages/MessageLeftPanel";
 import ConversationPanel from "../components/messages/ConversationPanel";
 import ReservationPanel from "../components/messages/ReservationDetailsPanel";
 import useCurrentReservation from "../hooks/useCurrentReservation";
@@ -33,7 +33,7 @@ export const UserContext = createContext<User>({
   role: 'USER'
 })
 
-const MessagingClient: React.FC<MessagesClientProps> = ({
+const MessagesClient: React.FC<MessagesClientProps> = ({
   reservationsAsGuest,
   reservationsAsHost,
   messsages,
@@ -48,7 +48,7 @@ const MessagingClient: React.FC<MessagesClientProps> = ({
         <div
           className="max-w-full flex flex-row h-[90vh]"
         >
-          <LeftPanel reservationsAsGuest={reservationsAsGuest} reservationsAsHost={reservationsAsHost} />
+          <MessageLeftPanel reservationsAsGuest={reservationsAsGuest} reservationsAsHost={reservationsAsHost} />
           <ConversationPanel messages={messagesSortedByTime} />
           <ReservationPanel reservation={currentReservation} />
         </div>
@@ -57,4 +57,4 @@ const MessagingClient: React.FC<MessagesClientProps> = ({
   );
 }
 
-export default MessagingClient;
+export default MessagesClient;

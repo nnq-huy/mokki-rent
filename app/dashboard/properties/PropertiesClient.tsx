@@ -7,10 +7,9 @@ import { useRouter } from "next/navigation";
 
 
 import Heading from "@/app/components/Heading";
-import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
 import { Listing, User } from "@prisma/client";
-import ConfirmDialog from "../components/ConfirmDialog";
+import ConfirmDialog from "@/app/components/ConfirmDialog";
 
 
 interface PropertiesClientProps {

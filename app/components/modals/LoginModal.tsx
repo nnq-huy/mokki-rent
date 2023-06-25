@@ -23,8 +23,6 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BiTestTube } from "react-icons/bi";
 
-
-
 const LoginModal = () => {
   const router = useRouter();
   const loginModal = useLoginModal();
@@ -39,7 +37,6 @@ const LoginModal = () => {
     formState: { errors, isSubmitting },
     setError,
   } = methods;
-
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
@@ -117,7 +114,7 @@ const LoginModal = () => {
             formOptions={loginSchema.fields.password}
             errors={errors.password}
           />
-          <div className="pb-6"></div>
+          <div className="pb-4"></div>
           <Button
             disabled={isLoading}
             label={'Continue'}

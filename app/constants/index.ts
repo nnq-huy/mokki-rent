@@ -5,7 +5,7 @@ import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla, MdCastle } from "react-icons/md";
 import { TbBeach, TbPool } from "react-icons/tb";
 import { SortOption } from "../types";
-import { ArrowUpCircle, CheckCircle2, HelpCircle, XCircle } from "lucide-react";
+import { ArrowUpCircle, CheckCircle2, FileBarChart2, HelpCircle, Home, Mail, Settings, ShoppingBag, User, XCircle } from "lucide-react";
 
 export const categories = [
   {
@@ -139,5 +139,39 @@ export const statuses = [
     value: "cancelled",
     label: "Cancelled",
     icon: XCircle,
+  },
+]
+
+//admin dashboard side navigation bar items:
+export const sidebarNavItems = [
+  {
+    title: "Profile",
+    href: "/dashboard/profile",
+    icon: User
+  },
+  {
+    title: "Bookings",
+    href: "/dashboard/bookings",
+    icon: ShoppingBag
+  },
+  {
+    title: "Mökki",
+    href: "/dashboard/properties",
+    icon: Home
+  },
+  {
+    title: "Reports",
+    href: "/dashboard/reports",
+    icon: FileBarChart2
+  },
+  {
+    title: "Messages",
+    href: "/dashboard/messages",
+    icon: Mail
+  },
+  {
+    title: "Settings",
+    href: "/dashboard/settings",
+    icon: Settings
   },
 ]

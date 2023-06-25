@@ -1,8 +1,7 @@
 'use client';
-import "react-toggle/style.css"
 import { useCallback } from "react";
-import Toggle from "react-toggle"
 import { IconType } from "react-icons";
+import { Switch } from "../ui/switch";
 
 interface SaunaToggleProps {
   title: string;
@@ -39,11 +38,9 @@ const SaunaToggle: React.FC<SaunaToggleProps> = ({
         </div>
       </div>
       <div className="flex text-4xl flex-row items-center gap-4">
-        <Toggle
-          aria-label='No label tag'
-          defaultChecked={defaultChecked ?? true}
-          onChange={onToggle}
-        />
+        <Switch
+          checked={value}
+          onCheckedChange={onToggle} />
       </div>
     </div>
   );

@@ -6,8 +6,9 @@ import useIsGuest from "@/app/hooks/useIsGuest";
 import Button from "../Button";
 import { useEffect, useState } from "react";
 import { AiOutlineUserSwitch } from "react-icons/ai";
+import { Separator } from "../ui/separator";
 
-interface LeftPanelProps {
+interface MessageLeftPanelProps {
   reservationsAsGuest: (Reservation & {
     user?: User;
     listing?: Listing;
@@ -18,7 +19,7 @@ interface LeftPanelProps {
   })[];
 }
 
-const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservationsAsHost }) => {
+const MessageLeftPanel: React.FC<MessageLeftPanelProps> = ({ reservationsAsGuest, reservationsAsHost }) => {
   const { setCurrentReservation, resetCurrentReservation } = useCurrentReservation();
   const { isGuest, switchToGuest, switchToHost } = useIsGuest();
   const [reservationsList, setReservationList] = useState(reservationsAsGuest);
@@ -61,7 +62,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
             outline
           />
         </div>
-        <div className="space-y-4">
+        <div className="">
           <hr />
           <div className="px-2 hidden sm:hidden md:visible ">Reservations</div>
           {reservationsList.length ?
@@ -81,21 +82,21 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
                     onClick={() => { setCurrentReservation(reservation) }}
                   >
                     <Avatar src={isGuest ? reservation.hostPhoto : reservation.user!.image} />
-                    <div className=" hidden md:block md:w-2/3 text-left rtl:text-right">
+                    <div className=" hidden md:block text-left rtl:text-right">
                       <h1 className="truncate text-sm font-semibold text-gray-700 capitalize dark:text-white">
                         {reservation.listing!.title}<br />
                         {reservation.startDate.toLocaleDateString('fi')} - {reservation.endDate.toLocaleDateString('fi')}
                       </h1>
                       {isGuest
-                        ? <div className=" hidden md:block md:w-2/3 text-left rtl:text-right truncate text-xs text-gray-500 dark:text-gray-400">
+                        ? <div className=" hidden md:block text-left rtl:text-right truncate text-xs text-gray-500 dark:text-gray-400">
                           Host: {reservation.hostName}
                         </div>
-                        : <div className=" hidden md:block md:w-2/3 text-left rtl:text-right truncate text-xs text-gray-500 dark:text-gray-400">
+                        : <div className=" hidden md:block text-left rtl:text-right truncate text-xs text-gray-500 dark:text-gray-400">
                           Guest: {reservation.user!.name}
                         </div>}
                     </div>
-
                   </button>
+                  <Separator/>
                 </li>
               ))}
             </ul> :
@@ -109,4 +110,4 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ reservationsAsGuest, reservations
   );
 }
 
-export default LeftPanel;
+export default MessageLeftPanel;

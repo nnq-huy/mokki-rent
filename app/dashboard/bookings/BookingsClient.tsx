@@ -6,13 +6,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Heading from "@/app/components/Heading";
-import Container from "@/app/components/Container";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import ReservationCard from '../components/reservations/ReservationCard';
-import ConfirmDialog from "../components/ConfirmDialog";
-import Button from "../components/Button";
+import ReservationCard from '@/app/components/reservations/ReservationCard';
+import ConfirmDialog from "@/app/components/ConfirmDialog";
+import { Button } from "@/app/components/ui/button";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import ReservationsTable from "../components/reservations/ReservationsTable";
+import ReservationsTable from "@/app/components/reservations/ReservationsTable";
 import { BsFillGridFill, BsListUl } from "react-icons/bs";
 
 interface ReservationsClientProps {
@@ -22,7 +21,7 @@ interface ReservationsClientProps {
   })[],
 }
 
-const ReservationsClient: React.FC<ReservationsClientProps> = ({
+const BookingsClient: React.FC<ReservationsClientProps> = ({
   reservations,
 }) => {
   const router = useRouter();
@@ -161,8 +160,8 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   return (
     <div className="min-h-[80vh]">
       <Heading
-        title="Reservations"
-        subtitle="Bookings on your properties"
+        title="Bookings"
+        subtitle="Reservations on your properties"
       />
       <>
         {markDoneReservationDialog}
@@ -170,21 +169,20 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         {confirmReservationDialog}
         {cancelReservationDialog}
       </>
-      <div className="flex flex-row justify-between gap-4 px-4 w-[100vw]">
+      <div className="flex flex-row justify-start gap-4 px-4 w-full">
         <Button
-          small
-          outline
-          icon={showCancelled ? AiFillEye : AiFillEyeInvisible}
-          label={showCancelled ? 'Cancelled is shown' : 'Cancelled is hidden'}
+          variant={'outline'}
+          className="gap-2 text-mokki-green"
           onClick={() => setShowCancelled(!showCancelled)}
-        />
+        >
+          {showCancelled ? 'Cancelled is shown' : 'Cancelled is hidden'}{showCancelled ? <AiFillEye /> : <AiFillEyeInvisible />}</Button>
         <Button
-          small
-          outline
-          icon={listView ? BsListUl : BsFillGridFill}
-          label={listView ? 'List View' : 'Grid View'}
+          variant={'outline'}
+          className="gap-2 text-mokki-green"
           onClick={() => setListView(!listView)}
-        />
+        >
+          {listView ? 'List View' : 'Grid View'}
+          {listView ? <BsListUl /> : <BsFillGridFill />}</Button>
       </div>
       <div className="px-4 pt-4 text-slate-500">
         Showing {filteredReservations.length} reservations
@@ -217,7 +215,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
               onCancel={() => { setActionId(reservation.id); setOpenCancelDialog(true) }}
               onConfirm={() => { setActionId(reservation.id); setOpenConfirmDialog(true) }}
               disabled={actionId === reservation.id}
-              actionLabel={(reservation.status != 'cancelled' && reservation.status !='done') ? "Cancel reservation" : ""}
+              actionLabel={(reservation.status != 'cancelled' && reservation.status != 'done') ? "Cancel reservation" : ""}
               showMessage
             />
           ))}
@@ -227,5 +225,4 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   );
 }
 
-export default ReservationsClient;
-//todo: handle actions on listview
+export default BookingsClient;

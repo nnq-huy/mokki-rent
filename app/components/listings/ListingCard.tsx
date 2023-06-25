@@ -38,7 +38,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   const location = getByValue(data.locationValue);
 
-  const path = isHost ? 'properties' : 'listings';
+  const path = isHost ? 'dashboard/properties' : 'listings';
 
   const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
