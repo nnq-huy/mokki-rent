@@ -4,10 +4,10 @@ interface PropertyTabsProps {
   details: React.ReactElement;
   calendar: React.ReactElement;
   bookings: React.ReactElement;
-  settings: React.ReactElement;
+  stats: React.ReactElement;
 }
 const PropertyTabs: React.FC<PropertyTabsProps> = ({
-  details, calendar, bookings, settings
+  details, calendar, bookings, stats
 }) => {
   return (
     <Tabs defaultValue="details" className="flex flex-col w-full px-2 md:px-4">
@@ -24,14 +24,14 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
           Bookings
         </TabsTrigger>
         <Separator orientation="vertical" decorative />
-        <TabsTrigger value="settings">
-          Settings
+        <TabsTrigger value="stats">
+          Stats
         </TabsTrigger>
       </TabsList>
       <TabsContent value="details">{details}</TabsContent>
       <TabsContent value="calendar">{calendar}</TabsContent>
       <TabsContent value="bookings">{bookings}</TabsContent>
-      <TabsContent value="settings">{settings}</TabsContent>
+      <TabsContent value="stats">{stats}</TabsContent>
     </Tabs>
   );
 }

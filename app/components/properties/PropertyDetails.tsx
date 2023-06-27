@@ -16,6 +16,7 @@ import { categories } from "@/app/constants";
 import ProvinceSelect from "../inputs/ProvinceSelect";
 import useProvinces from "@/app/hooks/useProvinces";
 
+import ConfirmDialog from "@/app/components/ConfirmDialog";
 import { Button } from "@/app/components/ui/button";
 import { Separator } from "@/app/components/ui/separator";
 import { Textarea } from "@/app/components/ui/textarea"
@@ -41,6 +42,7 @@ import CategoryInput from "../inputs/CategoryInput";
 import { Input } from "../ui/input";
 import { Label } from "@/app/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/app/components/ui/radio-group"
+import { useState } from "react";
 
 interface DetailsPageProps {
   listing: Listing | null
@@ -49,6 +51,33 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
   type ProfileFormValues = Yup.InferType<typeof listingSchema>
   const router = useRouter();
   const allProvinces = useProvinces().getAll();
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const onDelete = async () => {
+    await axios.delete(`/api/listings/${listing?.id}`)
+      .then(() => {
+        toast.success('Listing deleted');
+        setOpenDeleteDialog(false);
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error('Something went wrong.')
+      })
+  };
+
+  const deleteListingDialog = (
+    <ConfirmDialog
+      isOpen={openDeleteDialog}
+      title="Are you sure you want to delete this listing?"
+      subtitle="This action cannot be undone!"
+      onConfirm={onDelete}
+      onDismiss={() => {
+        setOpenDeleteDialog(false);
+      }}
+      actionLabel="Delete"
+    />
+  );
 
   const defaultValues: Partial<ProfileFormValues> = {
     title: listing!.title ?? '',
@@ -84,14 +113,15 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
   };
 
   return (
-    <div className="space-y-4 px-4 py-2 w-[80vw]">
+    <div className="space-y-4 px-0 md:px-4 py-2 max-w-screen-xl w-[80vw]">
       <div>
-        <h1 className="text-xl text-gray-500 font-semibold">Mokki details</h1>
+        <h1 className="text-xl font-semibold">Mokki details</h1>
         <p className="text-sm text-muted-foreground">
           You can edit your property info here
         </p>
       </div>
       <Separator />
+      <>{deleteListingDialog}</>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Accordion type="multiple" className="w-full">
@@ -102,7 +132,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="title"
                   render={({ field }) => (
-                    <FormItem className="px-4 pb-4">
+                    <FormItem className="md:px-4 px-0 pb-4">
                       <FormLabel className="text-gray-700">Title</FormLabel>
                       <FormControl>
                         <Input className="bg-white text-gray-500" placeholder="enter a new title for the listing" {...field} />
@@ -114,7 +144,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="description"
                   render={({ field }) => (
-                    <FormItem className="px-4 pb-4">
+                    <FormItem className="md:px-4 px-0 pb-4">
                       <FormLabel className="text-gray-700 pt-4">Description</FormLabel>
                       <FormControl>
                         <Textarea className="bg-white h-72 text-gray-500" placeholder="enter a new title for the listing" {...field} />
@@ -126,7 +156,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="locationValue"
                   render={({ field }) => (
-                    <FormItem className="px-4 pb-4">
+                    <FormItem className="md:px-4 px-0 pb-4">
                       <FormLabel className="text-gray-700">Location</FormLabel>
                       <FormControl>
                         <ProvinceSelect
@@ -145,7 +175,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="imageSrc"
                   render={({ field }) => (
-                    <FormItem className="px-4">
+                    <FormItem className="md:px-4">
                       <FormLabel className="text-gray-700">Mokki picture</FormLabel>
                       <ImageUpload
                         value={field.value}
@@ -159,7 +189,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                         />
                       </FormControl>
                       <FormDescription>
-                        You can update your listing picture here
+                        Click the box above to change listing picture
                       </FormDescription>
                     </FormItem>
                   )}
@@ -173,7 +203,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="category"
                   render={({ field }) => (
-                    <FormItem className="px-4">
+                    <FormItem className="md:px-4">
                       <FormControl>
                         <div className="flex flex-col gap-8">
                           <div
@@ -212,8 +242,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                     control={form.control}
                     name="guestCount"
                     render={({ field }) => (
-                    <FormItem className="px-4">
-                        <FormLabel className="text-gray-700">Title</FormLabel>
+                      <FormItem className="md:px-4">
                         <FormControl>
                           <div>
                             <Counter
@@ -232,8 +261,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                     control={form.control}
                     name="roomCount"
                     render={({ field }) => (
-                    <FormItem className="px-4">
-                        <FormLabel className="text-gray-700">Title</FormLabel>
+                      <FormItem className="md:px-4 px-0">
                         <FormControl>
                           <div>
                             <Counter
@@ -252,8 +280,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                     control={form.control}
                     name="bathroomCount"
                     render={({ field }) => (
-                    <FormItem className="px-4">
-                        <FormLabel className="text-gray-700">Title</FormLabel>
+                      <FormItem className="md:px-4 px-0">
                         <FormControl>
                           <div>
                             <Counter
@@ -272,8 +299,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                     control={form.control}
                     name="hasSauna"
                     render={({ field }) => (
-                    <FormItem className="px-4">
-                        <FormLabel className="text-gray-700">Title</FormLabel>
+                      <FormItem className="md:px-4 px-0">
                         <FormControl>
                           <div>
                             <SaunaToggle
@@ -298,10 +324,11 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="price"
                   render={({ field }) => (
-                    <FormItem className="px-4 pb-4">
+                    <FormItem className="md:px-4 px-0 pb-4">
                       <FormLabel className="text-gray-700">Price per night</FormLabel>
                       <FormControl>
-                        <div>
+                        <div className="font-semibold flex flex-row items-center">
+                          €
                           <Input
                             type='number'
                             defaultValue={100}
@@ -316,7 +343,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                   control={form.control}
                   name="status"
                   render={({ field }) => (
-                    <FormItem className="px-4">
+                    <FormItem className="md:px-4 px-0">
                       <FormLabel className="text-gray-700">Current availability</FormLabel>
                       <FormControl>
                         <div>
@@ -341,6 +368,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
           <div className="flex flex-row gap-4 pt-4">
             <Button type="submit">Save</Button>
             <Button type="reset" onClick={() => { form.reset(defaultValues) }}>Reset</Button>
+            <Button className="bg-red-500" type="button" onClick={() => {setOpenDeleteDialog(true)}}>Delete listing</Button>
           </div>
         </form>
       </Form>

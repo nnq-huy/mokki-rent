@@ -17,7 +17,7 @@ import 'rc-slider/assets/index.css';
 import { BiSort } from "react-icons/bi";
 import { sortOptions } from "@/app/constants";
 import { SortOption } from "@/app/types";
-import { Label } from "../ui/label";
+import  {Label} from "@/app/components/ui/label";
 
 const ListingFilterBar = () => {
   const params = useSearchParams();

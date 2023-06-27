@@ -48,7 +48,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
 
   return (
     <Container>
-      <div className="xl:px-8 md:px-4 sm:px-2 px-2 pt-4" >
+      <div className="xl:px-8 md:px-4 px-2 pt-4" >
         <Heading
           title="Trips"
           subtitle="Where you've been and where you're going"

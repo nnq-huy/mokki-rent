@@ -1,24 +1,18 @@
 'use client';
 // this page is for host managing the property
-import axios from "axios";
-import { useMemo, useState } from "react";
-import { toast } from "react-hot-toast";
+import { useMemo } from "react";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 
-
-import { enGB } from 'date-fns/locale'
-
-import { useRouter } from "next/navigation";
-
 import Container from "@/app/components/Container";
 import { Reservation, Listing, User } from "@prisma/client";
 import PropertyTabs from "@/app/components/properties/PropertyTab";
-import { categories, eventColors } from "@/app/constants";
+import { eventColors } from "@/app/constants";
 import { Booking } from "@/app/types";
 import PropertyReservationsTable from "@/app/components/properties/PropertyResTable";
 import DetailsPage from "@/app/components/properties/PropertyDetails";
+import PropertyStats from "@/app/components/properties/PropertyStats";
 
 
 
@@ -36,8 +30,6 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
   reservations = [],
   currentUser
 }) => {
-  const router = useRouter();
-
   const reservationsNoCancelled = reservations.filter((rerservation) => {
     return rerservation.status != 'cancelled';
   });
@@ -71,18 +63,12 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
     return bookings;
   }, [reservationsNoCancelled]);
 
-  const category = useMemo(() => {
-    return categories.find((items) =>
-      items.label === listing.category);
-  }, [listing.category]);
-  const [isLoading, setIsLoading] = useState(false);
-
   const detailsContent = (
    <DetailsPage listing={listing}/>
   );
 
   const calendarContent = (
-    <div className="w-[80vw]">
+    <div className="max-w-screen-xl w-[80vw]">
       <h1 className="font-semibold text-xl">Bookings for {listing.title}</h1>
 
       <FullCalendar
@@ -103,17 +89,15 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
     </div>
   );
   const bookingsContent = (
-    <div className="w-[80vw]">
+    <div className="max-w-screen-xl w-[85vw]">
       <h1 className="font-semibold text-xl">Bookings for {listing.title}</h1>
       <p className="text-neutral-500 ">Showing {reservations.length} bookings</p>
       <PropertyReservationsTable reservations={reservations} />
     </div>
 
   );
-  const settingsContent = (
-    <div className="w-[80vw]">
-      settings contents
-    </div>
+  const statsContent = (
+      <PropertyStats reservations={reservations} name={listing.title}/>
   );
 
   return (
@@ -123,7 +107,7 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
           details={detailsContent}
           calendar={calendarContent}
           bookings={bookingsContent}
-          settings={settingsContent}
+          stats={statsContent}
         />
       </div>
     </Container>
@@ -131,4 +115,4 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
 }
 
 export default PropertyClient;
-//todo: setting page
+//TODO: stats page

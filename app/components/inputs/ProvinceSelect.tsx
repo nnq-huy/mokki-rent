@@ -25,7 +25,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
   return (
     <div className='z-50'>
       <Select
-        placeholder={value?.label??'Select location'}
+        placeholder={value?.label ?? 'Select location'}
         isClearable
         options={getAll()}
         value={value}
@@ -42,7 +42,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
           </div>
         )}
         classNames={{
-          control: () => 'p-3 border-2',
+          control: () => 'p-3 border-2 border-mokki-green',
           input: () => 'text-lg',
           option: () => 'text-lg'
         }}

@@ -14,7 +14,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
   currentUser
 }) => {
   return (
-    <div className="min-h-[80vh]">
+    <div className="min-h-[80vh] w-full px-2 md:px-4 xl:px-8 pt-4">
       <Heading
         title="Favorites"
         subtitle="List of places you put on wishlist!"

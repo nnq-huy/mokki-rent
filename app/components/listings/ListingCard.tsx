@@ -9,9 +9,8 @@ import useProvinces from "@/app/hooks/useProvinces";
 import Button from "../Button";
 import { Listing, User } from "@prisma/client";
 import { AiOutlineDelete } from "react-icons/ai";
-import { Edit } from "lucide-react";
 import { BsPersonFill, BsStar } from "react-icons/bs";
-import { MdBathroom, MdBedroomParent, MdOutlineMeetingRoom, MdOutlinePlace } from "react-icons/md";
+import { MdBathroom, MdBedroomParent, MdOutlinePlace } from "react-icons/md";
 import HeartButton from "../HeartButton";
 import { BiCategory } from "react-icons/bi";
 
@@ -27,10 +26,6 @@ interface ListingCardProps {
 
 const ListingCard: React.FC<ListingCardProps> = ({
   data,
-  onAction,
-  disabled,
-  actionLabel,
-  actionId = '',
   isHost,
   currentUser
 }) => {
@@ -40,16 +35,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
   const location = getByValue(data.locationValue);
 
   const path = isHost ? 'dashboard/properties' : 'listings';
-
-  const handleDelete = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (disabled) {
-        return;
-      }
-      onAction?.(actionId)
-    }, [disabled, onAction, actionId]);
 
   return (
     <div className="flex flex-col gap-2 w-full cursor-pointer group shadow-md rounded-md bg-white">
@@ -112,23 +97,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
             {data.price}€ <p className="text-gray-500 font-normal">night</p>
           </div>
         </div>
-        {isHost &&
-          <Button
-            label="Edit info"
-            onClick={() => { }}
-            icon={Edit}
-            small
-          />
-        }
-        {onAction && actionLabel && (
-          <Button
-            icon={AiOutlineDelete}
-            disabled={disabled}
-            small
-            label={actionLabel}
-            onClick={handleDelete}
-          />
-        )}
       </div>
     </div>
   );

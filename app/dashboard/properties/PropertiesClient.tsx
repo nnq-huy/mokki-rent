@@ -1,15 +1,8 @@
 'use client';
 
-import { toast } from "react-hot-toast";
-import axios from "axios";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-
 import Heading from "@/app/components/Heading";
 import ListingCard from "@/app/components/listings/ListingCard";
 import { Listing, User } from "@prisma/client";
-import ConfirmDialog from "@/app/components/ConfirmDialog";
 
 
 interface PropertiesClientProps {
@@ -21,40 +14,9 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   listings,
   currentUser
 }) => {
-  const router = useRouter();
-  const [actionId, setActionId] = useState('');
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-
-  const onDelete = async () => {
-    await axios.delete(`/api/listings/${actionId}`)
-      .then(() => {
-        toast.success('Listing deleted');
-        setOpenDeleteDialog(false);
-        router.refresh();
-      })
-      .catch(() => {
-        toast.error('Something went wrong.')
-      }).finally(() => {
-        setActionId('');
-      })
-  };
-
-  const deleteListingDialog = (
-    <ConfirmDialog
-      isOpen={openDeleteDialog}
-      title="Are you sure you want to delete this listing?"
-      subtitle="This action cannot be undone!"
-      onConfirm={onDelete}
-      onDismiss={() => {
-        setOpenDeleteDialog(false);
-        setActionId('');
-      }}
-      actionLabel="Delete"
-    />
-  );
-
   return (
     <div className="
+        w-full
         min-h-[80vh] 
         xl:px-8
         md:px-4
@@ -76,14 +38,10 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
           gap-4
         "
       >
-        <>{deleteListingDialog}</>
         {listings.map((listing: any) => (
           <ListingCard
             key={listing.id}
             data={listing}
-            onAction={() => { setActionId(listing.id); setOpenDeleteDialog(true) }}
-            disabled={actionId === listing.id}
-            actionLabel="Delete property"
             currentUser={currentUser}
             isHost
           />

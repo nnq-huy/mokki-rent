@@ -1,7 +1,6 @@
 'use client';
 
-import Link from "next/link"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import * as Yup from "yup";
 
 import { profileSchema } from "@/app/validations/profile.validation";
@@ -23,7 +22,6 @@ import { User } from "@prisma/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import { Separator } from "../components/ui/separator";
-import MyAvatar from "../components/MyAvatar";
 import ImageUpload from "../components/inputs/ImageUpload";
 import axios from "axios";
 import { useRouter } from "next/navigation";

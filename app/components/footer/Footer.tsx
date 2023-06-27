@@ -1,7 +1,5 @@
-import { User } from "@prisma/client";
 import Logo from "../navbar/Logo";
 import Link from "next/link";
-import { GithubIcon } from "lucide-react";
 
 interface FooterProps {
 }

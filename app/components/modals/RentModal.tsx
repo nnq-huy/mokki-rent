@@ -189,7 +189,6 @@ const RentModal = () => {
           title="Share some basics about your place"
           subtitle="What amenities do you have?"
         />
-
         <Counter
           icon={BsFillPeopleFill}
           onChange={(value) => setCustomValue('guestCount', value)}
@@ -197,7 +196,6 @@ const RentModal = () => {
           title="Guests"
           subtitle="How many guests do you allow?"
         />
-        <hr />
         <Counter
           icon={MdBedroomParent}
           onChange={(value) => setCustomValue('roomCount', value)}
@@ -205,7 +203,6 @@ const RentModal = () => {
           title="Rooms"
           subtitle="How many rooms do you have?"
         />
-        <hr />
         <Counter
           icon={MdBathroom}
           onChange={(value) => setCustomValue('bathroomCount', value)}
@@ -213,7 +210,6 @@ const RentModal = () => {
           title="Bathrooms"
           subtitle="How many bathrooms do you have?"
         />
-        <hr />
         <SaunaToggle
           icon={MdWater}
           title='Sauna'

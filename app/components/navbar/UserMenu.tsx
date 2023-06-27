@@ -12,6 +12,7 @@ import MyAvatar from "../MyAvatar";
 import { User } from "@prisma/client";
 import useRentModal from "@/app/hooks/useRentModal";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import Link from "next/link";
 
 interface UserMenuProps {
   currentUser?: User | null;
@@ -62,32 +63,17 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <div className="flex flex-col cursor-pointer text-sm w-48">
           {currentUser ? (
             <>
-              <MenuItem
-                label="My trips"
-                onClick={() => router.push('/trips')}
-              />
-              <MenuItem
-                label="My favorites"
-                onClick={() => router.push('/favorites')}
-              />
+              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/trips'}>My trips</Link>
+              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/favorites'}>My favorites</Link>
               <hr />
               <MenuItem
                 label="Rent your mökki out"
                 onClick={() => rentModal.onOpen()}
               />
-              <MenuItem
-                label="Dashboard"
-                onClick={() => router.push('/dashboard')}
-              />
+              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/dashboard'}>Dashboard</Link>
               <hr />
-              <MenuItem
-                label="Home"
-                onClick={() => router.push('/')}
-              />
-              <MenuItem
-                label="Messages"
-                onClick={() => router.push('/messages')}
-              />
+              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/'}>Home</Link>
+              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/messages'}>Messages</Link>
               <MenuItem
                 label="Logout"
                 onClick={() => signOut()}
@@ -95,10 +81,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
             </>
           ) : (
             <>
-              <MenuItem
-                label="Home"
-                onClick={() => router.push('/')}
-              />
+              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/'}>Home</Link>
               <MenuItem
                 label="Login"
                 onClick={loginModal.onOpen}

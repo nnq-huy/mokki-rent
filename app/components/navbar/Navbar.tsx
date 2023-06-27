@@ -1,6 +1,5 @@
 import Categories from "./Categories";
 import Logo from "./Logo";
-import Container from "../Container";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { User } from "@prisma/client"
@@ -26,8 +25,8 @@ const Navbar: React.FC<NavbarProps> = ({
           border-b-[1px]
         "
       >
-          <div
-            className="
+        <div
+          className="
             w-full
             flex
             flex-row
@@ -37,11 +36,11 @@ const Navbar: React.FC<NavbarProps> = ({
             md:gap-0
             bg-white
           "
-          >
-            <Logo />
-            <Search />
-            <UserMenu currentUser={currentUser} />
-          </div>
+        >
+          <Logo />
+          <Search />
+          <UserMenu currentUser={currentUser} />
+        </div>
       </div>
       <Categories />
     </div>

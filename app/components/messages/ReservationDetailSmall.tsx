@@ -1,8 +1,6 @@
 'use client';
 
-import useIsGuest from "@/app/hooks/useIsGuest";
 import { Listing, Reservation, User } from "@prisma/client";
-import { useRouter } from "next/navigation";
 
 interface ReservationDetailSmallProps {
   reservation: Reservation & {
@@ -11,8 +9,6 @@ interface ReservationDetailSmallProps {
   }
 }
 const ReservationDetailSmall: React.FC<ReservationDetailSmallProps> = ({ reservation }) => {
-  const { isGuest } = useIsGuest();
-  const router = useRouter();
   return (
     <div className="text-xs p-2 border rounded-xl my-2 shadow-md bg-white">Booking for&nbsp;
     {reservation.listing?.title} <br/>

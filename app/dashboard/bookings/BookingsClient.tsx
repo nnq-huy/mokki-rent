@@ -158,7 +158,7 @@ const BookingsClient: React.FC<ReservationsClientProps> = ({
     else return rerservation.status
   });
   return (
-    <div className="min-h-[80vh]">
+    <div className="min-h-[80vh] w-full">
       <Heading
         title="Bookings"
         subtitle="Reservations on your properties"
