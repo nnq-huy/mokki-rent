@@ -23,10 +23,11 @@ import { User } from "@prisma/client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import { Separator } from "../components/ui/separator";
-import Avatar from "../components/Avatar";
+import MyAvatar from "../components/MyAvatar";
 import ImageUpload from "../components/inputs/ImageUpload";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 
 interface ProfilePageProps {
   currentUser: User | null
@@ -106,6 +107,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Profile picture</FormLabel>
+                <Avatar>
+                  <AvatarImage src={currentUser?.image!} />
+                  <AvatarFallback>Mokki</AvatarFallback>
+                </Avatar>
                 <ImageUpload
                   value={field.value}
                   onChange={(value) => { form.setValue('image', value) }}

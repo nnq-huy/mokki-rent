@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs"
+import { Separator } from "../ui/separator";
 interface PropertyTabsProps {
   details: React.ReactElement;
   calendar: React.ReactElement;
@@ -9,18 +10,21 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
   details, calendar, bookings, settings
 }) => {
   return (
-    <Tabs defaultValue="details" className="flex flex-col w-full justify-center px-2 md:px-4">
-      <TabsList className=" place-content-center bg-gray-50 text-white">
-        <TabsTrigger value="details" className="hover:opacity-70 rounded-t rounded-b-none bg-mokki-green shadow-md">
+    <Tabs defaultValue="details" className="flex flex-col w-full px-2 md:px-4">
+      <TabsList className="shadow bg-gray-100 w-full">
+        <TabsTrigger value="details">
           Details
         </TabsTrigger>
-        <TabsTrigger value="calendar" className="hover:opacity-70 rounded-t rounded-b-none bg-mokki-green shadow-md">
+        <Separator orientation="vertical" decorative />
+        <TabsTrigger value="calendar">
           Calendar
         </TabsTrigger>
-        <TabsTrigger value="bookings" className="hover:opacity-70 rounded-t rounded-b-none bg-mokki-green shadow-md">
+        <Separator orientation="vertical" decorative />
+        <TabsTrigger value="bookings">
           Bookings
         </TabsTrigger>
-        <TabsTrigger value="settings" className="hover:opacity-70 rounded-t rounded-b-none bg-mokki-green shadow-md">
+        <Separator orientation="vertical" decorative />
+        <TabsTrigger value="settings">
           Settings
         </TabsTrigger>
       </TabsList>

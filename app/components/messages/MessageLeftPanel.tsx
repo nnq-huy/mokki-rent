@@ -1,6 +1,6 @@
 'use client'
 import { Listing, Reservation, User } from "@prisma/client"
-import Avatar from "../Avatar";
+import MyAvatar from "../MyAvatar";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import Button from "../Button";
@@ -81,7 +81,7 @@ const MessageLeftPanel: React.FC<MessageLeftPanelProps> = ({ reservationsAsGuest
                     focus:outline-none"
                     onClick={() => { setCurrentReservation(reservation) }}
                   >
-                    <Avatar src={isGuest ? reservation.hostPhoto : reservation.user!.image} />
+                    <MyAvatar src={isGuest ? reservation.hostPhoto! : reservation.user!.image!} />
                     <div className=" hidden md:block text-left rtl:text-right">
                       <h1 className="truncate text-sm font-semibold text-gray-700 capitalize dark:text-white">
                         {reservation.listing!.title}<br />

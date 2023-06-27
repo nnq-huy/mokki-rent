@@ -32,3 +32,60 @@ export async function DELETE(
 
   return NextResponse.json(listing);
 }
+
+export async function PUT(
+  request: Request, 
+  { params }: { params: IParams }
+){
+  const currentUser = await getCurrentUser();
+  const body = await request.json();
+  const {
+          title,
+          category,
+          imageSrc,
+          guestCount,
+          roomCount,
+          bathroomCount,
+          locationValue,
+          hasSauna,
+          price,
+          description,
+          status,
+          userId
+        } = body;
+
+  if (!currentUser) {
+    return NextResponse.error();
+  }
+
+  const { listingId } = params;
+
+  if (!listingId || typeof listingId !== 'string') {
+    throw new Error('Invalid ID');
+  }
+
+  if(userId != currentUser.id){
+    throw new Error('Unauthorized operation!');
+  }
+
+  const confirmation = await prisma.listing.update({
+    where: {
+      id: listingId,
+    },
+    data:{
+      title:title,
+      description:description,
+      category:category,
+      locationValue:locationValue,
+      imageSrc:imageSrc,
+      guestCount:guestCount,
+      roomCount:roomCount,
+      bathroomCount:bathroomCount,
+      hasSauna:hasSauna,
+      status:status,
+      price:price,
+    }
+  })
+  return NextResponse.json(confirmation);
+}
+

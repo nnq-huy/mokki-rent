@@ -1,6 +1,6 @@
 'use client'
 import { Message } from "@prisma/client"
-import Avatar from "../Avatar";
+import MyAvatar from "../MyAvatar";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -36,13 +36,13 @@ const ConversationPanel: React.FC<ConversationPanelProps> = ({ messages }) => {
         <div className="flex justify-between items-center w-full h-[40px] bg-gray-100 rounded-xl shadow-lg">
         {isGuest
           ? <div className="p-2 flex items-center">
-            <Avatar src={currentReservation.hostPhoto} />
+            <MyAvatar src={currentReservation.hostPhoto!} />
             <div>
               <p className="font-semibold text-gray-800 px-2">{currentReservation.hostName}</p>
             </div>
           </div>
           : <div className="p-2 flex items-center">
-            {(currentReservation.user) ? <Avatar src={currentReservation.user!.image} /> : <></>}
+            {(currentReservation.user) ? <MyAvatar src={currentReservation.user!.image!} /> : <></>}
             <div>
               <p className="font-semibold text-gray-800 px-2">{currentReservation.user?.name}</p>
             </div>

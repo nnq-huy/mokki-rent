@@ -11,7 +11,7 @@ import { statuses } from "@/app/constants"
 
 import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import Avatar from "../Avatar";
+import MyAvatar from "../MyAvatar";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
@@ -110,34 +110,32 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const status = statuses.find((status) => status.value === reservation.status);
 
   return (
-    <div
-      className="col-span-1 bg-white"
-    >
-      <div className="flex flex-col gap-1 w-full shadow-lg p-4 rounded-xl">
-        <div
-          onClick={() => router.push(`/properties/${reservation.listing!.id}`)}
-          className="
-            cursor-pointer group
-            aspect-square 
-            w-full 
-            relative 
-            overflow-hidden 
-            rounded-xl
+    <div className="col-span-1 bg-white flex flex-col gap-1 w-full shadow-lg p-0 rounded-xl">
+      <div
+        onClick={() => router.push(`/dashboard/properties/${reservation.listing!.id}`)}
+        className="
+          cursor-pointer group
+          aspect-square 
+          w-full 
+          relative 
+          overflow-hidden 
+          rounded-t-xl
           "
-        >
-          <Image
-            fill
-            className="
-              object-cover 
-              h-full 
-              w-full 
-              group-hover:scale-110 
-              transition
-            "
-            src={reservation.listing!.imageSrc}
-            alt="Listing"
-          />
-        </div>
+      >
+        <Image
+          fill
+          className="
+            object-cover 
+            h-full 
+            w-full 
+            group-hover:scale-110 
+            transition
+          "
+          src={reservation.listing!.imageSrc}
+          alt="Listing"
+        />
+      </div>
+      <div className="px-4 pb-4">
         <div className="font-semibold text-lg">
           {reservation.listing?.title}
         </div>
@@ -158,7 +156,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             Booked by
             <br />
             {guest?.name}</p>
-          <Avatar src={guest?.image} />
+          <MyAvatar src={guest?.image!} />
         </div>
         <div className="font-bold flex items-center gap-1">
           {status && (
@@ -203,6 +201,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           onClick={handleDelete}
         />}
       </div>
+
     </div>
   );
 }

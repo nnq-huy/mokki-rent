@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import MenuItem from "./MenuItem";
-import Avatar from "../Avatar";
+import MyAvatar from "../MyAvatar";
 import { User } from "@prisma/client";
 import useRentModal from "@/app/hooks/useRentModal";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
@@ -54,7 +54,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser?.image} />
+            <MyAvatar src={currentUser?.image!} />
           </div>
         </div>
       </PopoverTrigger>

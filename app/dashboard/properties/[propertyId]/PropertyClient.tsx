@@ -11,17 +11,14 @@ import listPlugin from '@fullcalendar/list';
 import { enGB } from 'date-fns/locale'
 
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 import Container from "@/app/components/Container";
 import { Reservation, Listing, User } from "@prisma/client";
-import Heading from "@/app/components/Heading";
-import Link from "next/link";
 import PropertyTabs from "@/app/components/properties/PropertyTab";
-import PropertyInfo from "@/app/components/properties/PropertyInfo";
 import { categories, eventColors } from "@/app/constants";
 import { Booking } from "@/app/types";
 import PropertyReservationsTable from "@/app/components/properties/PropertyResTable";
+import DetailsPage from "@/app/components/properties/PropertyDetails";
 
 
 
@@ -81,36 +78,15 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const detailsContent = (
-    <div className="flex flex-col">
-      <Heading
-        title={listing.title}
-        subtitle={listing.locationValue}
-      />
-      <Image
-        width={600}
-        height={600}
-        src={listing.imageSrc}
-        className="object-cover rounded-xl"
-        alt="Image"
-      />
-      <PropertyInfo
-        id={listing.id}
-        description={listing.description}
-        guestCount={listing.guestCount}
-        roomCount={listing.roomCount}
-        bathroomCount={listing.bathroomCount}
-        category={category}
-        locationValue={listing.locationValue}
-        hasSauna={listing.hasSauna} />
-    </div>
+   <DetailsPage listing={listing}/>
   );
 
   const calendarContent = (
-    <div>
+    <div className="w-[80vw]">
       <h1 className="font-semibold text-xl">Bookings for {listing.title}</h1>
 
       <FullCalendar
-        buttonText={{ today: 'today', dayGridMonth: 'Home', listWeek: 'Week List'}}
+        buttonText={{ today: 'today', dayGridMonth: 'Home', listWeek: 'Week'}}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
@@ -124,15 +100,10 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
         initialView='dayGridMonth'
         eventColor='#028446'
       />
-      {/*      <ul>
-        {events.map((res)=>
-          <li key={res.id}>Start {res.start.toLocaleString()} end{res.end.toLocaleString()}</li>
-        )}
-      </ul> */}
     </div>
   );
   const bookingsContent = (
-    <div>
+    <div className="w-[80vw]">
       <h1 className="font-semibold text-xl">Bookings for {listing.title}</h1>
       <p className="text-neutral-500 ">Showing {reservations.length} bookings</p>
       <PropertyReservationsTable reservations={reservations} />
@@ -140,14 +111,14 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
 
   );
   const settingsContent = (
-    <div>
+    <div className="w-[80vw]">
       settings contents
     </div>
   );
 
   return (
     <Container>
-      <div className="bg-gray-50 pb-4">
+      <div className="bg-gray-50 pb-4 px-4">
         <PropertyTabs
           details={detailsContent}
           calendar={calendarContent}

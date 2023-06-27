@@ -66,7 +66,6 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
       />
       <div
         className="
-          mt-4
           grid 
           grid-cols-1 
           sm:grid-cols-2 

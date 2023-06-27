@@ -11,7 +11,7 @@ import Button from "../Button";
 import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import { AiOutlineMessage } from "react-icons/ai";
 import HeartButton from "../HeartButton";
-import Avatar from "../Avatar";
+import MyAvatar from "../MyAvatar";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
@@ -75,16 +75,15 @@ const TripCard: React.FC<TripCardProps> = ({
 
   return (
     <div
-      className="col-span-1 bg-white"
+      className="col-span-1 bg-white flex flex-col gap-2 w-full shadow-lg rounded-xl"
     >
-      <div className="flex flex-col gap-2 w-full shadow-lg p-4 rounded-xl">
         <div
           className="
             aspect-square 
             w-full 
             relative 
             overflow-hidden
-            rounded-xl
+            rounded-t-xl
           "
         >
           <Image
@@ -112,6 +111,8 @@ const TripCard: React.FC<TripCardProps> = ({
             />
           </div>
         </div>
+              <div className="px-4 pb-4">
+
         <div className="font-semibold text-lg flex flex-row justify-between">
           <div>{reservation.listing?.title}</div>
           <div className="flex flex-row gap-1 items-center text-sm text-neutral-500">
@@ -141,7 +142,7 @@ const TripCard: React.FC<TripCardProps> = ({
             <br />
             {reservation.hostName}
           </p>
-          <Avatar src={reservation.hostPhoto} />
+          <MyAvatar src={reservation.hostPhoto!} />
         </div>
         <div className="font-bold flex items-center gap-1">
           {status && (

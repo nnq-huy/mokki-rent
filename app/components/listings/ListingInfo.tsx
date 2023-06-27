@@ -5,7 +5,7 @@ import { IconType } from "react-icons";
 
 import useProvinces from "@/app/hooks/useProvinces";
 
-import Avatar from "../Avatar";
+import MyAvatar from "../MyAvatar";
 import ListingCategory from "./ListingCategory";
 import { User } from "@prisma/client";
 import HeartButton from "../HeartButton";
@@ -61,7 +61,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           "
         >
           <div>Hosted by {user?.name}</div>
-          <Avatar src={user?.image} />
+          <MyAvatar src={user?.image} />
         </div>
         <div className="
             flex 

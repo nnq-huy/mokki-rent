@@ -4,7 +4,7 @@ import { User, Message, Reservation, Listing } from "@prisma/client";
 import ConversationPanel from "@/app/components/messages/ConversationPanel";
 import ReservationPanel from "@/app/components/messages/ReservationDetailsPanel";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
-import Avatar from "../../components/Avatar";
+import MyAvatar from "../../components/MyAvatar";
 import Heading from "../../components/Heading";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { Separator } from "../../components/ui/separator";
@@ -45,9 +45,9 @@ const MessagesClient: React.FC<MessagesClientProps> = ({
                     p-2
                     w-full
                     flex 
-                    justify-evenly
+                    justify-start
                     items-center 
-                    gap-x-1
+                    gap-x-2
                     hover:bg-gray-100 
                     focus:outline-none"
                   onClick={() => {
@@ -55,7 +55,7 @@ const MessagesClient: React.FC<MessagesClientProps> = ({
                     setCurrentReservation(reservation)
                   }}
                 >
-                  <Avatar src={reservation.user.image} />
+                  <MyAvatar src={reservation.user.image!} />
                   <div className=" hidden md:block text-left rtl:text-right">
                     <p className="text-sm font-semibold text-gray-700 capitalize dark:text-white">
                       {reservation.user!.name}

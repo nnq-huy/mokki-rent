@@ -25,7 +25,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
   return (
     <div className='z-50'>
       <Select
-        placeholder="Anywhere"
+        placeholder={value?.label??'Select location'}
         isClearable
         options={getAll()}
         value={value}
@@ -35,7 +35,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
           flex flex-row items-center gap-3">
             <div>
               {option.label},
-              <span className="text-neutral-500 ml-1">
+              <span className="opacity-80 ml-1">
                 {option.english}
               </span>
             </div>
@@ -51,8 +51,8 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
           borderRadius: 6,
           colors: {
             ...theme.colors,
-            primary: 'black',
-            primary25: '#ffe4e6'
+            primary: '#028446',
+            primary25: '#cce6da'
           }
         })}
       />

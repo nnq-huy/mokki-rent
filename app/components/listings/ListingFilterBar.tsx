@@ -14,10 +14,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { Label } from "../ui/Label";
 import { BiSort } from "react-icons/bi";
 import { sortOptions } from "@/app/constants";
 import { SortOption } from "@/app/types";
+import { Label } from "../ui/label";
 
 const ListingFilterBar = () => {
   const params = useSearchParams();
