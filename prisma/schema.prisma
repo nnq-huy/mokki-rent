@@ -25,6 +25,7 @@ model User {
   accounts Account[]
   listings Listing[]
   reservations Reservation[]
+  events BoookingEvent[]
 }
 
 model Account {
@@ -84,6 +85,7 @@ model Reservation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
   messages Message[]
+  events BoookingEvent[]
 }
 
 model Message {
@@ -100,6 +102,17 @@ model Message {
   reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
 }
 
+model BoookingEvent {
+  id String @id @default(cuid())
+  reservationId String
+  createdAt DateTime @default(now())
+  event ReservationStatus
+  userId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+}
+
 enum Role {
   USER
   ADMIN
@@ -109,6 +122,7 @@ enum ReservationStatus {
   unconfirmed
   confirmed
   cancelled
+  paid
   done
 }
 

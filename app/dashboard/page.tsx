@@ -1,9 +1,9 @@
-
 import EmptyState from "@/app/components/EmptyState";
 import ClientOnly from "@/app/components/ClientOnly";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import ProfilePage from "./ProfilePage";
+import getReservations from "@/app/actions/getReservations";
+import ReportsClient from "./reports/ReportsClient";
 
 
 const HostDashboard = async () => {
@@ -21,10 +21,24 @@ const HostDashboard = async () => {
     )
   }
 
+  const reservations = await getReservations({ hostId: currentUser.id });
+
+  if (reservations.length === 0) {
+    return (
+      <ClientOnly>
+        <EmptyState
+          title="No reservations found"
+          subtitle="Looks like you have no reservations on your properties."
+          showRent
+        />
+      </ClientOnly>
+    );
+  }
+
   return (
     <ClientOnly>
-      <ProfilePage
-        currentUser={currentUser}
+      <ReportsClient
+        reservations={reservations}
       />
     </ClientOnly>
   );

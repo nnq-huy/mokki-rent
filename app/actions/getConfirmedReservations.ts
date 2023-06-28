@@ -13,7 +13,7 @@ export default async function getConfirmedReservations(
     let query: any = {};
   
 
-    //only get reservations that end after today - for guest
+    //only get reservations that end after today - for guest to find disabled dates when making reservation
     if (listingId) {
       query ={
         status: "confirmed",

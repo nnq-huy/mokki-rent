@@ -1,4 +1,4 @@
-import ProfilePage from "../ProfilePage"
+import ProfilePage from "./ProfilePage"
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";

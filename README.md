@@ -2,7 +2,7 @@
 
 ## Introduction
 
-A simple fullstack site for summer cottage listing and renting built with Next.JS with server components, React, Tailwind CSS,Image upload on Cloudinary,  Prisma with PostgreSQL hosted on Neon.tech/Supabase
+A simple fullstack site for summer cottage listing and renting built with Next.JS with server components, React, Tailwind CSS,custom shadcn/ui components, Image upload on Cloudinary,  Prisma with PostgreSQL hosted on Neon.tech/Supabase
 
 Main features:
 
@@ -20,12 +20,13 @@ Main features:
 - user and host can cancel reservations
 - guest and host can send messages, confirm and cancel reservations in the messages center
 - host can mangage their bookings and properties in dedicated pages with calendar and list view
+- reporting dashboard showing booking stats on user's properties
 - responsive design
 
 ## To dos:
 
 - ~~messaging between host & user~~
-- user & host profiles
+- ~~user & host profiles~~
 - more detailed info on listing
 - more images per listing
 - advanced price calculation
@@ -40,7 +41,6 @@ Main features:
 ## Link to demo
 
 [https://mokki-rent.vercel.app](https://mokki-rent.vercel.app/)
-
 
 ## To run the project
 

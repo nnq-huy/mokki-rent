@@ -62,3 +62,40 @@ export async function DELETE(
 
   return NextResponse.json(reservation);
 }
+//route to create booking events
+export async function POST(
+  request: Request, 
+) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.error();
+  }
+
+  const body = await request.json();
+  const {
+    reservationId,
+    event,
+    userId,
+   } = body;
+
+   if (!reservationId || !event || !userId) {
+    return NextResponse.error();
+  }
+
+  const bookingEvent = await prisma.reservation.update({
+    where: {
+      id: reservationId
+    },
+    data: {
+      events: {
+        create: {
+          userId: currentUser.id,
+          event,
+        }
+      }
+    }
+  });
+
+  return NextResponse.json(bookingEvent);
+}

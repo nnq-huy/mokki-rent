@@ -145,9 +145,9 @@ export const statuses = [
 //admin dashboard side navigation bar items:
 export const sidebarNavItems = [
   {
-    title: "Profile",
-    href: "/dashboard/profile",
-    icon: User
+    title: "Reports",
+    href: "/dashboard/reports",
+    icon: FileBarChart2
   },
   {
     title: "Bookings",
@@ -160,9 +160,9 @@ export const sidebarNavItems = [
     icon: Home
   },
   {
-    title: "Reports",
-    href: "/dashboard/reports",
-    icon: FileBarChart2
+    title: "Profile",
+    href: "/dashboard/profile",
+    icon: User
   },
   {
     title: "Messages",

@@ -184,6 +184,9 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={()=>{router.push(`/dashboard/bookings/${reservation.id}`)}}>
+              View details
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleOpenMessage}>
               Message guest
             </DropdownMenuItem>

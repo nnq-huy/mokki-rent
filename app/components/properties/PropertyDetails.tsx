@@ -368,7 +368,7 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
           <div className="flex flex-row gap-4 pt-4">
             <Button type="submit">Save</Button>
             <Button type="reset" onClick={() => { form.reset(defaultValues) }}>Reset</Button>
-            <Button className="bg-red-500" type="button" onClick={() => {setOpenDeleteDialog(true)}}>Delete listing</Button>
+            <Button variant={'destructive'} type="button" onClick={() => {setOpenDeleteDialog(true)}}>Delete listing</Button>
           </div>
         </form>
       </Form>
