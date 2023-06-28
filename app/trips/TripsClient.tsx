@@ -10,6 +10,7 @@ import Container from "@/app/components/Container";
 import { Reservation, User } from "@prisma/client";
 import TripCard from "../components/trips/TripCard";
 import ConfirmDialog from "../components/ConfirmDialog";
+import TripCardNew from "../components/trips/TripCardNew";
 
 interface TripsClientProps {
   reservations: Reservation[],
@@ -32,10 +33,17 @@ const TripsClient: React.FC<TripsClientProps> = ({
     const data = {
       status: "cancelled"
     }
+    const eventData = {
+      reservationId:id,
+      userId: currentUser?.id,
+      event: "cancelled"
+    }
     axios.put(`/api/reservations/${id}`, data)
       .then(() => {
-        toast.success('Reservation cancelled');
-        router.refresh();
+        axios.post(`/api/reservations/${id}`, eventData).then(() => {
+          toast.success('Reservation cancelled');
+          router.refresh();
+        })
       })
       .catch((error) => {
         toast.error(error?.response?.data?.error)
@@ -44,7 +52,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
         setDeletingId('');
         setOpenDialog(false);
       })
-  }, [router]);
+  }, [currentUser?.id, router]);
 
   return (
     <Container>
@@ -53,18 +61,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
           title="Trips"
           subtitle="Where you've been and where you're going"
         />
-        <div
-          className="
-          grid 
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3
-          lg:grid-cols-4
-          xl:grid-cols-4
-          2xl:grid-cols-5
-          gap-4
-        "
-        >
+        <div className="flex flex-col gap-16 items-center pt-4">
           <>
             <ConfirmDialog
               isOpen={openDialog}
@@ -78,7 +75,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
             />
           </>
           {reservations.map((reservation: any) => (
-            <TripCard
+            <TripCardNew
               key={reservation.id}
               reservation={reservation}
               actionId={reservation.id}

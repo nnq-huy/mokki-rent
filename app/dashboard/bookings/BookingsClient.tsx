@@ -13,24 +13,24 @@ import { Button } from "@/app/components/ui/button";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import ReservationsTable from "@/app/components/reservations/ReservationsTable";
 import { BsFillGridFill, BsListUl } from "react-icons/bs";
+import ReservationCardNew from "@/app/components/reservations/ReservationCardNew";
 
 interface ReservationsClientProps {
   reservations: (Reservation & {
     user: User,
     listing: Listing
   })[],
+  currentUser: User
 }
 
 const BookingsClient: React.FC<ReservationsClientProps> = ({
-  reservations,
+  reservations, currentUser
 }) => {
   const router = useRouter();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openMarkDoneDialog, setOpenMarkDoneDialog] = useState(false);
-
-
   const [actionId, setActionId] = useState('');
   const [showCancelled, setShowCancelled] = useState(false);
   const [listView, setListView] = useState(true);
@@ -39,11 +39,18 @@ const BookingsClient: React.FC<ReservationsClientProps> = ({
     const data = {
       status: ReservationStatus.done
     }
+    const eventData = {
+      reservationId: actionId,
+      userId: currentUser.id,
+      event: ReservationStatus.done
+    }
     await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
-        toast.success('Reservation marked as done');
-        setOpenMarkDoneDialog(false);
-        router.refresh();
+        axios.post(`/api/reservations/${actionId}`, eventData).then(() => {
+          toast.success('Reservation marked as done');
+          setOpenMarkDoneDialog(false);
+          router.refresh();
+        });
       })
       .catch(() => {
         toast.error('Something went wrong.')
@@ -70,11 +77,18 @@ const BookingsClient: React.FC<ReservationsClientProps> = ({
     const data = {
       status: ReservationStatus.cancelled
     }
+    const eventData = {
+      reservationId: actionId,
+      userId: currentUser.id,
+      event: ReservationStatus.cancelled
+    }
     await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
-        toast.success('Reservation cancelled');
-        setOpenCancelDialog(false);
-        router.refresh();
+        axios.post(`/api/reservations/${actionId}`, eventData).then(() => {
+          toast.success('Reservation cancelled');
+          setOpenCancelDialog(false);
+          router.refresh();
+        });
       })
       .catch(() => {
         toast.error('Something went wrong.')
@@ -87,11 +101,18 @@ const BookingsClient: React.FC<ReservationsClientProps> = ({
     const data = {
       status: ReservationStatus.confirmed
     }
+    const eventData = {
+      reservationId: actionId,
+      userId: currentUser.id,
+      event: ReservationStatus.confirmed
+    }
     await axios.put(`/api/reservations/${actionId}`, data)
       .then(() => {
-        toast.success('Reservation confirmed!');
-        setOpenConfirmDialog(false);
-        router.refresh();
+        axios.post(`/api/reservations/${actionId}`, eventData).then(() => {
+          toast.success('Reservation confirmed!');
+          setOpenConfirmDialog(false);
+          router.refresh();
+        });
       })
       .catch(() => {
         toast.error('Something went wrong.')
@@ -191,13 +212,9 @@ const BookingsClient: React.FC<ReservationsClientProps> = ({
         ? <ReservationsTable reservations={filteredReservations} />
         : <div
           className="
-          grid 
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-4
-          xl:grid-cols-5
-          2xl:grid-cols-6
+          items-center
+          flex
+          flex-col
           gap-4
           xl:px-8
           md:px-4
@@ -206,7 +223,7 @@ const BookingsClient: React.FC<ReservationsClientProps> = ({
         "
         >
           {filteredReservations.map((reservation) => (
-            <ReservationCard
+            <ReservationCardNew
               key={reservation.id}
               reservation={reservation}
               actionId={reservation.id}

@@ -77,41 +77,39 @@ const TripCard: React.FC<TripCardProps> = ({
     <div
       className="col-span-1 bg-white flex flex-col gap-2 w-full shadow-lg rounded-xl"
     >
-        <div
-          className="
+      <div
+        className="
             aspect-square 
             w-full 
             relative 
             overflow-hidden
             rounded-t-xl
           "
-        >
-          <Image
-            onClick={() => router.push(`/listings/${reservation.listing!.id}`)}
-            fill
-            className="
-              cursor-pointer group
+      >
+        <Image
+          onClick={() => router.push(`/trips/${reservation.id}`)}
+          fill
+          className="
+              cursor-pointer
               object-cover 
-              h-full 
-              w-full 
-              group-hover:scale-110 
+              hover:scale-110 
               transition
             "
-            src={reservation.listing!.imageSrc}
-            alt="Listing"
-          />
-          <div className="
+          src={reservation.listing!.imageSrc}
+          alt="Listing"
+        />
+        <div className="
             absolute
             top-3
             right-3
           ">
-            <HeartButton
-              listingId={reservation.listing!.id}
-              currentUser={currentUser}
-            />
-          </div>
+          <HeartButton
+            listingId={reservation.listing!.id}
+            currentUser={currentUser}
+          />
         </div>
-              <div className="px-4 pb-4">
+      </div>
+      <div className="px-4 pb-4">
 
         <div className="font-semibold text-lg flex flex-row justify-between">
           <div>{reservation.listing?.title}</div>
