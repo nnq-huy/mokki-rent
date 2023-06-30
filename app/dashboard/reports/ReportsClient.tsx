@@ -17,11 +17,11 @@ interface ReportsPageProps {
 
 const ReportsClient: React.FC<ReportsPageProps> = ({ reservations }) => {
   const doneBookings = reservations.filter((a) => { return a.status === "done" })
-  const recentBookings = reservations.slice(0, 5);
-  const totalRevenue = reservations.reduce((a, b) => {
+  const recentBookings = doneBookings.slice(0, 5);
+  const totalRevenue = doneBookings.reduce((a, b) => {
     return a + b.totalPrice;
   }, 0);
-  const totalBookings = reservations.length.toString();
+  const totalBookings = doneBookings.length.toString();
 
   const barChart = (
     <Card>
@@ -30,7 +30,7 @@ const ReportsClient: React.FC<ReportsPageProps> = ({ reservations }) => {
       </CardHeader>
       <CardContent className="">
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={reservations}>
+          <BarChart data={doneBookings}>
             <XAxis />
             <YAxis
               stroke="#888888"

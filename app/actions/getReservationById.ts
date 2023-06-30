@@ -18,6 +18,7 @@ export default async function getReservationById(
         user: true,
         events:true,
         messages:true,
+        listing:true,
       }
     });
 

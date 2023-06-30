@@ -121,7 +121,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser }) => {
                   />
                 </FormControl>
                 <FormDescription>
-                  You can update your profile picture here
+                  Click the box above to change profile picture
                 </FormDescription>
                 <FormMessage />
               </FormItem>

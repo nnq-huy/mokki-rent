@@ -1,96 +1,53 @@
 'use client';
 
-import { toast } from "react-hot-toast";
-import axios from "axios";
-import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
-
 import Heading from "@/app/components/Heading";
-import Container from "@/app/components/Container";
 import { Reservation, User } from "@prisma/client";
-import TripCard from "../components/trips/TripCard";
-import ConfirmDialog from "../components/ConfirmDialog";
 import TripCardNew from "../components/trips/TripCardNew";
+import { useState } from "react";
+import { Button } from "../components/ui/button";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 interface TripsClientProps {
   reservations: Reservation[],
-  currentUser?: User | null,
+  currentUser: User,
 }
 
 const TripsClient: React.FC<TripsClientProps> = ({
   reservations,
   currentUser
 }) => {
-  const router = useRouter();
-  const [deletingId, setDeletingId] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
-  const confirmDelete = (id: string) => {
-    setDeletingId(id);
-    setOpenDialog(true);
-  };
+  const [showCancelled, setShowCancelled] = useState(false);
 
-  const onCancel = useCallback((id: string) => {
-    const data = {
-      status: "cancelled"
-    }
-    const eventData = {
-      reservationId:id,
-      userId: currentUser?.id,
-      event: "cancelled"
-    }
-    axios.put(`/api/reservations/${id}`, data)
-      .then(() => {
-        axios.post(`/api/reservations/${id}`, eventData).then(() => {
-          toast.success('Reservation cancelled');
-          router.refresh();
-        })
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.error)
-      })
-      .finally(() => {
-        setDeletingId('');
-        setOpenDialog(false);
-      })
-  }, [currentUser?.id, router]);
-
+  const filteredReservations = reservations.filter((rerservation) => {
+    if (!showCancelled) { return rerservation.status != 'cancelled'; }
+    else return rerservation.status
+  });
   return (
-    <Container>
-      <div className="xl:px-8 md:px-4 px-2 pt-4" >
-        <Heading
-          title="Trips"
-          subtitle="Where you've been and where you're going"
-        />
-        <div className="flex flex-col gap-16 items-center pt-4">
-          <>
-            <ConfirmDialog
-              isOpen={openDialog}
-              title="Are you sure you want to cancel this reservation?"
-              subtitle="This action cannot be undone"
-              onConfirm={() => onCancel(deletingId)}
-              onDismiss={() => {
-                setOpenDialog(false);
-                setDeletingId('');
-              }}
-            />
-          </>
-          {reservations.map((reservation: any) => (
-            <TripCardNew
-              key={reservation.id}
-              reservation={reservation}
-              actionId={reservation.id}
-              onAction={confirmDelete}
-              disabled={deletingId === reservation.id}
-              actionLabel="Cancel reservation"
-              currentUser={currentUser}
-              showMessage
-            />
-          ))}
-        </div>
+    <div className="xl:px-8 md:px-4 px-2 pt-4" >
+      <Heading
+        title="Trips"
+        subtitle="Where you've been and where you're going"
+      />
+      <div className="flex flex-row justify-start gap-4 px-4 w-full">
+        <Button
+          variant={'outline'}
+          className="gap-2 text-mokki-green"
+          onClick={() => setShowCancelled(!showCancelled)}
+        >
+          {showCancelled ? 'Cancelled is shown' : 'Cancelled is hidden'}
+          {showCancelled ? <AiFillEye /> : <AiFillEyeInvisible />}
+        </Button>
       </div>
-
-
-    </Container>
+      <div className="flex flex-col gap-16 items-center pt-4">
+        {filteredReservations.map((reservation: any) => (
+          <TripCardNew
+            key={reservation.id}
+            reservation={reservation}
+            currentUser={currentUser}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 

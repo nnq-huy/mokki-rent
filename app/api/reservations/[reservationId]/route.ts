@@ -5,13 +5,14 @@ import prisma from "@/app/utils/prismadb";
 interface IParams {
   reservationId?: string;
 }
+//route to update reservation status
 export async function PUT(
   request: Request, 
   { params }: { params: IParams }
 ){
   const currentUser = await getCurrentUser();
   const body = await request.json();
-  const {status} = body;
+  const {status, rating} = body;
 
   if (!currentUser) {
     return NextResponse.error();
@@ -28,7 +29,8 @@ export async function PUT(
       id: reservationId,
     },
     data:{
-      status:status
+      status:status,
+      rating:rating
     }
   })
   return NextResponse.json(confirmation);
@@ -77,9 +79,9 @@ export async function POST(
     reservationId,
     event,
     userId,
-   } = body;
+  } = body;
 
-   if (!reservationId || !event || !userId) {
+  if (!reservationId || !event || !userId) {
     return NextResponse.error();
   }
 

@@ -1,5 +1,5 @@
 'use client'
-import { Message } from "@prisma/client"
+import { Message, User } from "@prisma/client"
 import MyAvatar from "../MyAvatar";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import { useEffect, useRef, useState } from "react";
@@ -10,9 +10,10 @@ import { MessageInput } from "./MessageInput";
 import ReservationDetailSmall from "./ReservationDetailSmall";
 
 interface ConversationPanelProps {
-  messages: Message[]
+  messages: Message[],
+  currentUser: User
 }
-const ConversationPanel: React.FC<ConversationPanelProps> = ({ messages }) => {
+const ConversationPanel: React.FC<ConversationPanelProps> = ({ messages,currentUser }) => {
   const { currentReservation } = useCurrentReservation();
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   const { isGuest } = useIsGuest();
@@ -20,14 +21,12 @@ const ConversationPanel: React.FC<ConversationPanelProps> = ({ messages }) => {
 
   useEffect(() => {
     let filteredMessages: Message[] = [];
-
     messages.forEach((message) => {
       if (message.reservationId === currentReservation.id) {
         filteredMessages.push(message);
       }
     })
     setCurrentMessages(filteredMessages);
-
   }, [currentReservation, messages]);
 
   return (
@@ -52,9 +51,8 @@ const ConversationPanel: React.FC<ConversationPanelProps> = ({ messages }) => {
           {<BsThreeDotsVertical />}
         </button>
         </div>
-        <div className="inline md:hidden">
-
-          <ReservationDetailSmall reservation={currentReservation}/>
+        <div className="inline">
+          <ReservationDetailSmall reservation={currentReservation} currentUser={currentUser}/>
         </div>
       </div>
       <div className="flex flex-col p-4 overflow-auto">

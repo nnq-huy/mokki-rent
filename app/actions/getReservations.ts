@@ -42,7 +42,8 @@ export default async function getReservations(
       where: query,
       include: {
         user: true,
-        listing: true
+        listing: true,
+        events:true,
       },
       orderBy: {
         createdAt: 'desc'

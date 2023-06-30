@@ -161,7 +161,8 @@ const ListingClient: React.FC<PropertyClientProps> = ({
           >
             <ListingInfo
               id={listing.id}
-              user={listing.user}
+              hostName={listing.user.name!}
+              hostPhoto={listing.user.image!}
               category={category}
               description={listing.description}
               roomCount={listing.roomCount}

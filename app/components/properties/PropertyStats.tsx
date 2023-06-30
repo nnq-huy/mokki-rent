@@ -18,11 +18,11 @@ interface PropertyStatsProps {
 
 const PropertyStats: React.FC<PropertyStatsProps> = ({ reservations, name }) => {
   const doneBookings = reservations.filter((a) => { return a.status === "done" })
-  const recentBookings = reservations.slice(0, 5);
-  const totalRevenue = reservations.reduce((a, b) => {
+  const recentBookings = doneBookings.slice(0, 5);
+  const totalRevenue = doneBookings.reduce((a, b) => {
     return a + b.totalPrice;
   }, 0);
-  const totalBookings = reservations.length.toString();
+  const totalBookings = doneBookings.length.toString();
 
   const barChart = (
     <Card>
@@ -31,7 +31,7 @@ const PropertyStats: React.FC<PropertyStatsProps> = ({ reservations, name }) => 
       </CardHeader>
       <CardContent className="">
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={reservations}>
+          <BarChart data={doneBookings}>
             <XAxis />
             <YAxis
               stroke="#888888"
@@ -64,4 +64,4 @@ const PropertyStats: React.FC<PropertyStatsProps> = ({ reservations, name }) => 
 }
 
 export default PropertyStats;
-//TODO calculate revenue based on done bookings, groups by month
+//TODO groups by month

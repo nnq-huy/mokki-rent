@@ -1,6 +1,6 @@
 import { Listing, Reservation, User } from "@prisma/client";
 import { DataTable } from "../ui/data-table";
-import { columns } from "./DataColumn";
+import { columns } from "./BookingsDataColumn";
 
 interface ReservationsTableProps {
   reservations: (Reservation & {

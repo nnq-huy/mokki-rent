@@ -9,7 +9,7 @@ import { statuses } from "@/app/constants"
 
 
 import Button from "../Button";
-import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
+import { BoookingEvent, Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import MyAvatar from "../MyAvatar";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import useMessageModal from "@/app/hooks/useMessageModal";
@@ -20,7 +20,7 @@ import { Separator } from "../ui/separator";
 
 interface ReservationCardProps {
 
-  reservation: Reservation & { user?: User, listing?: Listing };
+  reservation: Reservation & { user?: User, listing?: Listing, events:BoookingEvent[] };
   onDelete?: (id: string) => void;
   onCancel?: (id: string) => void;
   onConfirm?: (id: string) => void;
@@ -150,6 +150,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
           icon={BiDetail}
           disabled={disabled}
           small
+          outline
           label={"View details"}
           onClick={() => { router.push(`/dashboard/bookings/${reservation.id}`) }}
         />
@@ -157,6 +158,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
           icon={CalendarCheck}
           disabled={disabled}
           small
+          outline
           label="Confirm booking"
           onClick={handleConfirm}
         />}
@@ -164,6 +166,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
           icon={CheckCircle}
           disabled={disabled}
           small
+          outline
           label="Mark as done"
           onClick={handleMarkDone}
         />}
@@ -171,6 +174,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
           icon={MessageCircle}
           disabled={disabled}
           small
+          outline
           label="Message guest"
           onClick={handleOpenMessage}
         />}
@@ -179,6 +183,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
             icon={XCircle}
             disabled={disabled}
             small
+            outline
             label={actionLabel}
             onClick={handleCancel}
           />
@@ -187,6 +192,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
           icon={Trash2}
           disabled={disabled}
           small
+          outline
           label="Delete reservation"
           onClick={handleDelete}
         />}

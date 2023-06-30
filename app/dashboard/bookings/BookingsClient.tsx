@@ -6,19 +6,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Heading from "@/app/components/Heading";
-import { Listing, Reservation, ReservationStatus, User } from "@prisma/client";
-import ReservationCard from '@/app/components/reservations/ReservationCard';
+import { BoookingEvent, Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
 import { Button } from "@/app/components/ui/button";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import ReservationsTable from "@/app/components/reservations/ReservationsTable";
+import ReservationsTable from "@/app/components/bookings/BookingsTable";
 import { BsFillGridFill, BsListUl } from "react-icons/bs";
-import ReservationCardNew from "@/app/components/reservations/ReservationCardNew";
+import ReservationCardNew from "@/app/components/bookings/BookingCardNew";
 
 interface ReservationsClientProps {
   reservations: (Reservation & {
     user: User,
     listing: Listing
+    events:BoookingEvent[]
   })[],
   currentUser: User
 }

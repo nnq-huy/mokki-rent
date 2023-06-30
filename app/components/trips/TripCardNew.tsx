@@ -1,33 +1,32 @@
 'use client';
+import { useState } from "react";
+import { BoookingEvent, Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { differenceInHours, format } from 'date-fns';
-
-import useProvinces from "@/app/hooks/useProvinces";
-
-import { Listing, Reservation, User } from "@prisma/client";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
+
+import Image from "next/image";
 import { MdInfoOutline, MdOutlineMessage, MdOutlinePlace, MdOutlineRateReview } from "react-icons/md";
 import { BsStar } from "react-icons/bs";
 import { statuses } from "@/app/constants";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import { ScrollArea } from "../ui/scroll-area";
+import BookingTimeline from "../bookings/BookingTimeline";
+import BookingListingDetails from "../bookings/BookingListingDetails";
+import BookingDetails from "../bookings/BookingDetails";
+import BookingActions from "../bookings/BookingActions";
 
 interface TripCardProps {
-  reservation: Reservation & { user?: User, listing?: Listing };
-  onAction?: (id: string) => void;
-  disabled?: boolean;
-  actionLabel?: string;
-  actionId?: string;
-  currentUser?: User | null;
-  showMessage?: Boolean;
+  reservation: Reservation & { user: User, listing: Listing, events: BoookingEvent[] };
+  currentUser: User;
 };
 
 const TripCardNew: React.FC<TripCardProps> = ({
-  showMessage,
   reservation,
   currentUser,
 }) => {
@@ -36,22 +35,19 @@ const TripCardNew: React.FC<TripCardProps> = ({
   const IsGuest = useIsGuest();
   const { setCurrentReservation } = useCurrentReservation();
 
-  const { getByValue } = useProvinces();
+  const start = new Date(reservation.startDate);
+  const end = new Date(reservation.endDate);
+  const checkinDate = `${format(start, 'PP')}`;
+  const checkoutDate = `${format(end, 'PP')}`;
 
-  const location = getByValue(reservation.listing!.locationValue);
+  const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
+  const status = statuses.find((status) => status.value === reservation.status);
 
   const handleOpenMessage = () => {
     IsGuest.switchToGuest();
     setCurrentReservation(reservation);
     messageModal.onOpen();
   }
-
-  const start = new Date(reservation.startDate);
-  const end = new Date(reservation.endDate);
-  const checkinDate = `${format(start, 'PP')}`;
-  const checkoutDate = `${format(end, 'PP')}`;
-  const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
-  const status = statuses.find((status) => status.value === reservation.status);
 
   return (
     <div className="col-span-2 bg-white flex flex-row gap-2 w-full shadow-lg rounded-xl max-w-screen-lg">
@@ -64,7 +60,7 @@ const TripCardNew: React.FC<TripCardProps> = ({
           </div>
         </div>
         <div className="flex flex-row items-center  justify-between gap-1 text-gray-500">
-          <div className="flex items-center gap-1 text-sm"><MdOutlinePlace />{location?.label} </div>
+          <div className="flex items-center gap-1 text-sm"><MdOutlinePlace />{reservation.listing.locationValue} </div>
         </div>
         <Separator />
         <div className="text-gray-500 text-sm py-2">
@@ -74,24 +70,37 @@ const TripCardNew: React.FC<TripCardProps> = ({
           {bookedNights} {bookedNights > 1 ? 'nights' : 'night'} | {reservation.totalPrice}€
         </div>
         <div className="flex flex-row items-start">
-          {showMessage &&
-            <Button
-              size={'icon'}
-              variant={'ghost'}
-              onClick={() => router.push(`/trips/${reservation.id}`)}
-            >
-              <MdInfoOutline size={20} color="gray" />
-            </Button>
-          }
-          {showMessage &&
-            <Button
-              size={'icon'}
-              variant={'ghost'}
-              onClick={handleOpenMessage}
-            >
-              <MdOutlineMessage size={20} color="gray" />
-            </Button>
-          }
+          <Sheet>
+            <SheetTrigger>
+              <Button
+                size={'icon'}
+                variant={'ghost'}
+              >
+                <MdInfoOutline size={20} color="gray" />
+              </Button></SheetTrigger>
+            <SheetContent className="md:w-[50vw] w-full">
+              <SheetHeader>
+                <SheetTitle>Booking details</SheetTitle>
+              </SheetHeader>
+              <ScrollArea className="h-full">
+                <BookingListingDetails booking={reservation} />
+                <BookingDetails booking={reservation} bookedNights={bookedNights} />
+                <BookingTimeline booking={reservation} currentUser={currentUser} />
+                <BookingActions booking={reservation} showMessage currentUser={currentUser} />
+                <SheetClose className='mb-4'>
+                  <Button variant={'outline'} size={'lg'}> Close
+                  </Button>
+                </SheetClose>
+              </ScrollArea>
+            </SheetContent>
+          </Sheet>
+          <Button
+            size={'icon'}
+            variant={'ghost'}
+            onClick={handleOpenMessage}
+          >
+            <MdOutlineMessage size={20} color="gray" />
+          </Button>
           {reservation.status === 'done' &&
             <Button
               size={'icon'}
@@ -115,12 +124,12 @@ const TripCardNew: React.FC<TripCardProps> = ({
           "
       >
         <Image
-          onClick={() => router.push(`/trips/${reservation.id}`)}
+          onClick={() => router.push(`/listings/${reservation.listingId}`)}
           fill
           className="
               cursor-pointer
-              object-cover 
-              hover:scale-110 
+              object-cover
+              hover:scale-110
               transition
             "
           src={reservation.listing!.imageSrc}

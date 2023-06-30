@@ -5,7 +5,7 @@ import { IoDiamond } from "react-icons/io5";
 import { MdOutlineVilla, MdCastle } from "react-icons/md";
 import { TbBeach, TbPool } from "react-icons/tb";
 import { SortOption } from "../types";
-import { ArrowUpCircle, CheckCircle2, FileBarChart2, HelpCircle, Home, Mail, Settings, ShoppingBag, User, XCircle } from "lucide-react";
+import { ArrowUpCircle, CheckCircle2, FileBarChart2, HelpCircle, Home, Mail, MailCheck, Settings, ShoppingBag, User, XCircle } from "lucide-react";
 
 export const categories = [
   {
@@ -140,6 +140,11 @@ export const statuses = [
     label: "Cancelled",
     icon: XCircle,
   },
+  {
+    value: "reviewed",
+    label: "Reviewed",
+    icon: MailCheck,
+  }
 ]
 
 //admin dashboard side navigation bar items:

@@ -20,7 +20,7 @@ const RecentBookings: React.FC<RecentBookingsProps> = ({ reservations, name }) =
       <CardHeader>
         <CardTitle>Recent Bookings</CardTitle>
         <CardDescription>
-          {name} has {reservations.length} bookings recently
+          {name} has {reservations.length} completed bookings recently
         </CardDescription>
       </CardHeader>
       <CardContent>

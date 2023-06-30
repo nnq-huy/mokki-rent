@@ -15,7 +15,9 @@ const Map = dynamic(() => import('../Map'), {
 });
 
 interface ListingInfoProps {
-  user: User,
+  //user: User,
+  hostName: string,
+  hostPhoto?: string,
   currentUser?: User | null;
   id: string,
   description: string;
@@ -32,7 +34,9 @@ interface ListingInfoProps {
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
-  user,
+  //user,
+  hostName,
+  hostPhoto,
   currentUser,
   id,
   description,
@@ -60,8 +64,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             gap-2
           "
         >
-          <div>Hosted by {user?.name}</div>
-          <MyAvatar src={user?.image!} />
+          <div>Hosted by {hostName}</div>
+          <MyAvatar src={hostPhoto} />
         </div>
         <div className="
             flex 

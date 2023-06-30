@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
-import { Listing, Reservation, User } from "@prisma/client"
+import { BoookingEvent, Listing, Reservation, User } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 
 import { Button } from "@/app/components/ui/button"
 import {
@@ -17,14 +17,14 @@ import {
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ColumnActionAlert from "../ColumnActionAlert";
+import MyActionAlert from "../MyActionAlert";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { DataTableColumnHeader } from "../ui/data-table-column-header";
 import { statuses } from "@/app/constants";
 
-export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }>[] = [
+export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing, events: BoookingEvent[] }>[] = [
   {
     id: 'guest',
     accessorKey: "user.name",
@@ -119,15 +119,24 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
         const data = {
           status: 'done'
         }
+        const eventData = {
+          reservationId: reservation.id,
+          userId: reservation.hostId,
+          event: 'done'
+        }
         await axios.put(`/api/reservations/${reservation.id}`, data)
           .then(() => {
-            toast.success('Reservation marked as done');
-            router.refresh();
+            axios.post(`/api/reservations/${reservation.id}`, eventData)
+              .then(() => {
+                toast.success('Reservation marked as done');
+                router.refresh();
+              });
           })
           .catch(() => {
             toast.error('Something went wrong.')
           });
       };
+
 
       const onDelete = async () => {
         await axios.delete(`/api/reservations/${reservation.id}`).then(() => {
@@ -143,10 +152,18 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
         const data = {
           status: 'cancelled'
         }
+        const eventData = {
+          reservationId: reservation.id,
+          userId: reservation.hostId,
+          event: 'cancelled'
+        }
         await axios.put(`/api/reservations/${reservation.id}`, data)
           .then(() => {
-            toast.success('Reservation cancelled');
-            router.refresh();
+            axios.post(`/api/reservations/${reservation.id}`, eventData)
+              .then(() => {
+                toast.success('Reservation marked as done');
+                router.refresh();
+              });
           })
           .catch(() => {
             toast.error('Something went wrong.')
@@ -157,10 +174,18 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
         const data = {
           status: 'confirmed'
         }
+        const eventData = {
+          reservationId: reservation.id,
+          userId: reservation.hostId,
+          event: 'confirmed'
+        }
         await axios.put(`/api/reservations/${reservation.id}`, data)
           .then(() => {
-            toast.success('Reservation confirmed!');
-            router.refresh();
+            axios.post(`/api/reservations/${reservation.id}`, eventData)
+              .then(() => {
+                toast.success('Reservation confirmed!');
+                router.refresh();
+              });
           })
           .catch(() => {
             toast.error('Something went wrong.')
@@ -181,7 +206,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
               Message guest
             </DropdownMenuItem>
             {(reservation.status === 'confirmed' && canMarkDone) &&
-              <ColumnActionAlert
+              <MyActionAlert
                 action={onMarkDone}
                 title="Mark as done"
                 actionText="Mark reservation as done confirmation"
@@ -190,7 +215,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
             }
             <DropdownMenuSeparator />
             {reservation.status === 'unconfirmed' &&
-              <><ColumnActionAlert
+              <><MyActionAlert
                 action={onConfirm}
                 title="Confirm reservation"
                 actionText="Do you want to confirm this reservation?"
@@ -199,14 +224,14 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing }
               /> <DropdownMenuSeparator />
               </>}
             {(reservation.status != 'cancelled' && reservation.status != 'done') &&
-              <ColumnActionAlert
+              <MyActionAlert
                 action={onCancel}
                 title="Cancel reservation"
                 actionText="Do you want to cancel this reservation?"
                 actionButtonLabel="Confirm"
               />}
             {reservation.status === 'cancelled' &&
-              <ColumnActionAlert
+              <MyActionAlert
                 action={onDelete}
                 title="Delete reservation"
                 actionText="Do you want to permanently delete this reservation?"

@@ -124,6 +124,7 @@ enum ReservationStatus {
   cancelled
   paid
   done
+  reviewed
 }
 
 enum ListingStatus {
