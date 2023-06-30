@@ -1,11 +1,12 @@
-import { Listing, Reservation, User } from "@prisma/client";
+import { BoookingEvent, Listing, Reservation, User } from "@prisma/client";
 import { DataTable } from "../ui/data-table";
 import { columns } from "./BookingsDataColumn";
 
 interface ReservationsTableProps {
   reservations: (Reservation & {
     user: User,
-    listing: Listing
+    listing: Listing,
+    events:BoookingEvent[]
   })[],
 }
 

@@ -1,8 +1,7 @@
 'use client';
 
-import { User, Message, Reservation, Listing } from "@prisma/client";
+import { User, Message, Reservation, Listing, BoookingEvent } from "@prisma/client";
 import ConversationPanel from "@/app/components/messages/ConversationPanel";
-import ReservationPanel from "@/app/components/messages/ReservationDetailsPanel";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import MyAvatar from "../../components/MyAvatar";
 import Heading from "../../components/Heading";
@@ -13,13 +12,16 @@ interface MessagesClientProps {
   reservationsAsHost: (Reservation & {
     user: User;
     listing: Listing;
-  })[];
-  messsages: Message[]
+    events:BoookingEvent[];
+  })[],
+  messsages: Message[],
+  currentUser:User
 }
 
 const MessagesClient: React.FC<MessagesClientProps> = ({
   reservationsAsHost,
   messsages,
+  currentUser
 }) => {
   const { currentReservation } = useCurrentReservation();
   const messagesSortedByTime = messsages.sort((a, b) => (a.createdAt.getTime() - b.createdAt.getTime()));
@@ -82,8 +84,7 @@ const MessagesClient: React.FC<MessagesClientProps> = ({
         className="flex flex-row h-[85vh]"
       >
         {leftPanel}
-        <ConversationPanel messages={messagesSortedByTime} />
-        <ReservationPanel reservation={currentReservation} />
+        <ConversationPanel messages={messagesSortedByTime} currentUser={currentUser} />
       </div>
     </div>
   );

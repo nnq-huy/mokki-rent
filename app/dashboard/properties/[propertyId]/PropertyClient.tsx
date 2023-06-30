@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 
 import Container from "@/app/components/Container";
-import { Reservation, Listing, User } from "@prisma/client";
+import { Reservation, Listing, User, BoookingEvent } from "@prisma/client";
 import PropertyTabs from "@/app/components/properties/PropertyTab";
 import { eventColors } from "@/app/constants";
 import { Booking } from "@/app/types";
@@ -18,7 +18,7 @@ import PropertyStats from "@/app/components/properties/PropertyStats";
 
 
 interface PropertyClientProps {
-  reservations?: (Reservation & { user: User, listing: Listing })[];
+  reservations?: (Reservation & { user: User, listing: Listing , events:BoookingEvent[]})[];
   listing: Listing & {
     user: User;
   };

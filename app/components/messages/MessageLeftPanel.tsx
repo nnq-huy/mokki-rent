@@ -1,5 +1,5 @@
 'use client'
-import { Listing, Reservation, User } from "@prisma/client"
+import { BoookingEvent, Listing, Reservation, User } from "@prisma/client"
 import MyAvatar from "../MyAvatar";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
@@ -12,10 +12,12 @@ interface MessageLeftPanelProps {
   reservationsAsGuest: (Reservation & {
     user?: User;
     listing?: Listing;
+    events: BoookingEvent[];
   })[];
   reservationsAsHost: (Reservation & {
     user?: User;
     listing?: Listing;
+    events: BoookingEvent[];
   })[];
 }
 
@@ -96,7 +98,7 @@ const MessageLeftPanel: React.FC<MessageLeftPanelProps> = ({ reservationsAsGuest
                         </div>}
                     </div>
                   </button>
-                  <Separator/>
+                  <Separator />
                 </li>
               ))}
             </ul> :

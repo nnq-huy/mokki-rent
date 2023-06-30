@@ -29,6 +29,7 @@ const MessagesPage = async () => {
       <MessagesClient
         reservationsAsHost={reservationsAsHost}
         messsages={messagesReceived.concat(messagesSent)}
+        currentUser={currentUser}
       />
     </ClientOnly>
   );
