@@ -17,12 +17,20 @@ interface PropertyStatsProps {
 }
 
 const PropertyStats: React.FC<PropertyStatsProps> = ({ reservations, name }) => {
-  const doneBookings = reservations.filter((a) => { return a.status === "done" })
+  const doneBookings = reservations.filter((a) => { return (a.status === "done" || a.status === "reviewed") })
+  const reviewedBookings = reservations.filter((a) => { return a.status === "reviewed" });
+
   const recentBookings = doneBookings.slice(0, 5);
   const totalRevenue = doneBookings.reduce((a, b) => {
     return a + b.totalPrice;
   }, 0);
-  const totalBookings = doneBookings.length.toString();
+  const totalBookings = doneBookings.length;
+  const averageRating = (
+    reviewedBookings.reduce((a, b) => {
+      return a + b.rating;
+    }, 0) / reviewedBookings.length
+  );
+  const averageRevenuePerBooking = totalRevenue / totalBookings;
 
   const barChart = (
     <Card>
@@ -52,9 +60,10 @@ const PropertyStats: React.FC<PropertyStatsProps> = ({ reservations, name }) => 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 py-4 w-full">
         <DashboardCard title="Total revenue" subtext=" down 10 % from last year" amount={totalRevenue.toString() + '€'} icon={BiEuro} />
         <DashboardCard title="Last month revenue" subtext="up 10 % from previous month" amount="0€" icon={BiEuro} />
-        <DashboardCard title="Total bookings" subtext="up 10 % from previous month" amount={totalBookings} icon={BiCart} />
+        <DashboardCard title="Total bookings" subtext="up 10 % from previous month" amount={totalBookings.toString()} icon={BiCart} />
         <DashboardCard title="Last month bookings" subtext="up 10 % from previous month" amount="0" icon={BiCart} />
-        <DashboardCard title="Rating" subtext="down 100 % from previous month" amount="4.4/5" icon={BiStar} />
+        <DashboardCard title="Average booking value" subtext="up 15 % from previous month" amount={averageRevenuePerBooking.toFixed(2)} icon={BiCart} />
+        <DashboardCard title="Rating" subtext="down 100 % from previous month" amount={averageRating.toFixed(1)} icon={BiStar} />
       </div>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         {barChart}
