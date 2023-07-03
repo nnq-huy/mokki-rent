@@ -12,10 +12,7 @@ import { eventColors } from "@/app/constants";
 import { Booking } from "@/app/types";
 import PropertyReservationsTable from "@/app/components/properties/PropertyResTable";
 import DetailsPage from "@/app/components/properties/PropertyDetails";
-import PropertyStats from "@/app/components/properties/PropertyStats";
-
-
-
+import ReportsClient from "../../reports/ReportsClient";
 
 interface PropertyClientProps {
   reservations?: (Reservation & { user: User, listing: Listing , events:BoookingEvent[]})[];
@@ -97,7 +94,7 @@ const PropertyClient: React.FC<PropertyClientProps> = ({
 
   );
   const statsContent = (
-      <PropertyStats reservations={reservations} name={listing.title}/>
+      <ReportsClient reservations={reservations} mokkiName={listing.title}/>
   );
 
   return (

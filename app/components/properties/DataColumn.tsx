@@ -15,14 +15,13 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu"
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
 import MyActionAlert from "../MyActionAlert";
 import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import useIsGuest from "@/app/hooks/useIsGuest";
 import { DataTableColumnHeader } from "../ui/data-table-column-header";
 import { statuses } from "@/app/constants";
+import useBooking from "@/app/hooks/useBooking";
 
 export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing, events: BoookingEvent[] }>[] = [
   {
@@ -101,96 +100,18 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing, 
     id: "actions",
     cell: ({ row }) => {
       const reservation = row.original
-      const router = useRouter();
-
       const today = new Date();
       const canMarkDone = reservation.endDate < today;
       const IsGuest = useIsGuest();
       const { setCurrentReservation } = useCurrentReservation();
       const messageModal = useMessageModal();
+      const { cancelBooking, confirmBooking, deleteBooking, markDoneBooking } = useBooking({ reservationId: reservation.id, currentUserId: reservation.hostId })
 
       const handleOpenMessage = () => {
         IsGuest.switchToHost();
         setCurrentReservation(reservation);
         messageModal.onOpen();
       }
-
-      const onMarkDone = async () => {
-        const data = {
-          status: 'done'
-        }
-        const eventData = {
-          reservationId: reservation.id,
-          userId: reservation.hostId,
-          event: 'done'
-        }
-        await axios.put(`/api/reservations/${reservation.id}`, data)
-          .then(() => {
-            axios.post(`/api/reservations/${reservation.id}`, eventData)
-              .then(() => {
-                toast.success('Reservation marked as done');
-                router.refresh();
-              });
-          })
-          .catch(() => {
-            toast.error('Something went wrong.')
-          });
-      };
-
-
-      const onDelete = async () => {
-        await axios.delete(`/api/reservations/${reservation.id}`).then(() => {
-          toast.success('Reservation deleted');
-          router.refresh();
-        })
-          .catch(() => {
-            toast.error('Something went wrong.')
-          });
-      };
-
-      const onCancel = async () => {
-        const data = {
-          status: 'cancelled'
-        }
-        const eventData = {
-          reservationId: reservation.id,
-          userId: reservation.hostId,
-          event: 'cancelled'
-        }
-        await axios.put(`/api/reservations/${reservation.id}`, data)
-          .then(() => {
-            axios.post(`/api/reservations/${reservation.id}`, eventData)
-              .then(() => {
-                toast.success('Reservation marked as done');
-                router.refresh();
-              });
-          })
-          .catch(() => {
-            toast.error('Something went wrong.')
-          });
-      };
-
-      const onConfirm = async () => {
-        const data = {
-          status: 'confirmed'
-        }
-        const eventData = {
-          reservationId: reservation.id,
-          userId: reservation.hostId,
-          event: 'confirmed'
-        }
-        await axios.put(`/api/reservations/${reservation.id}`, data)
-          .then(() => {
-            axios.post(`/api/reservations/${reservation.id}`, eventData)
-              .then(() => {
-                toast.success('Reservation confirmed!');
-                router.refresh();
-              });
-          })
-          .catch(() => {
-            toast.error('Something went wrong.')
-          });
-      };
 
       return (
         <DropdownMenu>
@@ -207,7 +128,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing, 
             </DropdownMenuItem>
             {(reservation.status === 'confirmed' && canMarkDone) &&
               <MyActionAlert
-                action={onMarkDone}
+                action={markDoneBooking}
                 title="Mark as done"
                 actionText="Mark reservation as done confirmation"
                 actionButtonLabel="Continue"
@@ -216,7 +137,7 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing, 
             <DropdownMenuSeparator />
             {reservation.status === 'unconfirmed' &&
               <><MyActionAlert
-                action={onConfirm}
+                action={confirmBooking}
                 title="Confirm reservation"
                 actionText="Do you want to confirm this reservation?"
                 actionSubText="You can still cancel this reservation 10 days prior to arrival."
@@ -225,14 +146,14 @@ export const columns: ColumnDef<Reservation & { user?: User, listing?: Listing, 
               </>}
             {(reservation.status != 'cancelled' && reservation.status != 'done') &&
               <MyActionAlert
-                action={onCancel}
+                action={cancelBooking}
                 title="Cancel reservation"
                 actionText="Do you want to cancel this reservation?"
                 actionButtonLabel="Confirm"
               />}
             {reservation.status === 'cancelled' &&
               <MyActionAlert
-                action={onDelete}
+                action={deleteBooking}
                 title="Delete reservation"
                 actionText="Do you want to permanently delete this reservation?"
                 actionButtonLabel="Delete"

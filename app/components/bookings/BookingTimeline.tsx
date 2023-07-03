@@ -7,9 +7,8 @@ interface BookingTimelineProps {
   booking: Reservation & {
     events: BoookingEvent[]
   },
-  currentUser: User
 }
-const BookingTimeline: React.FC<BookingTimelineProps> = ({ booking, currentUser }) => {
+const BookingTimeline: React.FC<BookingTimelineProps> = ({ booking }) => {
   return (<Accordion type="single" collapsible>
     <AccordionItem value="item-1">
       <AccordionTrigger>Booking timeline</AccordionTrigger>

@@ -85,8 +85,8 @@ const TripCardNew: React.FC<TripCardProps> = ({
               <ScrollArea className="h-full">
                 <BookingListingDetails booking={reservation} />
                 <BookingDetails booking={reservation} bookedNights={bookedNights} />
-                <BookingTimeline booking={reservation} currentUser={currentUser} />
-                <BookingActions booking={reservation} showMessage currentUser={currentUser} />
+                <BookingTimeline booking={reservation} />
+                <BookingActions booking={reservation} showMessage currentUserId={currentUser.id} />
                 <SheetClose className='mb-4'>
                   <Button variant={'outline'} size={'lg'}> Close
                   </Button>

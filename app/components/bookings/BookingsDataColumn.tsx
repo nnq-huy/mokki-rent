@@ -3,7 +3,7 @@
 
 import { BoookingEvent, Listing, Reservation, User } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 
 import { Button } from "@/app/components/ui/button"
 import {
@@ -15,14 +15,19 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu"
 import MyActionAlert from "../MyActionAlert"
-import { useRouter } from "next/navigation"
-import axios from "axios"
-import toast from "react-hot-toast"
 import useIsGuest from "@/app/hooks/useIsGuest"
 import useCurrentReservation from "@/app/hooks/useCurrentReservation"
 import useMessageModal from "@/app/hooks/useMessageModal"
 import { statuses } from "@/app/constants"
 import { DataTableColumnHeader } from "../ui/data-table-column-header"
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
+import { ScrollArea } from "@radix-ui/react-scroll-area"
+import BookingActions from "./BookingActions"
+import BookingDetails from "./BookingDetails"
+import BookingListingDetails from "./BookingListingDetails"
+import BookingTimeline from "./BookingTimeline"
+import { differenceInHours } from "date-fns"
+import useBooking from "@/app/hooks/useBooking"
 
 export const columns: ColumnDef<Reservation & {
   user?: User,
@@ -113,12 +118,12 @@ export const columns: ColumnDef<Reservation & {
       id: "actions",
       cell: ({ row }) => {
         const reservation = row.original
-        const router = useRouter();
         const today = new Date();
         const canMarkDone = reservation.endDate < today;
         const IsGuest = useIsGuest();
         const { setCurrentReservation } = useCurrentReservation();
         const messageModal = useMessageModal();
+        const { cancelBooking, confirmBooking, deleteBooking, markDoneBooking } = useBooking({ reservationId: reservation.id, currentUserId: reservation.hostId })
 
         const handleOpenMessage = () => {
           IsGuest.switchToHost();
@@ -126,82 +131,9 @@ export const columns: ColumnDef<Reservation & {
           messageModal.onOpen();
         }
 
-        const onMarkDone = async () => {
-          const data = {
-            status: 'done'
-          }
-          const eventData = {
-            reservationId: reservation.id,
-            userId: reservation.hostId,
-            event: 'done'
-          }
-          await axios.put(`/api/reservations/${reservation.id}`, data)
-            .then(() => {
-              axios.post(`/api/reservations/${reservation.id}`, eventData)
-                .then(() => {
-                  toast.success('Reservation marked as done');
-                  router.refresh();
-                });
-            })
-            .catch(() => {
-              toast.error('Something went wrong.')
-            });
-        };
-
-        const onDelete = async () => {
-          await axios.delete(`/api/reservations/${reservation.id}`).then(() => {
-            toast.success('Reservation deleted');
-            router.refresh();
-          })
-            .catch(() => {
-              toast.error('Something went wrong.')
-            });
-        };
-
-        const onCancel = async () => {
-          const data = {
-            status: 'cancelled'
-          }
-          const eventData = {
-            reservationId: reservation.id,
-            userId: reservation.hostId,
-            event: 'cancelled'
-          }
-          await axios.put(`/api/reservations/${reservation.id}`, data)
-            .then(() => {
-              axios.post(`/api/reservations/${reservation.id}`, eventData)
-                .then(() => {
-                  toast.success('Reservation marked as done');
-                  router.refresh();
-                });
-            })
-            .catch(() => {
-              toast.error('Something went wrong.')
-            });
-        };
-
-        const onConfirm = async () => {
-          const data = {
-            status: 'confirmed'
-          }
-          const eventData = {
-            reservationId: reservation.id,
-            userId: reservation.hostId,
-            event: 'confirmed'
-          }
-          await axios.put(`/api/reservations/${reservation.id}`, data)
-            .then(() => {
-              axios.post(`/api/reservations/${reservation.id}`, eventData)
-                .then(() => {
-                  toast.success('Reservation confirmed!');
-                  router.refresh();
-                });
-            })
-            .catch(() => {
-              toast.error('Something went wrong.')
-            });
-        };
-
+        const start = new Date(reservation.startDate);
+        const end = new Date(reservation.endDate);
+        const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -212,15 +144,35 @@ export const columns: ColumnDef<Reservation & {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => { router.push(`/dashboard/bookings/${reservation.id}`) }}>
-                View details
+              <DropdownMenuItem >
+                <Sheet>
+                  <SheetTrigger>
+                    Show details
+                  </SheetTrigger>
+                  <SheetContent className="md:w-[50vw] w-full">
+                    <SheetHeader>
+                      <SheetTitle>Booking details</SheetTitle>
+                    </SheetHeader>
+                    <ScrollArea className="h-full">
+                      <BookingListingDetails booking={reservation} />
+                      <BookingDetails booking={reservation} bookedNights={bookedNights} />
+                      <BookingTimeline booking={reservation} />
+                      <BookingActions booking={reservation} currentUserId={reservation.hostId} showMessage
+                      />
+                      <SheetClose className='mb-4'>
+                        <Button variant={'outline'} size={'lg'}> Close
+                        </Button>
+                      </SheetClose>
+                    </ScrollArea>
+                  </SheetContent>
+                </Sheet>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleOpenMessage}>
                 Message guest
               </DropdownMenuItem>
               {(reservation.status === 'confirmed' && canMarkDone) &&
                 <MyActionAlert
-                  action={onMarkDone}
+                  action={markDoneBooking}
                   title="Mark as done"
                   actionText="Mark reservation as done confirmation"
                   actionButtonLabel="Continue"
@@ -229,7 +181,7 @@ export const columns: ColumnDef<Reservation & {
               <DropdownMenuSeparator />
               {reservation.status === 'unconfirmed' &&
                 <><MyActionAlert
-                  action={onConfirm}
+                  action={confirmBooking}
                   title="Confirm reservation"
                   actionText="Do you want to confirm this reservation?"
                   actionSubText="You can still cancel this reservation 10 days prior to arrival."
@@ -238,14 +190,14 @@ export const columns: ColumnDef<Reservation & {
                 </>}
               {(reservation.status != 'cancelled' && reservation.status != 'done') &&
                 <MyActionAlert
-                  action={onCancel}
+                  action={cancelBooking}
                   title="Cancel reservation"
                   actionText="Do you want to cancel this reservation?"
                   actionButtonLabel="Confirm"
                 />}
               {reservation.status === 'cancelled' &&
                 <MyActionAlert
-                  action={onDelete}
+                  action={deleteBooking}
                   title="Delete reservation"
                   actionText="Do you want to permanently delete this reservation?"
                   actionButtonLabel="Delete"

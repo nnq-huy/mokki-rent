@@ -2,9 +2,7 @@
 
 import { BoookingEvent, Listing, Reservation, User } from "@prisma/client";
 import MyActionAlert from "../MyActionAlert";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { MdOutlineCancelPresentation, MdOutlineMessage, MdOutlineRateReview } from "react-icons/md";
+import { MdOutlineCancelPresentation, MdOutlineCheckCircleOutline, MdOutlineLibraryAddCheck, MdOutlineMessage, MdOutlineRateReview } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import {
@@ -19,18 +17,23 @@ import {
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import { Rating } from "flowbite-react";
 import { useMemo, useState } from "react";
+import useBooking from "@/app/hooks/useBooking";
 
 interface BookingActionsProps {
   booking?: Reservation & { user?: User, listing?: Listing, events: BoookingEvent[] },
   showMessage: boolean,
-  currentUser: User
+  currentUserId: string
 }
-const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, currentUser }) => {
+const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, currentUserId }) => {
   const isCancellable = (booking!.status == 'unconfirmed' || booking!.status == 'confirmed')
+  const today= new Date();
   const router = useRouter();
   const { setCurrentReservation } = useCurrentReservation();
   const currentRating = booking?.rating ?? 0;
   const [rating, setRating] = useState(currentRating);
+  const { cancelBooking,rateBooking, confirmBooking, markDoneBooking } = useBooking({ reservationId: booking!.id, currentUserId: currentUserId,rating:rating })
+  const isConfirmable = (booking!.status == 'unconfirmed' && currentUserId===booking!.hostId);
+  const canMarkDone = (booking!.status == 'confirmed' && currentUserId===booking!.hostId && booking!.endDate < today);
 
   const ratingStars = useMemo(() => {
     let ratings: React.ReactElement[] = [];
@@ -43,49 +46,6 @@ const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, c
     }
     return ratings;
   }, [rating]);
-
-  const onRate = (id: string) => {
-    const data = {
-      rating: rating,
-      status: "reviewed"
-    }
-    const eventData = {
-      reservationId: id,
-      userId: currentUser?.id,
-      event: "reviewed"
-    }
-    axios.put(`/api/reservations/${id}`, data)
-      .then(() => {
-        axios.post(`/api/reservations/${id}`, eventData).then(() => {
-          toast.success('Review submitted!');
-          router.refresh();
-        })
-      })
-      .catch(() => {
-        toast.error('Error')
-      })
-  }
-  const onCancel = (id: string) => {
-    const data = {
-      status: "cancelled"
-    }
-    const eventData = {
-      reservationId: id,
-      userId: currentUser?.id,
-      event: "cancelled"
-    }
-    axios.put(`/api/reservations/${id}`, data)
-      .then(() => {
-        axios.post(`/api/reservations/${id}`, eventData).then(() => {
-          toast.success('Reservation cancelled');
-          router.refresh();
-        })
-      })
-      .catch(() => {
-        toast.error('Error')
-      })
-  };
-
 
   return (<div className="w-full my-4 items-center flex flex-wrap gap-4">
     {showMessage && booking && <Button
@@ -100,7 +60,7 @@ const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, c
       messages
     </Button>}
 
-    {booking && booking.status === 'done' && currentUser.id === booking.userId &&
+    {booking && booking.status === 'done' && currentUserId === booking.userId &&
       <Dialog>
         <DialogTrigger> <Button
           size={'lg'}
@@ -125,23 +85,43 @@ const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, c
             <Button type="submit"
               className=" border-2 border-mokki-light font-bold text-mokki-green"
               variant={'outline'}
-              onClick={() => {
-                onRate(booking.id)
-              }}
+              onClick={()=>rateBooking}
             > Submit</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     }
     {
-      booking && isCancellable &&
+      booking && isCancellable && !canMarkDone &&
       <MyActionAlert
-        action={() => onCancel(booking.id)}
+        action={cancelBooking}
         title="Cancel booking"
         actionText="Do you want to cancel this reservation?"
         actionButtonLabel="Confirm"
         outline
         icon={MdOutlineCancelPresentation}
+      />
+    }
+    {
+      booking && isConfirmable &&
+      <MyActionAlert
+        action={confirmBooking}
+        title="Confirm booking"
+        actionText="Do you want to confirm this reservation?"
+        actionButtonLabel="Confirm"
+        outline
+        icon={MdOutlineCheckCircleOutline}
+      />
+    }
+     {
+      booking && canMarkDone &&
+      <MyActionAlert
+        action={markDoneBooking}
+        title="Mark booking as done"
+        actionText="Do you want to mar this reservation as finished?"
+        actionButtonLabel="Confirm"
+        outline
+        icon={MdOutlineLibraryAddCheck}
       />
     }
   </div >)

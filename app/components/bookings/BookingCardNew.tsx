@@ -1,107 +1,41 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
 import { differenceInHours, format } from 'date-fns';
 
 import useProvinces from "@/app/hooks/useProvinces";
 import { statuses } from "@/app/constants"
 
 
-import Button from "../Button";
+import { Button } from "../ui/button";
 import { BoookingEvent, Listing, Reservation, ReservationStatus, User } from "@prisma/client";
 import MyAvatar from "../MyAvatar";
-import useIsGuest from "@/app/hooks/useIsGuest";
-import useMessageModal from "@/app/hooks/useMessageModal";
 import useCurrentReservation from "@/app/hooks/useCurrentReservation";
-import { CalendarCheck, CheckCircle, MessageCircle, Trash2, XCircle } from "lucide-react";
-import { BiDetail } from "react-icons/bi";
 import { Separator } from "../ui/separator";
+import useBooking from "@/app/hooks/useBooking";
+import MyActionAlert from "../MyActionAlert";
+import { MdOutlineCancelPresentation, MdOutlineCheckCircleOutline, MdOutlineLibraryAddCheck, MdOutlineMessage } from "react-icons/md";
 
 interface ReservationCardProps {
 
-  reservation: Reservation & { user?: User, listing?: Listing, events:BoookingEvent[] };
-  onDelete?: (id: string) => void;
-  onCancel?: (id: string) => void;
-  onConfirm?: (id: string) => void;
-  onMarkDone?: (id: string) => void;
-  disabled?: boolean;
-  actionLabel?: string;
-  actionId?: string;
+  reservation: Reservation & { user?: User, listing?: Listing, events: BoookingEvent[] };
+  currentUserId: string,
   showMessage?: Boolean;
 };
 
 const ReservationCardNew: React.FC<ReservationCardProps> = ({
   showMessage,
   reservation,
-  onCancel,
-  onDelete,
-  onConfirm,
-  onMarkDone,
-  disabled,
-  actionLabel,
-  actionId = '',
+  currentUserId,
 }) => {
-  const router = useRouter();
   const { getByValue } = useProvinces();
   const guest = reservation.user;
-  const IsGuest = useIsGuest();
-  const messageModal = useMessageModal();
   const { setCurrentReservation } = useCurrentReservation();
+  const { cancelBooking, deleteBooking, confirmBooking, markDoneBooking } = useBooking({ reservationId: reservation.id, currentUserId: currentUserId })
+  const router = useRouter();
   const today = new Date();
-  const canMarkDone = reservation.endDate < today;
-
+  const canMarkDone = (reservation.endDate < today && reservation.status === 'confirmed');
   const location = getByValue(reservation.listing!.locationValue);
-
-
-  const handleOpenMessage = () => {
-    IsGuest.switchToHost();
-    setCurrentReservation(reservation);
-    messageModal.onOpen();
-  }
-  const handleMarkDone = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (disabled) {
-        return;
-      }
-
-      onMarkDone?.(actionId)
-    }, [disabled, onMarkDone, actionId]);
-
-  const handleCancel = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (disabled) {
-        return;
-      }
-
-      onCancel?.(actionId)
-    }, [disabled, onCancel, actionId]);
-
-  const handleDelete = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (disabled) {
-        return;
-      }
-
-      onDelete?.(actionId)
-    }, [disabled, onDelete, actionId]);
-
-  const handleConfirm = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (disabled) {
-        return;
-      }
-
-      onConfirm?.(actionId)
-    }, [disabled, onConfirm, actionId]);
 
   const start = new Date(reservation.startDate);
   const end = new Date(reservation.endDate);
@@ -109,6 +43,9 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
   const checkoutDate = `${format(end, 'PP')}`;
   const bookedNights = Math.ceil(differenceInHours(end, start) / 24);
   const status = statuses.find((status) => status.value === reservation.status);
+  const isCancellable = (reservation.status === 'unconfirmed' || reservation.status === 'confirmed');
+  const isConfirmable = (reservation.status === 'unconfirmed');
+  const canDelete = (reservation.status === 'cancelled');
 
   return (
     <div className="bg-white flex flex-row gap-4 max-w-screen-sm w-[85vw] shadow-lg p-0 rounded-xl">
@@ -145,60 +82,66 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
         </div>
       </div>
 
-      <div className="basis-1/2 md:basis-1/3 items-center flex flex-col gap-1 justify-center p-2 border-l">
-        <Button
-          icon={BiDetail}
-          disabled={disabled}
-          small
-          outline
-          label={"View details"}
-          onClick={() => { router.push(`/dashboard/bookings/${reservation.id}`) }}
-        />
-        {(reservation?.status === ReservationStatus.unconfirmed) && <Button
-          icon={CalendarCheck}
-          disabled={disabled}
-          small
-          outline
-          label="Confirm booking"
-          onClick={handleConfirm}
-        />}
-        {(reservation?.status === ReservationStatus.confirmed && canMarkDone) && <Button
-          icon={CheckCircle}
-          disabled={disabled}
-          small
-          outline
-          label="Mark as done"
-          onClick={handleMarkDone}
-        />}
+      <div className="basis-1/2 md:basis-1/3 items-end flex flex-col gap-2 justify-center p-2 border-l">
         {showMessage && <Button
-          icon={MessageCircle}
-          disabled={disabled}
-          small
-          outline
-          label="Message guest"
-          onClick={handleOpenMessage}
-        />}
-        {onCancel && actionLabel && (
-          <Button
-            icon={XCircle}
-            disabled={disabled}
-            small
+          size={'lg'}
+          variant={'outline'}
+          onClick={() => {
+            setCurrentReservation(reservation)
+            router.push('/messages')
+          }}
+        >
+          <MdOutlineMessage size={20} color="gray" />&nbsp;
+          messages
+        </Button>}
+        {
+          isCancellable && !canMarkDone &&
+          <MyActionAlert
+            action={cancelBooking}
+            title="Cancel booking"
+            actionText="Do you want to cancel this reservation?"
+            actionButtonLabel="Confirm"
             outline
-            label={actionLabel}
-            onClick={handleCancel}
+            icon={MdOutlineCancelPresentation}
           />
-        )}
-        {(reservation?.status === ReservationStatus.cancelled) && <Button
-          icon={Trash2}
-          disabled={disabled}
-          small
-          outline
-          label="Delete reservation"
-          onClick={handleDelete}
-        />}
+        }
+        {
+          isConfirmable &&
+          <MyActionAlert
+            action={confirmBooking}
+            title="Confirm booking"
+            actionText="Do you want to confirm this reservation?"
+            actionButtonLabel="Confirm"
+            outline
+            icon={MdOutlineCheckCircleOutline}
+          />
+        }
+        {
+          canMarkDone &&
+          <MyActionAlert
+            action={markDoneBooking}
+            title="Mark as done"
+            actionText="Do you want to mark this reservation as finished?"
+            actionButtonLabel="Confirm"
+            outline
+            icon={MdOutlineLibraryAddCheck}
+          />
+        }
+        {
+          canDelete &&
+          <MyActionAlert
+            action={deleteBooking}
+            title="Delete booking"
+            actionText="Do you want to permanently delete this reservation?"
+            actionButtonLabel="Confirm"
+            outline
+            icon={MdOutlineLibraryAddCheck}
+          />
+        }
       </div>
     </div>
   );
 }
 
 export default ReservationCardNew;
+//TODO: show details

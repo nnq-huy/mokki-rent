@@ -4,12 +4,12 @@ import { BoookingEvent, Listing, Reservation, User } from "@prisma/client";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { MdInfoOutline } from "react-icons/md";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import BookingListingDetails from "../bookings/BookingListingDetails";
 import BookingDetails from "../bookings/BookingDetails";
 import BookingTimeline from "../bookings/BookingTimeline";
 import { differenceInHours } from "date-fns";
 import BookingActions from "../bookings/BookingActions";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ReservationDetailSmallProps {
   reservation: Reservation & { user?: User, listing?: Listing, events: BoookingEvent[] };
@@ -43,8 +43,8 @@ const ReservationDetailSmall: React.FC<ReservationDetailSmallProps> = ({ reserva
           <ScrollArea className="h-full">
             <BookingListingDetails booking={reservation} />
             <BookingDetails booking={reservation} bookedNights={bookedNights} />
-            <BookingTimeline booking={reservation} currentUser={currentUser} />
-            <BookingActions booking={reservation} currentUser={currentUser} showMessage={false}
+            <BookingTimeline booking={reservation} />
+            <BookingActions booking={reservation} currentUserId={currentUser.id} showMessage={false}
             />
             <SheetClose className='mb-4'>
               <Button variant={'outline'} size={'lg'}> Close
@@ -53,7 +53,6 @@ const ReservationDetailSmall: React.FC<ReservationDetailSmallProps> = ({ reserva
           </ScrollArea>
         </SheetContent>
       </Sheet>}
-      
     </div>
   )
 }

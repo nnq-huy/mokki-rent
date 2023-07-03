@@ -23,7 +23,6 @@ const MessagesClient: React.FC<MessagesClientProps> = ({
   messsages,
   currentUser
 }) => {
-  const { currentReservation } = useCurrentReservation();
   const messagesSortedByTime = messsages.sort((a, b) => (a.createdAt.getTime() - b.createdAt.getTime()));
   const { setCurrentReservation } = useCurrentReservation();
   const { isGuest, switchToHost } = useIsGuest();
