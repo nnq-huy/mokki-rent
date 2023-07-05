@@ -21,13 +21,13 @@ import useMessageModal from "@/app/hooks/useMessageModal"
 import { statuses } from "@/app/constants"
 import { DataTableColumnHeader } from "../ui/data-table-column-header"
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
-import { ScrollArea } from "@radix-ui/react-scroll-area"
 import BookingActions from "./BookingActions"
 import BookingDetails from "./BookingDetails"
 import BookingListingDetails from "./BookingListingDetails"
 import BookingTimeline from "./BookingTimeline"
 import { differenceInHours } from "date-fns"
 import useBooking from "@/app/hooks/useBooking"
+import { ScrollArea } from "../ui/scroll-area"
 
 export const columns: ColumnDef<Reservation & {
   user?: User,
@@ -144,29 +144,29 @@ export const columns: ColumnDef<Reservation & {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem >
-                <Sheet>
-                  <SheetTrigger>
-                    Show details
-                  </SheetTrigger>
-                  <SheetContent className="md:w-[50vw] w-full">
-                    <SheetHeader>
-                      <SheetTitle>Booking details</SheetTitle>
-                    </SheetHeader>
-                    <ScrollArea className="h-full">
-                      <BookingListingDetails booking={reservation} />
-                      <BookingDetails booking={reservation} bookedNights={bookedNights} />
-                      <BookingTimeline booking={reservation} />
-                      <BookingActions booking={reservation} currentUserId={reservation.hostId} showMessage
-                      />
-                      <SheetClose className='mb-4'>
-                        <Button variant={'outline'} size={'lg'}> Close
-                        </Button>
-                      </SheetClose>
-                    </ScrollArea>
-                  </SheetContent>
-                </Sheet>
-              </DropdownMenuItem>
+              <Sheet>
+                <SheetTrigger>
+                  <Button className="ml-[-8px]" variant={'ghost'}>
+                    More details
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="md:w-[50vw] w-full">
+                  <SheetHeader>
+                    <SheetTitle>Booking details</SheetTitle>
+                  </SheetHeader>
+                  <ScrollArea className="h-full">
+                    <BookingListingDetails booking={reservation} />
+                    <BookingDetails booking={reservation} bookedNights={bookedNights} />
+                    <BookingTimeline booking={reservation} />
+                    <BookingActions booking={reservation} currentUserId={reservation.hostId} showMessage
+                    />
+                    <SheetClose className='mb-4'>
+                      <Button variant={'outline'} size={'lg'}> Close
+                      </Button>
+                    </SheetClose>
+                  </ScrollArea>
+                </SheetContent>
+              </Sheet>
               <DropdownMenuItem onClick={handleOpenMessage}>
                 Message guest
               </DropdownMenuItem>

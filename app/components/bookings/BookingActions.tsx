@@ -2,7 +2,13 @@
 
 import { BoookingEvent, Listing, Reservation, User } from "@prisma/client";
 import MyActionAlert from "../MyActionAlert";
-import { MdOutlineCancelPresentation, MdOutlineCheckCircleOutline, MdOutlineLibraryAddCheck, MdOutlineMessage, MdOutlineRateReview } from "react-icons/md";
+import {
+  MdOutlineCancelPresentation,
+  MdOutlineCheckCircleOutline,
+  MdOutlineLibraryAddCheck,
+  MdOutlineMessage,
+  MdOutlineRateReview
+} from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import {
@@ -26,15 +32,21 @@ interface BookingActionsProps {
 }
 const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, currentUserId }) => {
   const isCancellable = (booking!.status == 'unconfirmed' || booking!.status == 'confirmed')
-  const today= new Date();
+  const today = new Date();
   const router = useRouter();
   const { setCurrentReservation } = useCurrentReservation();
   const currentRating = booking?.rating ?? 0;
   const [rating, setRating] = useState(currentRating);
-  const { cancelBooking,rateBooking, confirmBooking, markDoneBooking } = useBooking({ reservationId: booking!.id, currentUserId: currentUserId,rating:rating })
-  const isConfirmable = (booking!.status == 'unconfirmed' && currentUserId===booking!.hostId);
-  const canMarkDone = (booking!.status == 'confirmed' && currentUserId===booking!.hostId && booking!.endDate < today);
+  const {
+    cancelBooking,
+    rateBooking,
+    confirmBooking,
+    markDoneBooking
+  } = useBooking({ reservationId: booking!.id, currentUserId: currentUserId, rating: rating })
+  const isConfirmable = (booking!.status == 'unconfirmed' && currentUserId === booking!.hostId);
+  const canMarkDone = (booking!.status == 'confirmed' && currentUserId === booking!.hostId && booking!.endDate < today);
 
+  //5 stars rating components
   const ratingStars = useMemo(() => {
     let ratings: React.ReactElement[] = [];
     let i = 0;
@@ -80,12 +92,12 @@ const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, c
               return (<div key={e.key} onMouseEnter={() => { setRating(parseInt(e.key!.toString()) + 1) }} onClick={() => { setRating(parseInt(e.key!.toString()) + 1) }}>{e}</div>);
             })}
           </Rating>
-          {rating}
+          {rating} stars
           <DialogFooter>
             <Button type="submit"
               className=" border-2 border-mokki-light font-bold text-mokki-green"
               variant={'outline'}
-              onClick={()=>rateBooking}
+              onClick={rateBooking}
             > Submit</Button>
           </DialogFooter>
         </DialogContent>
@@ -113,7 +125,7 @@ const BookingActions: React.FC<BookingActionsProps> = ({ booking, showMessage, c
         icon={MdOutlineCheckCircleOutline}
       />
     }
-     {
+    {
       booking && canMarkDone &&
       <MyActionAlert
         action={markDoneBooking}

@@ -13,19 +13,19 @@ interface IUseBooking {
 const useBooking = ({ reservationId, currentUserId,rating }: IUseBooking) => {
   const router = useRouter();
 
-  const rateBooking = (id: string) => {
+  const rateBooking = async () => {
     const data = {
       rating: rating,
       status: "reviewed"
     }
     const eventData = {
-      reservationId: id,
+      reservationId: reservationId,
       userId: currentUserId,
       event: "reviewed"
     }
-    axios.put(`/api/reservations/${id}`, data)
+    await axios.put(`/api/reservations/${reservationId}`, data)
       .then(() => {
-        axios.post(`/api/reservations/${id}`, eventData).then(() => {
+        axios.post(`/api/reservations/${reservationId}`, eventData).then(() => {
           toast.success('Review submitted!');
           router.refresh();
         })

@@ -36,7 +36,7 @@ const ReservationDetailSmall: React.FC<ReservationDetailSmallProps> = ({ reserva
           >
             <MdInfoOutline size={20} color="gray" />Show details
           </Button></SheetTrigger>
-        <SheetContent className="md:w-[50vw] w-full">
+        <SheetContent className="md:w-[50vw] w-full pr-4">
           <SheetHeader>
             <SheetTitle>Booking details</SheetTitle>
           </SheetHeader>

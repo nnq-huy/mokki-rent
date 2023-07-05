@@ -105,7 +105,6 @@ const MessageLeftPanel: React.FC<MessageLeftPanelProps> = ({ reservationsAsGuest
             <div className="text-neutral-400 text-center text-md align-self-center">
               no reservations found
             </div>}
-
         </div>
       </div>
     </div>

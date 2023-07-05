@@ -17,8 +17,8 @@ interface ColumnActionAlertProps {
   actionText: string,
   actionSubText?: string,
   actionButtonLabel: string,
-  outline?:boolean,
-  icon?:IconType
+  outline?: boolean,
+  icon?: IconType
 }
 
 const MyActionAlert: React.FC<ColumnActionAlertProps> = ({
@@ -28,17 +28,16 @@ const MyActionAlert: React.FC<ColumnActionAlertProps> = ({
   actionText,
   actionSubText,
   outline,
-  icon:Icon,
+  icon: Icon,
 }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger >
-        {(outline && Icon) ?<Button size="lg" variant="outline" className="px-2 my-[-4px] text-sm font-normal">
-          <Icon size={20} className="text-neutral-500"/>&nbsp;{title}
-        </Button> :<Button variant="ghost" className="px-2 my-[-4px] text-sm font-normal">
+        {(outline && Icon) ? <Button size="lg" variant="outline" className="px-2 my-[-4px] text-sm font-normal">
+          <Icon size={20} className="text-neutral-500" />&nbsp;{title}
+        </Button> : <Button variant="ghost" className="px-2 my-[-4px] text-sm font-normal">
           {title}
         </Button>}
-        
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

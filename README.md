@@ -19,6 +19,7 @@ Main features:
 - user can reserve a cottage for a time, it will be made unavailable to other users once confirmed by host
 - user and host can cancel reservations
 - guest and host can send messages, confirm and cancel reservations in the messages center
+- guest can leave review after the stay is done
 - host can mangage their bookings and properties in dedicated pages with calendar and list view
 - reporting dashboard showing booking stats on user's properties
 - responsive design
@@ -27,12 +28,11 @@ Main features:
 
 - ~~messaging between host & user~~
 - ~~user & host profiles~~
-- more detailed info on listing
 - more images per listing
 - advanced price calculation
 - map view of all listings
 - ~~calendar view to manage listing's reservations~~
-- user review
+- ~~user review~~
 - multilangues
 - cookies consent
 - dark theme

@@ -13,6 +13,14 @@ import { User } from "@prisma/client";
 import useRentModal from "@/app/hooks/useRentModal";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "../ui/dropdown-menu";
 
 interface UserMenuProps {
   currentUser?: User | null;
@@ -21,7 +29,6 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({
   currentUser
 }) => {
-  const router = useRouter();
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
@@ -32,10 +39,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
     }
     rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
-
-  const menuPopover = (
-    <Popover>
-      <PopoverTrigger>
+  const menuDropdown = (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
         <div
           className="
           p-4
@@ -58,26 +64,37 @@ const UserMenu: React.FC<UserMenuProps> = ({
             <MyAvatar src={currentUser?.image!} />
           </div>
         </div>
-      </PopoverTrigger>
-      <PopoverContent className="w-full">
-        <div className="flex flex-col cursor-pointer text-sm w-48">
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <div className="flex flex-col text-sm w-48">
           {currentUser ? (
             <>
-              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/trips'}>My trips</Link>
-              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/favorites'}>My favorites</Link>
-              <hr />
-              <MenuItem
-                label="Rent your mökki out"
-                onClick={() => rentModal.onOpen()}
-              />
-              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/dashboard'}>Dashboard</Link>
-              <hr />
-              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/'}>Home</Link>
-              <Link className="p-2 font-semibold hover:text-mokki-green" href={'/messages'}>Messages</Link>
-              <MenuItem
-                label="Logout"
-                onClick={() => signOut()}
-              />
+              <DropdownMenuItem asChild>
+                <Link className="p-2 font-semibold hover:text-mokki-green" href={'/trips'}>My trips</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link className="p-2 font-semibold hover:text-mokki-green" href={'/favorites'}>My favorites</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => rentModal.onOpen()} >
+                <p className="font-semibold">Rent your mökki out</p>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link className="p-2 font-semibold hover:text-mokki-green" href={'/dashboard'}>Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link className="p-2 font-semibold hover:text-mokki-green" href={'/'}>Home</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link className="p-2 font-semibold hover:text-mokki-green" href={'/dashboard/profile'}>Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link className="p-2 font-semibold hover:text-mokki-green" href={'/messages'}>Messages</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => signOut()}>
+                <p className="font-semibold">Logout</p>
+              </DropdownMenuItem>
             </>
           ) : (
             <>
@@ -93,9 +110,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
             </>
           )}
         </div>
-      </PopoverContent>
-    </Popover>
-  )
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   return (
     <div className="relative">
@@ -118,7 +135,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         >
           Rent your mökki
         </div>
-        {menuPopover}
+        {menuDropdown}
       </div>
     </div>
   );

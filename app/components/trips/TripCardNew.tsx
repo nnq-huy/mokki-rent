@@ -101,15 +101,6 @@ const TripCardNew: React.FC<TripCardProps> = ({
           >
             <MdOutlineMessage size={20} color="gray" />
           </Button>
-          {reservation.status === 'done' &&
-            <Button
-              size={'icon'}
-              variant={'ghost'}
-              onClick={handleOpenMessage}
-            >
-              <MdOutlineRateReview size={20} color="gray" />
-            </Button>
-          }
         </div>
       </div>
       <div

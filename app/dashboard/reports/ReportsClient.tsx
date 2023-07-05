@@ -7,6 +7,7 @@ import { BiCart, BiEuro, BiStar } from "react-icons/bi";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/components/ui/card";
 import RecentBookings from "@/app/components/properties/RecentBookings";
 import DashboardCard from "@/app/components/DashBoardCard";
+import useBookingStats from "@/app/hooks/useBookingStats";
 
 interface ReportsPageProps {
   reservations: (Reservation & {
@@ -17,27 +18,17 @@ interface ReportsPageProps {
 }
 
 const ReportsClient: React.FC<ReportsPageProps> = ({ reservations, mokkiName }) => {
-  const doneBookings = reservations.filter((a) => { return (a.status === "done" || a.status === "reviewed") });
-  const lastMonthBookings = doneBookings.filter((a) => {
-    const bookingMonth = a.endDate.getMonth();
-    const currentMonth = new Date().getMonth();
-    return bookingMonth === (currentMonth - 1)
-  });
-  const lastMonthRevenue = lastMonthBookings.reduce((a, b) => {
-    return a + b.totalPrice;
-  }, 0);
-  const reviewedBookings = reservations.filter((a) => { return a.status === "reviewed" });
-  const recentBookings = doneBookings.slice(0, 5);
-  const totalRevenue = doneBookings.reduce((a, b) => {
-    return a + b.totalPrice;
-  }, 0);
-  const totalBookings = doneBookings.length;
-  const averageRating = (
-    reviewedBookings.reduce((a, b) => {
-      return a + b.rating;
-    }, 0) / reviewedBookings.length
-  );
-  const averageRevenuePerBooking = totalRevenue / totalBookings;
+  const {
+    doneBookings,
+    lastMonthBookings,
+    lastMonthRevenue,
+    totalBookings,
+    totalRevenue,
+    averageRevenuePerBooking,
+    averageRating,
+    totalRatings,
+    recentBookings
+  } = useBookingStats({ reservations: reservations });
 
   const barChart = (
     <Card>
@@ -71,11 +62,11 @@ const ReportsClient: React.FC<ReportsPageProps> = ({ reservations, mokkiName }) 
         <DashboardCard title="Total bookings" subtext="up 10 % from previous month" amount={totalBookings.toString()} icon={BiCart} />
         <DashboardCard title="Last month bookings" subtext="up 10 % from previous month" amount={lastMonthBookings.length.toString()} icon={BiCart} />
         <DashboardCard title="Average booking value" subtext="up 15 % from previous month" amount={averageRevenuePerBooking.toFixed(2)} icon={BiCart} />
-        <DashboardCard title="Rating" subtext={reviewedBookings.length.toString() + ' reviews'} amount={averageRating.toFixed(1) + ' / 5'} icon={BiStar} />
+        <DashboardCard title="Rating" subtext={totalRatings + ' reviews'} amount={averageRating.toFixed(1) + ' / 5'} icon={BiStar} />
       </div>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         {barChart}
-        <RecentBookings reservations={recentBookings} name={'all mokki'} />
+        <RecentBookings reservations={recentBookings} name={mokkiName ?? 'You'} />
       </div>
     </div>)
 }

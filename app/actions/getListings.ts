@@ -1,4 +1,4 @@
-import prisma from "@/app/utils/prismadb";
+import prisma from "@/lib/prismadb";
 
 export interface IListingsParams {
   userId?: string;
@@ -65,6 +65,11 @@ export default async function getListings(
     if (userId) {
       query.userId = userId;
     }
+    
+    if(!userId){
+      query.status = 'available';
+    }
+
     if (category) {
       query.category = category;
     }

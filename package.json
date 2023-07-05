@@ -52,7 +52,7 @@
     "flowbite-react": "^0.4.9",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.233.0",
-    "next": "13.4.4",
+    "next": "13.4.8",
     "next-auth": "^4.22.1",
     "next-cloudinary": "^4.12.0",
     "postcss": "8.4.24",

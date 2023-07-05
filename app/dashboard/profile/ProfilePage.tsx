@@ -131,7 +131,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ currentUser }) => {
         </form>
       </Form>
     </div>
-
   )
 }
 

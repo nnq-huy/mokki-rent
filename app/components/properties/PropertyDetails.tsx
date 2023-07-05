@@ -347,14 +347,21 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
                       <FormLabel className="text-gray-700">Current availability</FormLabel>
                       <FormControl>
                         <div>
-                          <RadioGroup defaultValue={field.value}>
+                          <RadioGroup
+                            defaultValue={field.value}
+                            onValueChange={field.onChange}
+                          >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="available" id="available" />
-                              <Label className="text-gray-500" htmlFor="available">Available</Label>
+                              <Label className="text-gray-500" htmlFor="available">
+                                Available
+                                </Label>
                             </div>
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="unavailable" id="unavailable" />
-                              <Label className="text-gray-500" htmlFor="unavailable">Unavailable</Label>
+                              <Label className="text-gray-500" htmlFor="unavailable">
+                                Unavailable
+                                </Label>
                             </div>
                           </RadioGroup>
                         </div>
@@ -368,7 +375,12 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ listing }) => {
           <div className="flex flex-row gap-4 pt-4">
             <Button type="submit">Save</Button>
             <Button type="reset" onClick={() => { form.reset(defaultValues) }}>Reset</Button>
-            <Button variant={'destructive'} type="button" onClick={() => {setOpenDeleteDialog(true)}}>Delete listing</Button>
+            <Button
+              variant={'destructive'}
+              type="button"
+              onClick={() => { setOpenDeleteDialog(true) }}>
+              Delete listing
+            </Button>
           </div>
         </form>
       </Form>

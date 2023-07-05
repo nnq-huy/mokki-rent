@@ -82,7 +82,7 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
         </div>
       </div>
 
-      <div className="basis-1/2 md:basis-1/3 items-end flex flex-col gap-2 justify-center p-2 border-l">
+      <div className="basis-1/2 md:basis-1/3 items-end flex flex-col gap-4 justify-center p-2 border-l">
         {showMessage && <Button
           size={'lg'}
           variant={'outline'}

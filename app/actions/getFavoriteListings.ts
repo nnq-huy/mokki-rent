@@ -1,4 +1,4 @@
-import prisma from "@/app/utils/prismadb";
+import prisma from "@/lib/prismadb";
 
 import getCurrentUser from "./getCurrentUser";
 
