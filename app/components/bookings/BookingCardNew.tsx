@@ -14,7 +14,13 @@ import useCurrentReservation from "@/app/hooks/useCurrentReservation";
 import { Separator } from "../ui/separator";
 import useBooking from "@/app/hooks/useBooking";
 import MyActionAlert from "../MyActionAlert";
-import { MdOutlineCancelPresentation, MdOutlineCheckCircleOutline, MdOutlineLibraryAddCheck, MdOutlineMessage } from "react-icons/md";
+import { MdInfoOutline, MdOutlineCancelPresentation, MdOutlineCheckCircleOutline, MdOutlineLibraryAddCheck, MdOutlineMessage } from "react-icons/md";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import BookingActions from "./BookingActions";
+import BookingDetails from "./BookingDetails";
+import BookingListingDetails from "./BookingListingDetails";
+import BookingTimeline from "./BookingTimeline";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ReservationCardProps {
 
@@ -83,17 +89,29 @@ const ReservationCardNew: React.FC<ReservationCardProps> = ({
       </div>
 
       <div className="basis-1/2 md:basis-1/3 items-end flex flex-col gap-4 justify-center p-2 border-l">
-        {showMessage && <Button
-          size={'lg'}
-          variant={'outline'}
-          onClick={() => {
-            setCurrentReservation(reservation)
-            router.push('/messages')
-          }}
-        >
-          <MdOutlineMessage size={20} color="gray" />&nbsp;
-          messages
-        </Button>}
+        <Sheet>
+          <SheetTrigger>
+            <Button className="ml-[-8px]" variant={'outline'}>
+              <MdInfoOutline size={24} className="text-gray-500 pr-1" /> More details
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="md:w-[50vw] w-full">
+            <SheetHeader>
+              <SheetTitle>Booking details</SheetTitle>
+            </SheetHeader>
+            <ScrollArea className="h-full">
+              <BookingListingDetails booking={reservation} />
+              <BookingDetails booking={reservation} bookedNights={bookedNights} />
+              <BookingTimeline booking={reservation} />
+              <BookingActions booking={reservation} currentUserId={reservation.hostId} showMessage
+              />
+              <SheetClose className='mb-4'>
+                <Button variant={'outline'} size={'lg'}> Close
+                </Button>
+              </SheetClose>
+            </ScrollArea>
+          </SheetContent>
+        </Sheet>
         {
           isCancellable && !canMarkDone &&
           <MyActionAlert

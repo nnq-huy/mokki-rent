@@ -13,6 +13,7 @@ export interface IListingsParams {
   startPrice?:number;
   stopPrice?:number;
   sort?:string;
+  page?: string;
 }
 
 export default async function getListings(
@@ -31,10 +32,11 @@ export default async function getListings(
       needSauna,
       startPrice,
       stopPrice,
-      sort
+      sort,
+      page,
     } = params;
 
-    let sortOption :any =  {};
+  let sortOption :any =  {};
 
     if (sort) {
       switch (sort){

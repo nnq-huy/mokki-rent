@@ -2,13 +2,14 @@
 
 ## Introduction
 
-A simple fullstack site for summer cottage listing and renting built with Next.JS with server components, React, Tailwind CSS,custom shadcn/ui components, Image upload on Cloudinary,  Prisma with PostgreSQL hosted on Neon.tech/Supabase
+A simple fullstack site for summer cottage listing and renting built with Next.JS with server components,api routes,  React, Tailwind CSS,custom shadcn/ui components, Image upload on Cloudinary,  Prisma with PostgreSQL hosted on Supabase
 
 Main features:
 
 - full stack Next.js with Server Side rendering and App Router
 - authentication with next-auth
 - user can login/signup using an email/password or a Google & Github account.
+- routes are protected, login prompt in authenticated pages
 - host can create listing with location, category, a picture and amenities info
 - host can delete cottage listing
 - user can add cottage to favorites list
@@ -36,7 +37,7 @@ Main features:
 - multilangues
 - cookies consent
 - dark theme
-- paginated listing loading
+- paginated all listings loading
 
 ## Link to demo
 
