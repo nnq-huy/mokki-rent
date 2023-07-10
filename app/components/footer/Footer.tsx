@@ -7,8 +7,8 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({
 }) => {
   return (
-    <footer className="pt-4 bg-gray-50 w-full z-10">
-      <hr className=" border-gray-200 sm:mx-auto dark:border-gray-700" />
+    <footer className="pt-4 bg-gray-50 w-full">
+      <hr className=" border-gray-200 sm:mx-auto" />
       <div
         className="
             py-4

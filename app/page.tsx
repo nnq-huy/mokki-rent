@@ -10,13 +10,15 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "./components/ClientOnly";
 import ListingFilterBar from "./components/listings/ListingFilterBar";
 import ListingFilterChips from "./components/listings/ListingFilterChips";
+import ListingPagination from "./components/listings/ListingPagination";
 
 interface HomeProps {
   searchParams: IListingsParams
 };
 
 const Home = async ({ searchParams }: HomeProps) => {
-  const listings = await getListings(searchParams);
+  const listingsAndCount = await getListings(searchParams);
+  const listings = listingsAndCount.listings;
   const currentUser = await getCurrentUser();
 
   if (listings.length === 0) {
@@ -53,6 +55,7 @@ const Home = async ({ searchParams }: HomeProps) => {
             />
           ))}
         </div>
+      <ListingPagination count={listingsAndCount.count}/>
       </div>
     </ClientOnly>
   )

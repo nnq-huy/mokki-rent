@@ -36,6 +36,13 @@ export default async function getListings(
       page,
     } = params;
 
+  let currentPage =  1;
+
+  if (page) {
+    currentPage = parseInt(page);
+  }
+  const currentSkip = (currentPage -1) * 10;
+
   let sortOption :any =  {};
 
     if (sort) {
@@ -128,12 +135,19 @@ export default async function getListings(
         }
       }
     }
-    const listings = await prisma.listing.findMany({
-      where: query,
-      orderBy: sortOption
-    });
-
-    return listings;
+    const [count, listings] = await prisma.$transaction([
+      prisma.listing.count({
+        where: query
+      }),
+      prisma.listing.findMany({
+        skip: currentSkip,
+        take: 10,
+        where: query,
+        orderBy: sortOption
+      })
+    ])
+  
+    return {count,listings};
   } catch (error: any) {
     throw new Error(error);
   }

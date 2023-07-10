@@ -26,15 +26,15 @@ export default async function RootLayout({
   return (
     <html lang="en-FI">
       <body className={font.className}>
+        <Header currentUser={currentUser} />
         <ClientOnly>
           <ToasterProvider />
           <ModalsProvider />
-          <Header currentUser={currentUser} />
         </ClientOnly>
         <div className="pt-[88px] bg-gray-50">
           {children}
         </div>
-        <Footer/>
+        <Footer />
       </body>
     </html>
   )
