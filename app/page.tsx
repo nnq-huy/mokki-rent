@@ -17,8 +17,7 @@ interface HomeProps {
 };
 
 const Home = async ({ searchParams }: HomeProps) => {
-  const listingsAndCount = await getListings(searchParams);
-  const listings = listingsAndCount.listings;
+  const {count, listings} = await getListings(searchParams);
   const currentUser = await getCurrentUser();
 
   if (listings.length === 0) {
@@ -32,7 +31,7 @@ const Home = async ({ searchParams }: HomeProps) => {
     <ClientOnly>
       <div className="min-h-[80vh] xl:px-8 md:px-4 sm:px-2 px-2">
         <ListingFilterBar />
-        <h1 className="pt-6 text-gray-500">Showing {listings.length} listings</h1>
+        <h1 className="pt-6 text-gray-500">Showing {listings.length} of {count} listings</h1>
         <ListingFilterChips/>
         <div
           className="
@@ -55,7 +54,7 @@ const Home = async ({ searchParams }: HomeProps) => {
             />
           ))}
         </div>
-      <ListingPagination count={listingsAndCount.count}/>
+      <ListingPagination count={count}/>
       </div>
     </ClientOnly>
   )

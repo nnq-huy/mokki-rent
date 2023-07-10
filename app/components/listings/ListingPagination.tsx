@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react";
 import qs from 'query-string';
 import { Button } from "../ui/button";
+import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos, MdOutlineNavigateNext } from "react-icons/md";
 
 interface ListingPaginationProps {
   count: number
@@ -48,11 +49,15 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({ count }) => {
     )
     pageButtons.push(button)
   }
+const nextButton = (<Button variant={'ghost'} disabled={currentPage===numberOfPages} onClick={()=>handlePageChange(currentPage+1)}><MdOutlineArrowForwardIos/></Button>);
+const previousButton = (<Button variant={'ghost'} disabled={currentPage===1} onClick={()=>handlePageChange(currentPage-1)}><MdOutlineArrowBackIos/></Button>)
 
   return (
-    <div className="w-full items-center flex flex-row pt-8">
-      Pages
+    <div className="w-full items-center justify-center flex flex-row pt-8">
+      Page
+      {previousButton}
       {pageButtons}
+      {nextButton}
     </div>
   )
 
