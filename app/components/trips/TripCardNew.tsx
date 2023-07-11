@@ -69,39 +69,7 @@ const TripCardNew: React.FC<TripCardProps> = ({
         <div className="font-semibold ">
           {bookedNights} {bookedNights > 1 ? 'nights' : 'night'} | {reservation.totalPrice}€
         </div>
-        <div className="flex flex-row items-start">
-          <Sheet>
-            <SheetTrigger>
-              <Button
-                size={'icon'}
-                variant={'ghost'}
-              >
-                <MdInfoOutline size={20} color="gray" />
-              </Button></SheetTrigger>
-            <SheetContent className="md:w-[50vw] w-full">
-              <SheetHeader>
-                <SheetTitle>Booking details</SheetTitle>
-              </SheetHeader>
-              <ScrollArea className="h-full">
-                <BookingListingDetails booking={reservation} />
-                <BookingDetails booking={reservation} bookedNights={bookedNights} />
-                <BookingTimeline booking={reservation} />
-                <BookingActions booking={reservation} showMessage currentUserId={currentUser.id} />
-                <SheetClose className='mb-4'>
-                  <Button variant={'outline'} size={'lg'}> Close
-                  </Button>
-                </SheetClose>
-              </ScrollArea>
-            </SheetContent>
-          </Sheet>
-          <Button
-            size={'icon'}
-            variant={'ghost'}
-            onClick={handleOpenMessage}
-          >
-            <MdOutlineMessage size={20} color="gray" />
-          </Button>
-        </div>
+        
       </div>
       <div
         className="
@@ -131,11 +99,44 @@ const TripCardNew: React.FC<TripCardProps> = ({
             top-3
             left-3
           ">
-          <div className="font-bold bg-black/70 rounded text-gray-100 flex items-center gap-1">
+          <div className="font-bold bg-black/70 rounded text-gray-100 flex items-center gap-1 p-1">
             {status && (
               <status.icon className=" h-4 w-4" />
             )}{status?.label.toUpperCase()}
           </div>
+        </div>
+        <div className="flex flex-row items-start absolute bottom-1 left-1 bg-black/70 rounded-sm">
+          <Sheet>
+            <SheetTrigger>
+              <Button
+                size={'icon'}
+                variant={'ghost'}
+              >
+                <MdInfoOutline size={20} color="white" />
+              </Button></SheetTrigger>
+            <SheetContent className="md:w-[50vw] w-full">
+              <SheetHeader>
+                <SheetTitle>Booking details</SheetTitle>
+              </SheetHeader>
+              <ScrollArea className="h-full">
+                <BookingListingDetails booking={reservation} />
+                <BookingDetails booking={reservation} bookedNights={bookedNights} />
+                <BookingTimeline booking={reservation} />
+                <BookingActions booking={reservation} showMessage currentUserId={currentUser.id} />
+                <SheetClose className='mb-4'>
+                  <Button variant={'outline'} size={'lg'}> Close
+                  </Button>
+                </SheetClose>
+              </ScrollArea>
+            </SheetContent>
+          </Sheet>
+          <Button
+            size={'icon'}
+            variant={'ghost'}
+            onClick={handleOpenMessage}
+          >
+            <MdOutlineMessage size={20} color="white" />
+          </Button>
         </div>
       </div>
     </div>

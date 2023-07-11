@@ -27,17 +27,12 @@ Main features:
 
 ## To dos:
 
-- ~~messaging between host & user~~
-- ~~user & host profiles~~
 - more images per listing
 - advanced price calculation
 - map view of all listings
-- ~~calendar view to manage listing's reservations~~
-- ~~user review~~
 - multilangues
 - cookies consent
 - dark theme
-- paginated all listings loading
 
 ## Link to demo
 

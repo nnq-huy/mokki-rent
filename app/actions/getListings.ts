@@ -41,7 +41,8 @@ export default async function getListings(
   if (page) {
     currentPage = parseInt(page);
   }
-  const currentSkip = (currentPage -1) * 10;
+  const currentSkip = (currentPage -1) * 20;
+  let listingsPerPage = 20;
 
   let sortOption :any =  {};
 
@@ -73,8 +74,9 @@ export default async function getListings(
 
     if (userId) {
       query.userId = userId;
+      listingsPerPage = 50;
     }
-    
+
     if(!userId){
       query.status = 'available';
     }
@@ -141,7 +143,7 @@ export default async function getListings(
       }),
       prisma.listing.findMany({
         skip: currentSkip,
-        take: 10,
+        take: listingsPerPage,
         where: query,
         orderBy: sortOption
       })

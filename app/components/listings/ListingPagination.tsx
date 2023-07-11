@@ -14,7 +14,7 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({ count }) => {
   const router = useRouter();
 
   const [currentPage, setCurentPage] = useState(1);
-  const listingsPerPage = 10;
+  const listingsPerPage = 20;
   const numberOfPages = count % listingsPerPage === 0 ? count / listingsPerPage : (Math.floor(count / listingsPerPage) + 1);
 
   const handlePageChange = useCallback((page: number) => {
@@ -37,20 +37,33 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({ count }) => {
   }, [params, router]);
 
   let pageButtons = [];
-  let i = 1;
   for (let i = 1; i <= numberOfPages; i++) {
     const button = (
       <Button
         variant={'ghost'}
         onClick={() => handlePageChange(i)}
       >
-        {i===currentPage?<p className="text-black">{i}</p>:<p className="text-gray-400">{i}</p>}
+        {i === currentPage ? <p className="text-black">{i}</p> : <p className="text-gray-400">{i}</p>}
       </Button>
     )
     pageButtons.push(button)
   }
-const nextButton = (<Button variant={'ghost'} disabled={currentPage===numberOfPages} onClick={()=>handlePageChange(currentPage+1)}><MdOutlineArrowForwardIos/></Button>);
-const previousButton = (<Button variant={'ghost'} disabled={currentPage===1} onClick={()=>handlePageChange(currentPage-1)}><MdOutlineArrowBackIos/></Button>)
+  const nextButton = (
+    <Button
+      variant={'ghost'}
+      disabled={currentPage === numberOfPages}
+      onClick={() => handlePageChange(currentPage + 1)}>
+      <MdOutlineArrowForwardIos />
+    </Button>
+  );
+  const previousButton = (
+    <Button
+      variant={'ghost'}
+      disabled={currentPage === 1}
+      onClick={() => handlePageChange(currentPage - 1)}>
+      <MdOutlineArrowBackIos />
+    </Button>
+  );
 
   return (
     <div className="w-full items-center justify-center flex flex-row pt-8">
